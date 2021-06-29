@@ -1,9 +1,9 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:tms/models/movie_model.dart';
 import 'package:tms/providers/movie_genre_provider.dart';
-import 'package:tms/widgets/movie_detail_video.dart';
-import 'package:tms/widgets/movie_genre.dart';
+import 'package:tms/screens/movie_detail_screen.dart';
 
 class MovieGenreList extends StatelessWidget {
   @override
@@ -24,7 +24,7 @@ class MovieGenreList extends StatelessWidget {
                   ),
                 );
               },
-              child: MovieGenre(),
+              child: MovieGenreList(),
             ),
           )
         ],
@@ -38,7 +38,7 @@ class MovieGenreList extends StatelessWidget {
         Navigator.of(context).push(
           MaterialPageRoute(
             builder: (BuildContext context) {
-              return MovieDetailVideo(movieData: movie);
+              return MovieDetailScreen(movieData: movie);
             },
           ),
         );
@@ -52,14 +52,16 @@ class MovieGenreList extends StatelessWidget {
           children: [
             ClipRRect(
               borderRadius: BorderRadius.circular(15.0),
-              child: Image.network("https://image.tmdb.org/t/p/original/${movie.posterPath}"),
+              child: CachedNetworkImage(
+                fit: BoxFit.cover,
+                imageUrl: 'https://image.tmdb.org/t/p/original/${movie.posterPath}',
+              ),
             ),
             Container(
               padding: EdgeInsets.only(top: 5.0),
               child: Text(
                 movie.title,
                 style: TextStyle(
-                  fontSize: 12.0,
                   fontWeight: FontWeight.bold,
                   color: Colors.white,
                 ),

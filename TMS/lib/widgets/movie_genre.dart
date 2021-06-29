@@ -70,12 +70,14 @@ class _MovieGenreState extends State<MovieGenre> {
           borderRadius: BorderRadius.all(Radius.circular(25.0)),
           color: isSelected ? Colors.white : Colors.black,
         ),
-        child: Text(
-          genre.name,
-          style: TextStyle(
-            fontSize: 12.0,
-            fontWeight: FontWeight.bold,
-            color: isSelected ? Colors.black : Colors.white,
+        child: Container(
+          child: Text(
+            genre.name,
+            style: TextStyle(
+              fontSize: 12.0,
+              fontWeight: FontWeight.bold,
+              color: isSelected ? Colors.black : Colors.white,
+            ),
           ),
         ),
       ),

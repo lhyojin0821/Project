@@ -8,30 +8,31 @@ class MovieScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.grey[900],
+      appBar: AppBar(
+        centerTitle: true,
+        elevation: 0.0,
         backgroundColor: Colors.grey[900],
-        appBar: AppBar(
-          centerTitle: true,
-          elevation: 0.0,
-          backgroundColor: Colors.grey[900],
-          title: Text('MOVIE'),
-          leading: IconButton(
-            onPressed: () {},
-            icon: Icon(Icons.menu),
-          ),
-          actions: [IconButton(onPressed: () {}, icon: Icon(Icons.search))],
+        title: Text('MOVIE'),
+        leading: IconButton(
+          onPressed: () {},
+          icon: Icon(Icons.menu),
         ),
-        body: SingleChildScrollView(
-          child: Container(
-            width: MediaQuery.of(context).size.width,
-            child: Column(
-              children: [
-                MovieNowPlaying(),
-                MovieGenre(),
-                MoviePerson(),
-                MovieTopRated(),
-              ],
-            ),
+        actions: [IconButton(onPressed: () {}, icon: Icon(Icons.search))],
+      ),
+      body: SingleChildScrollView(
+        child: Container(
+          width: MediaQuery.of(context).size.width,
+          child: Column(
+            children: [
+              MovieNowPlaying(),
+              MovieGenre(),
+              MoviePerson(),
+              MovieTopRated(),
+            ],
           ),
-        ));
+        ),
+      ),
+    );
   }
 }

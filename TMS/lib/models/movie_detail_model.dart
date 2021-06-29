@@ -9,9 +9,11 @@ class MovieDetailModel {
   String releaseDate;
   int runtime;
 
+  String? trailerId;
+
   MovieDetailModel({required this.id, required this.adult, required this.budget, required this.genres, required this.releaseDate, required this.runtime});
 
-  factory MovieDetailModel.fromJson({required Map<String, dynamic> json}) {
+  factory MovieDetailModel.fromJson({required dynamic json}) {
     return MovieDetailModel(id: json["id"], adult: json["adult"], budget: json["budget"], genres: json["genres"].map((i) => new MovieGenreModel.fromJson(json: i)).toList(), releaseDate: json["release_date"], runtime: json["runtime"]);
   }
 }

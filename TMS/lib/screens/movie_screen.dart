@@ -20,13 +20,18 @@ class MovieScreen extends StatelessWidget {
           ),
           actions: [IconButton(onPressed: () {}, icon: Icon(Icons.search))],
         ),
-        body: ListView(
-          children: [
-            MovieNowPlaying(),
-            MovieGenre(),
-            MoviePerson(),
-            MovieTopRated(),
-          ],
+        body: SingleChildScrollView(
+          child: Container(
+            width: MediaQuery.of(context).size.width,
+            child: Column(
+              children: [
+                MovieNowPlaying(),
+                MovieGenre(),
+                MoviePerson(),
+                MovieTopRated(),
+              ],
+            ),
+          ),
         ));
   }
 }

@@ -52,7 +52,7 @@ class MovieGenreList extends StatelessWidget {
           children: [
             ClipRRect(
               borderRadius: BorderRadius.circular(15.0),
-              child: Image.network("https://image.tmdb.org/t/p/w200/" + movie.posterPath),
+              child: Image.network("https://image.tmdb.org/t/p/original/${movie.posterPath}"),
             ),
             Container(
               padding: EdgeInsets.only(top: 5.0),

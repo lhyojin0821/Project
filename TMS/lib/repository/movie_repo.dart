@@ -1,9 +1,11 @@
 import 'dart:convert';
+import 'package:tms/models/movie_cast_model.dart';
 import 'package:tms/models/movie_detail_model.dart';
 import 'package:tms/models/movie_genre_model.dart';
 import 'package:tms/models/movie_model.dart';
 import 'package:http/http.dart' as http;
 import 'package:tms/models/movie_person_model.dart';
+import 'package:tms/models/movie_video_model.dart';
 
 class MovieRepo {
   String mainUrl = 'https://api.themoviedb.org/3';
@@ -91,9 +93,58 @@ class MovieRepo {
         return [];
       }
       Map<String, dynamic> result = jsonDecode(res.body);
-      List resultList = result['results'];
-      return resultList.map<MovieDetailModel>((dynamic e) {
+      List movieDetail = result['results'];
+      return movieDetail.map<MovieDetailModel>((dynamic e) {
         return MovieDetailModel.fromJson(json: e);
+      }).toList();
+    } catch (e) {}
+    return [];
+  }
+
+  Future<List<MovieVideoModel>> getMovieVideo(int movieId) async {
+    try {
+      http.Response res = await http.get(Uri.parse('$mainUrl/movie/$movieId/videos?$apiKey')).timeout(Duration(seconds: 8), onTimeout: () async => new http.Response('{}', 404));
+      if (res.statusCode == 404) {
+        return [];
+      }
+      Map<String, dynamic> result = jsonDecode(res.body);
+      print(result);
+      List resultList = result['results'];
+      print(resultList);
+      return resultList.map<MovieVideoModel>((dynamic e) {
+        return MovieVideoModel.fromJson(json: e);
+      }).toList();
+    } catch (e) {}
+    return [];
+  }
+
+  Future<List<MovieCastModel>> getMovieCast(int movieId) async {
+    try {
+      http.Response res = await http.get(Uri.parse('$mainUrl/movie/$movieId/credits/$apiKey')).timeout(Duration(seconds: 8), onTimeout: () async => new http.Response('{}', 404));
+      if (res.statusCode == 404) {
+        return [];
+      }
+      Map<String, dynamic> result = jsonDecode(res.body);
+      List resultList = result['results'];
+
+      return resultList.map<MovieCastModel>((dynamic e) {
+        return MovieCastModel.fromJson(json: e);
+      }).toList();
+    } catch (e) {}
+    return [];
+  }
+
+  Future<List<MovieModel>> getSimilarMovies(int movieId) async {
+    try {
+      http.Response res = await http.get(Uri.parse('$mainUrl/movie/$movieId/credits/$apiKey')).timeout(Duration(seconds: 8), onTimeout: () async => new http.Response('{}', 404));
+      if (res.statusCode == 404) {
+        return [];
+      }
+      Map<String, dynamic> result = jsonDecode(res.body);
+      List resultList = result['results'];
+
+      return resultList.map<MovieModel>((dynamic e) {
+        return MovieModel.fromJson(json: e);
       }).toList();
     } catch (e) {}
     return [];

@@ -2,18 +2,25 @@ import 'package:flutter/foundation.dart';
 import 'package:tms/models/movie_genre_model.dart';
 
 class MovieDetailModel {
-  int id;
-  bool adult;
-  String budget;
-  List<MovieGenreModel> genres;
-  String releaseDate;
-  int runtime;
+  final int id;
+  final bool adult;
+  final int budget;
+  final List<MovieGenreModel> genres;
+  final List companies;
+  final String releaseDate;
+  final int runtime;
 
-  String? trailerId;
+  MovieDetailModel({required this.id, required this.adult, required this.budget, required this.genres, required this.companies, required this.releaseDate, required this.runtime});
 
-  MovieDetailModel({required this.id, required this.adult, required this.budget, required this.genres, required this.releaseDate, required this.runtime});
-
-  factory MovieDetailModel.fromJson({required dynamic json}) {
-    return MovieDetailModel(id: json["id"], adult: json["adult"], budget: json["budget"], genres: json["genres"].map((i) => new MovieGenreModel.fromJson(json: i)).toList(), releaseDate: json["release_date"], runtime: json["runtime"]);
+  factory MovieDetailModel.fromJson(Map<String, dynamic> json) {
+    return MovieDetailModel(
+      id: json["id"],
+      adult: json["adult"],
+      budget: json["budget"],
+      genres: (json["genres"] as List).map((i) => new MovieGenreModel.fromJson(json: i)).toList(),
+      companies: (json["production_companies"]),
+      releaseDate: json["release_date"],
+      runtime: json["runtime"],
+    );
   }
 }

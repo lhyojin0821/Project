@@ -6,6 +6,7 @@ import 'package:tms/models/movie_model.dart';
 import 'package:tms/models/movie_video_model.dart';
 import 'package:tms/providers/movie_detail_provider.dart';
 import 'package:tms/providers/movie_video_provider.dart';
+import 'package:tms/widgets/movie_info.dart';
 import 'package:tms/widgets/movie_video_player.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
@@ -43,61 +44,77 @@ class _MovieDetailScreenState extends State<MovieDetailScreen> {
       backgroundColor: Colors.grey[900],
       body: Column(
         children: [
-          _videoImage(),
+          _videoImage(
+            this._movieController.movieDetail(movieId: movieData.id),
+            this.movieData,
+          ),
         ],
       ),
     );
   }
 
-  Widget _videoImage() {
-    return FutureBuilder(
-      future: this._movieController.movieDetail(movieId: movieData.id),
-      builder: (BuildContext context, AsyncSnapshot<List<MovieDetailModel>> snapshot) {
-        if (snapshot.hasData) {
-          return Consumer<MovieDetailProvider>(
-            builder: (context, value, child) {
-              return Stack(
-                children: [
-                  ClipPath(
-                    child: ClipRRect(
-                      child: CachedNetworkImage(
-                        imageUrl: 'https://image.tmdb.org/t/p/original/${this.movieData.backdropPath}',
-                        height: MediaQuery.of(context).size.height / 2,
-                        width: MediaQuery.of(context).size.width,
-                        fit: BoxFit.cover,
-                      ),
-                      borderRadius: BorderRadius.only(
-                        bottomLeft: Radius.circular(60.0),
-                        bottomRight: Radius.circular(60.0),
-                      ),
-                    ),
-                  ),
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      AppBar(
-                        backgroundColor: Colors.transparent,
-                        elevation: 0.0,
-                      ),
-                      _videoPlay(),
-                    ],
-                  ),
-                ],
-              );
+  Widget _videoImage(Future<MovieDetailModel> movieDetail, MovieModel movieData) {
+    return Container(
+      child: Column(
+        children: [
+          FutureBuilder(
+            future: movieDetail,
+            builder: (BuildContext context, AsyncSnapshot<MovieDetailModel> snapshot) {
+              if (snapshot.hasData) {
+                return Consumer<MovieDetailProvider>(
+                  builder: (context, value, child) {
+                    return Stack(
+                      children: [
+                        ClipPath(
+                          child: ClipRRect(
+                            child: CachedNetworkImage(
+                              imageUrl: 'https://image.tmdb.org/t/p/original/${movieData.backdropPath}',
+                              height: MediaQuery.of(context).size.height / 2,
+                              width: MediaQuery.of(context).size.width,
+                              fit: BoxFit.cover,
+                            ),
+                            borderRadius: BorderRadius.only(
+                              bottomLeft: Radius.circular(60.0),
+                              bottomRight: Radius.circular(60.0),
+                            ),
+                          ),
+                        ),
+                        Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            AppBar(
+                              backgroundColor: Colors.transparent,
+                              elevation: 0.0,
+                            ),
+                            _videoPlay(
+                              this._videoController.movieVideoDetail(movieId: movieData.id),
+                              this.movieData,
+                            ),
+                          ],
+                        ),
+                      ],
+                    );
+                  },
+                );
+              } else {
+                return Center(
+                  child: Text(''),
+                );
+              }
             },
-          );
-        } else {
-          return Center(
-            child: Text(''),
-          );
-        }
-      },
+          ),
+          MovieInfo(movieData: this.movieData),
+        ],
+      ),
     );
   }
 
-  Widget _videoPlay() {
+  Widget _videoPlay(
+    Future<List<MovieVideoModel>> videoPlay,
+    MovieModel movieData,
+  ) {
     return FutureBuilder(
-      future: this._videoController.movieVideoDetail(movieId: movieData.id),
+      future: videoPlay,
       builder: (BuildContext context, AsyncSnapshot<List<MovieVideoModel>> snapshot) {
         if (snapshot.hasData) {
           return Consumer<MovieVideoProvider>(
@@ -125,7 +142,7 @@ class _MovieDetailScreenState extends State<MovieDetailScreen> {
                           color: Colors.yellow,
                         ),
                         Text(
-                          this.movieData.title,
+                          movieData.title,
                           style: TextStyle(
                             color: Colors.white,
                             fontWeight: FontWeight.bold,

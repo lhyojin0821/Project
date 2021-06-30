@@ -87,11 +87,16 @@ class MovieRepo {
   }
 
   Future<MovieDetailModel> getMovieDetail(int movieId) async {
-    http.Response res = await http.get(Uri.parse('$mainUrl/movie/$movieId?$apiKey'));
-    Map<String, dynamic> result = jsonDecode(res.body);
-    MovieDetailModel movieDetail = MovieDetailModel.fromJson(result);
-    print(movieDetail);
-    return movieDetail;
+    try {
+      http.Response res = await http.get(Uri.parse('$mainUrl/movie/$movieId?$apiKey')).timeout(Duration(seconds: 8), onTimeout: () async => new http.Response('{}', 404));
+      if (res.statusCode == 404) {
+        return MovieDetailModel.fromJson({});
+      }
+      Map<String, dynamic> result = jsonDecode(res.body);
+      MovieDetailModel movieDetail = MovieDetailModel.fromJson(result);
+      return movieDetail;
+    } catch (e) {}
+    return MovieDetailModel.fromJson({});
   }
 
   Future<List<MovieVideoModel>> getMovieVideo(int movieId) async {

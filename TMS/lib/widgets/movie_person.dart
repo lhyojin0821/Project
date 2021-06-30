@@ -39,7 +39,7 @@ class _MoviePersonState extends State<MoviePerson> {
                   return Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Padding(
+                      Container(
                         padding: EdgeInsets.only(left: 10.0, top: 20.0, bottom: 10.0),
                         child: Text(
                           'TRENDING PERSONS ON THIS WEEK',
@@ -65,7 +65,7 @@ class _MoviePersonState extends State<MoviePerson> {
                                     onTap: () {},
                                     child: Card(
                                       shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(100.0),
+                                        borderRadius: BorderRadius.circular(10.0),
                                       ),
                                       elevation: 3.0,
                                       child: ClipRRect(
@@ -76,7 +76,7 @@ class _MoviePersonState extends State<MoviePerson> {
                                               width: 80.0,
                                               height: 80.0,
                                               decoration: BoxDecoration(
-                                                borderRadius: BorderRadius.circular(100.0),
+                                                borderRadius: BorderRadius.circular(10.0),
                                                 image: DecorationImage(fit: BoxFit.cover, image: imgProvider),
                                               ),
                                             );

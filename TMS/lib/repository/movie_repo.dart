@@ -131,13 +131,14 @@ class MovieRepo {
 
   Future<List<MovieModel>> getSimilarMovies(int movieId) async {
     try {
-      http.Response res = await http.get(Uri.parse('$mainUrl/movie/$movieId/similar?$apiKey')).timeout(Duration(seconds: 8), onTimeout: () async => new http.Response('{}', 404));
+      http.Response res = await http.get(Uri.parse('$mainUrl/movie/$movieId/similar?$apiKey&language=en-US&page=1')).timeout(Duration(seconds: 8), onTimeout: () async => new http.Response('{}', 404));
       if (res.statusCode == 404) {
         return [];
       }
       Map<String, dynamic> result = jsonDecode(res.body);
       List resultList = result['results'];
       return resultList.map<MovieModel>((dynamic e) {
+        print(resultList);
         return MovieModel.fromJson(json: e);
       }).toList();
     } catch (e) {}

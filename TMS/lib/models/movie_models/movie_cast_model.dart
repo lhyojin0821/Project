@@ -11,9 +11,9 @@ class MovieCastModel {
 
   factory MovieCastModel.fromJson({required Map<String, dynamic> json}) {
     return MovieCastModel(
-      name: json['name'],
-      profilePath: json['profile_path'],
-      character: json['character'],
+      name: json['name'] == null ? '' : json['name'].toString(),
+      profilePath: json['profile_path'] == null ? '' : json['profile_path'].toString(),
+      character: json['character'] == null ? '' : json['character'].toString(),
     );
   }
 }

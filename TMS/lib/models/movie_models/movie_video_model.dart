@@ -1,9 +1,9 @@
 class MovieVideoModel {
-  String id;
-  String key;
-  String name;
-  String site;
-  String type;
+  final String id;
+  final String key;
+  final String name;
+  final String site;
+  final String type;
 
   MovieVideoModel({required this.id, required this.key, required this.name, required this.site, required this.type});
 

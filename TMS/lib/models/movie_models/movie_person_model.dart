@@ -1,10 +1,10 @@
 class MoviePersonModel {
-  String id;
-  String gender;
-  String name;
-  String profilePath;
-  String knownForDepartment;
-  String popularity;
+  final String id;
+  final String gender;
+  final String name;
+  final String profilePath;
+  final String knownForDepartment;
+  final String popularity;
 
   MoviePersonModel({required this.id, required this.gender, required this.name, required this.profilePath, required this.knownForDepartment, required this.popularity});
 

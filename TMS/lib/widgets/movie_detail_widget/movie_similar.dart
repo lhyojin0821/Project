@@ -34,6 +34,8 @@ class _MovieSimilarState extends State<MovieSimilar> {
         future: this._movieController.similar(movieId: movieData.id),
         builder: (BuildContext context, AsyncSnapshot<List<MovieModel>> snapshot) {
           if (snapshot.hasData) {
+            print(movieData.id);
+            print(snapshot.data!.length);
             return Consumer<MovieDetailProvider>(
               builder: (context, value, child) {
                 return Column(

@@ -1,6 +1,6 @@
 class MovieGenreModel {
-  int id;
-  String name;
+  final int id;
+  final String name;
 
   MovieGenreModel({required this.id, required this.name});
 

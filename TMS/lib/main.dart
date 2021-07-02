@@ -5,7 +5,6 @@ import 'package:tms/providers/movie_provider/movie_genre_provider.dart';
 import 'package:tms/providers/movie_provider/movie_person_provider.dart';
 import 'package:tms/providers/movie_provider/movie_provider.dart';
 import 'package:tms/providers/movie_provider/movie_video_provider.dart';
-import 'package:tms/providers/tv_provider/tv_provider.dart';
 import 'package:tms/screens/main_screen.dart';
 
 void main() {
@@ -22,7 +21,6 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (BuildContext context) => MoviePersonProvider()),
         ChangeNotifierProvider(create: (BuildContext context) => MovieDetailProvider()),
         ChangeNotifierProvider(create: (BuildContext context) => MovieVideoProvider()),
-        ChangeNotifierProvider(create: (BuildContext context) => TvProvider()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,

@@ -116,7 +116,7 @@ class MovieRepo {
 
   Future<List<MovieCastModel>> getMovieCast(int movieId) async {
     try {
-      http.Response res = await http.get(Uri.parse('$mainUrl/movie/$movieId/credits?$apiKey&language=en-US')).timeout(Duration(seconds: 8), onTimeout: () async => new http.Response('{}', 404));
+      http.Response res = await http.get(Uri.parse('$mainUrl/movie/$movieId/credits?$apiKey')).timeout(Duration(seconds: 8), onTimeout: () async => new http.Response('{}', 404));
       if (res.statusCode == 404) {
         return [];
       }

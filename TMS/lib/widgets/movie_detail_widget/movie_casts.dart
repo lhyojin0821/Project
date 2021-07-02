@@ -22,11 +22,11 @@ class _MovieCastState extends State<MovieCast> {
 
   @override
   void initState() {
-    super.initState();
     this._movieController = Provider.of<MovieDetailProvider>(
       context,
-      listen: true,
+      listen: false,
     );
+    super.initState();
   }
 
   @override

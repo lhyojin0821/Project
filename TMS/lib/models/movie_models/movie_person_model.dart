@@ -1,5 +1,3 @@
-import 'package:flutter/foundation.dart';
-
 class MoviePersonModel {
   String id;
   String gender;

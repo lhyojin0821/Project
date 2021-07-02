@@ -1,13 +1,15 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:tms/models/movie_detail_model.dart';
-import 'package:tms/models/movie_model.dart';
-import 'package:tms/models/movie_video_model.dart';
-import 'package:tms/providers/movie_detail_provider.dart';
-import 'package:tms/providers/movie_video_provider.dart';
-import 'package:tms/widgets/movie_info.dart';
-import 'package:tms/widgets/movie_video_player.dart';
+import 'package:tms/models/movie_models/movie_detail_model.dart';
+import 'package:tms/models/movie_models/movie_model.dart';
+import 'package:tms/models/movie_models/movie_video_model.dart';
+import 'package:tms/providers/movie_provider/movie_detail_provider.dart';
+import 'package:tms/providers/movie_provider/movie_video_provider.dart';
+import 'package:tms/widgets/movie_detail_widget/movie_casts.dart';
+import 'package:tms/widgets/movie_detail_widget/movie_info.dart';
+import 'package:tms/widgets/movie_detail_widget/movie_similar.dart';
+import 'package:tms/widgets/movie_detail_widget/movie_video_player.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
 class MovieDetailScreen extends StatefulWidget {
@@ -42,13 +44,17 @@ class _MovieDetailScreenState extends State<MovieDetailScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.grey[900],
-      body: Column(
-        children: [
-          _videoImage(
-            this._movieController.movieDetail(movieId: movieData.id),
-            this.movieData,
+      body: SafeArea(
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              _videoImage(
+                this._movieController.movieDetail(movieId: movieData.id),
+                this.movieData,
+              ),
+            ],
           ),
-        ],
+        ),
       ),
     );
   }
@@ -104,6 +110,8 @@ class _MovieDetailScreenState extends State<MovieDetailScreen> {
             },
           ),
           MovieInfo(movieData: this.movieData),
+          MovieSimilar(movieData: this.movieData),
+          MovieCast(movieData: this.movieData),
         ],
       ),
     );
@@ -143,12 +151,14 @@ class _MovieDetailScreenState extends State<MovieDetailScreen> {
                         ),
                         Text(
                           movieData.title,
+                          textAlign: TextAlign.center,
                           style: TextStyle(
                             color: Colors.white,
                             fontWeight: FontWeight.bold,
                             fontSize: 18.0,
                           ),
                           overflow: TextOverflow.ellipsis,
+                          maxLines: 2,
                         ),
                       ],
                     ),

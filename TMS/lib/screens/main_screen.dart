@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-
-import 'package:tms/screens/movie_screen.dart';
-import 'package:tms/screens/tv_screen.dart';
+import 'package:tms/screens/movie_screens/movie_screen.dart';
+import 'package:tms/screens/tv_screens/tv_screen.dart';
 
 class MainScreen extends StatelessWidget {
   @override

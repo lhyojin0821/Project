@@ -1,10 +1,9 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
-import 'package:tms/models/movie_detail_model.dart';
-import 'package:tms/models/movie_model.dart';
-import 'package:tms/providers/movie_detail_provider.dart';
+import 'package:tms/models/movie_models/movie_detail_model.dart';
+import 'package:tms/models/movie_models/movie_model.dart';
+import 'package:tms/providers/movie_provider/movie_detail_provider.dart';
 
 class MovieInfo extends StatefulWidget {
   final MovieModel movieData;
@@ -72,7 +71,7 @@ class _MovieInfoState extends State<MovieInfo> {
                           Container(
                             padding: EdgeInsets.only(top: 20.0, left: 10.0),
                             child: Text(
-                              'OverView'.toUpperCase(),
+                              'OVERVIEW',
                               style: TextStyle(
                                 color: Colors.grey,
                                 fontWeight: FontWeight.w500,
@@ -91,9 +90,9 @@ class _MovieInfoState extends State<MovieInfo> {
                             ),
                           ),
                           Container(
-                            padding: EdgeInsets.only(top: 15.0),
+                            padding: EdgeInsets.only(top: 20.0),
                             child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              mainAxisAlignment: MainAxisAlignment.spaceAround,
                               children: [
                                 Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -169,7 +168,7 @@ class _MovieInfoState extends State<MovieInfo> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Container(
-                                  padding: EdgeInsets.only(bottom: 10.0),
+                                  padding: EdgeInsets.only(bottom: 15.0),
                                   child: Text(
                                     'GENRES',
                                     style: TextStyle(color: Colors.grey, fontWeight: FontWeight.w500),

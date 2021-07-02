@@ -3,9 +3,10 @@ import 'package:carousel_slider/carousel_options.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:tms/models/movie_model.dart';
-import 'package:tms/providers/movie_provider.dart';
-import 'package:tms/screens/movie_detail_screen.dart';
+import 'package:tms/models/movie_models/movie_model.dart';
+import 'package:tms/providers/movie_provider/movie_provider.dart';
+
+import 'package:tms/screens/movie_screens/movie_detail_screen.dart';
 
 class MovieNowPlaying extends StatefulWidget {
   @override
@@ -89,7 +90,7 @@ class _MovieNowPlayingState extends State<MovieNowPlaying> {
             );
           } else {
             return Center(
-              child: Text(''),
+              child: Container(),
             );
           }
         },

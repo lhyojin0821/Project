@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
-import 'package:tms/models/movie_genre_model.dart';
-import 'package:tms/models/movie_model.dart';
+import 'package:tms/models/movie_models/movie_genre_model.dart';
+
+import 'package:tms/models/movie_models/movie_model.dart';
 import 'package:tms/repository/movie_repo.dart';
 
 class MovieGenreProvider with ChangeNotifier {

@@ -1,5 +1,3 @@
-import 'package:flutter/foundation.dart';
-
 class MovieGenreModel {
   int id;
   String name;

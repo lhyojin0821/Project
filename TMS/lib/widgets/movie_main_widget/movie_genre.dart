@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:tms/models/movie_genre_model.dart';
-import 'package:tms/providers/movie_genre_provider.dart';
-import 'package:tms/widgets/movie_genre_list.dart';
+import 'package:tms/models/movie_models/movie_genre_model.dart';
+import 'package:tms/providers/movie_provider/movie_genre_provider.dart';
+import 'package:tms/widgets/movie_main_widget/movie_genre_list.dart';
 
 class MovieGenre extends StatefulWidget {
   @override

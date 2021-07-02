@@ -1,15 +1,14 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:tms/models/movie_model.dart';
-import 'package:tms/providers/movie_genre_provider.dart';
-import 'package:tms/screens/movie_detail_screen.dart';
+import 'package:tms/models/movie_models/movie_model.dart';
+import 'package:tms/providers/movie_provider/movie_genre_provider.dart';
+import 'package:tms/screens/movie_screens/movie_detail_screen.dart';
 
 class MovieGenreList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.all(10.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
@@ -44,8 +43,7 @@ class MovieGenreList extends StatelessWidget {
         );
       },
       child: Container(
-        margin: EdgeInsets.only(top: 5.0),
-        padding: EdgeInsets.only(right: 10.0),
+        padding: EdgeInsets.only(left: 10.0, top: 10.0),
         width: 150,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -70,22 +68,30 @@ class MovieGenreList extends StatelessWidget {
             ),
             Row(
               children: [
-                Container(
-                  child: Icon(
-                    Icons.star,
-                    size: 14.0,
-                    color: Colors.yellow,
-                  ),
-                ),
-                Container(
-                  padding: EdgeInsets.only(left: 5.0),
-                  child: Text(
-                    movie.voteAverage.toString(),
-                    style: TextStyle(
-                      color: Colors.white,
-                    ),
-                  ),
-                )
+                movie.voteAverage == 0
+                    ? Center(
+                        child: Container(),
+                      )
+                    : Container(
+                        child: Icon(
+                          Icons.star,
+                          size: 14.0,
+                          color: Colors.yellow,
+                        ),
+                      ),
+                movie.voteAverage == 0
+                    ? Center(
+                        child: Container(),
+                      )
+                    : Container(
+                        padding: EdgeInsets.only(left: 5.0),
+                        child: Text(
+                          movie.voteAverage.toString(),
+                          style: TextStyle(
+                            color: Colors.white,
+                          ),
+                        ),
+                      )
               ],
             ),
           ],

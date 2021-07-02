@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:tms/models/movie_model.dart';
-import 'package:tms/providers/movie_provider.dart';
-import 'package:tms/widgets/movie_genre_list.dart';
+import 'package:tms/models/movie_models/movie_model.dart';
+import 'package:tms/providers/movie_provider/movie_provider.dart';
+
+import 'package:tms/widgets/movie_main_widget/movie_genre_list.dart';
 
 class MovieTopRated extends StatefulWidget {
   @override
@@ -14,18 +15,17 @@ class _MovieTopRatedState extends State<MovieTopRated> {
   MovieGenreList _movieWidget = MovieGenreList();
 
   @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
+  void initState() {
     this._movieController = Provider.of<MovieProvider>(
       context,
       listen: false,
     );
+    super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.all(10.0),
       child: FutureBuilder(
         future: this._movieController.topRated(),
         builder: (BuildContext context, AsyncSnapshot<List<MovieModel>> snapshot) {
@@ -37,13 +37,16 @@ class _MovieTopRatedState extends State<MovieTopRated> {
                   children: [
                     Container(
                       padding: EdgeInsets.only(
-                        left: 5.0,
+                        left: 10.0,
                         top: 20.0,
                         bottom: 10.0,
                       ),
                       child: Text(
                         'TOP RATED MOVIES',
-                        style: TextStyle(color: Colors.grey, fontWeight: FontWeight.w500, fontSize: 12.0),
+                        style: TextStyle(
+                          color: Colors.grey,
+                          fontWeight: FontWeight.w500,
+                        ),
                       ),
                     ),
                     SingleChildScrollView(

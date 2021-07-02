@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tms/widgets/tv_main_widget/tv_on_the_air.dart';
 
 class TvScreen extends StatelessWidget {
   @override
@@ -9,12 +10,24 @@ class TvScreen extends StatelessWidget {
         centerTitle: true,
         elevation: 0.0,
         backgroundColor: Colors.grey[900],
-        title: Text('MOVIE'),
+        title: Text('TV'),
         leading: IconButton(
           onPressed: () {},
           icon: Icon(Icons.menu),
         ),
         actions: [IconButton(onPressed: () {}, icon: Icon(Icons.search))],
+      ),
+      body: SafeArea(
+        child: SingleChildScrollView(
+          child: Container(
+            width: MediaQuery.of(context).size.width,
+            child: Column(
+              children: [
+                TvOnTheAir(),
+              ],
+            ),
+          ),
+        ),
       ),
     );
   }

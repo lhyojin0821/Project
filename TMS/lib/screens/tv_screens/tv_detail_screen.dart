@@ -1,39 +1,37 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:tms/models/movie_models/movie_detail_model.dart';
-import 'package:tms/models/movie_models/movie_model.dart';
-import 'package:tms/models/movie_models/movie_video_model.dart';
-import 'package:tms/providers/movie_provider/movie_detail_provider.dart';
-import 'package:tms/widgets/movie_detail_widget/movie_casts.dart';
-import 'package:tms/widgets/movie_detail_widget/movie_info.dart';
-import 'package:tms/widgets/movie_detail_widget/movie_similar.dart';
+import 'package:tms/models/tv_models/tv_detail_model.dart';
+import 'package:tms/models/tv_models/tv_model.dart';
+import 'package:tms/models/tv_models/tv_video_model.dart';
+import 'package:tms/providers/tv_provider/tv_detail_provider.dart';
 import 'package:tms/widgets/movie_detail_widget/movie_video_player.dart';
+import 'package:tms/widgets/tv_detail_widget/tv_info.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
-class MovieDetailScreen extends StatefulWidget {
-  final MovieModel movieData;
-  MovieDetailScreen({required this.movieData});
+class TvDetailScreen extends StatefulWidget {
+  final TvModel tvData;
+  TvDetailScreen({required this.tvData});
 
   @override
-  _MovieDetailScreenState createState() => _MovieDetailScreenState(this.movieData);
+  _TvDetailScreenState createState() => _TvDetailScreenState(this.tvData);
 }
 
-class _MovieDetailScreenState extends State<MovieDetailScreen> {
-  late MovieModel movieData;
-  _MovieDetailScreenState(this.movieData);
+class _TvDetailScreenState extends State<TvDetailScreen> {
+  late TvModel tvData;
+  _TvDetailScreenState(this.tvData);
 
-  late MovieDetailProvider _movieController;
-  late MovieDetailProvider _videoController;
+  late TvDetailProvider _tvController;
+  late TvDetailProvider _videoController;
 
   @override
   void initState() {
     super.initState();
-    this._movieController = Provider.of<MovieDetailProvider>(
+    this._tvController = Provider.of<TvDetailProvider>(
       context,
       listen: false,
     );
-    this._videoController = Provider.of<MovieDetailProvider>(
+    this._videoController = Provider.of<TvDetailProvider>(
       context,
       listen: false,
     );
@@ -48,8 +46,8 @@ class _MovieDetailScreenState extends State<MovieDetailScreen> {
           child: Column(
             children: [
               _videoImage(
-                this._movieController.movieDetail(movieId: movieData.id),
-                this.movieData,
+                this._tvController.tvDetail(tvId: tvData.id),
+                this.tvData,
               ),
             ],
           ),
@@ -58,22 +56,22 @@ class _MovieDetailScreenState extends State<MovieDetailScreen> {
     );
   }
 
-  Widget _videoImage(Future<MovieDetailModel> movieDetail, MovieModel movieData) {
+  Widget _videoImage(Future<TvDetailModel> tvDetail, TvModel tvData) {
     return Container(
       child: Column(
         children: [
           FutureBuilder(
-            future: movieDetail,
-            builder: (BuildContext context, AsyncSnapshot<MovieDetailModel> snapshot) {
+            future: tvDetail,
+            builder: (BuildContext context, AsyncSnapshot<TvDetailModel> snapshot) {
               if (snapshot.hasData) {
-                return Consumer<MovieDetailProvider>(
+                return Consumer<TvDetailProvider>(
                   builder: (context, value, child) {
                     return Stack(
                       children: [
                         ClipPath(
                           child: ClipRRect(
                             child: CachedNetworkImage(
-                              imageUrl: 'https://image.tmdb.org/t/p/original/${movieData.backdropPath}',
+                              imageUrl: 'https://image.tmdb.org/t/p/original/${tvData.backdropPath}',
                               height: MediaQuery.of(context).size.height / 2,
                               width: MediaQuery.of(context).size.width,
                               fit: BoxFit.cover,
@@ -92,8 +90,8 @@ class _MovieDetailScreenState extends State<MovieDetailScreen> {
                               elevation: 0.0,
                             ),
                             _videoPlay(
-                              this._videoController.movieVideoDetail(movieId: movieData.id),
-                              this.movieData,
+                              this._videoController.tvVideoDetail(tvId: tvData.id),
+                              this.tvData,
                             ),
                           ],
                         ),
@@ -108,23 +106,23 @@ class _MovieDetailScreenState extends State<MovieDetailScreen> {
               }
             },
           ),
-          MovieInfo(movieData: this.movieData),
-          MovieSimilar(movieData: this.movieData),
-          MovieCast(movieData: this.movieData),
+          TvInfo(tvData: this.tvData),
+          // MovieSimilar(tvData: this.tvData),
+          // MovieCast(tvData: this.tvData),
         ],
       ),
     );
   }
 
   Widget _videoPlay(
-    Future<List<MovieVideoModel>> videoPlay,
-    MovieModel movieData,
+    Future<List<TvVideoModel>> videoPlay,
+    TvModel tvData,
   ) {
     return FutureBuilder(
       future: videoPlay,
-      builder: (BuildContext context, AsyncSnapshot<List<MovieVideoModel>> snapshot) {
+      builder: (BuildContext context, AsyncSnapshot<List<TvVideoModel>> snapshot) {
         if (snapshot.hasData) {
-          return Consumer<MovieDetailProvider>(
+          return Consumer<TvDetailProvider>(
             builder: (context, value, child) {
               return Container(
                 padding: EdgeInsets.only(top: 150.0),
@@ -149,7 +147,7 @@ class _MovieDetailScreenState extends State<MovieDetailScreen> {
                           color: Colors.yellow,
                         ),
                         Text(
-                          movieData.title,
+                          tvData.name,
                           textAlign: TextAlign.center,
                           style: TextStyle(
                             color: Colors.white,

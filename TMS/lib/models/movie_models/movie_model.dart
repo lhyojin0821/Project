@@ -8,7 +8,6 @@ class MovieModel {
   final String overView;
   final double popularity;
   final String posterPath;
-  final DateTime? releaseDate;
   final String title;
   final bool video;
   final double voteAverage;
@@ -24,7 +23,6 @@ class MovieModel {
     required this.overView,
     required this.popularity,
     required this.posterPath,
-    required this.releaseDate,
     required this.title,
     required this.video,
     required this.voteAverage,
@@ -41,7 +39,6 @@ class MovieModel {
         overView: json["overview"] == null ? '' : json['overview'],
         popularity: json["popularity"] == null ? 0.0 : json['popularity'].toDouble(),
         posterPath: json["poster_path"] == null ? '' : json['poster_path'],
-        releaseDate: json["release_date"] == null ? null : DateTime.parse(json["release_date"]),
         title: json["title"] == null ? '' : json['title'],
         video: json["video"] == null ? false : json['video'],
         voteAverage: json["vote_average"] == null ? 0.0 : json['vote_average'].toDouble(),

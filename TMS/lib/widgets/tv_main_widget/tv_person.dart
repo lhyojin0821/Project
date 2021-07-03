@@ -1,21 +1,21 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:tms/models/movie_models/movie_person_model.dart';
-import 'package:tms/providers/movie_provider/movie_provider.dart';
+import 'package:tms/models/tv_models/tv_person_model.dart';
+import 'package:tms/providers/tv_provider/tv_provider.dart';
 
-class MoviePerson extends StatefulWidget {
+class TvPerson extends StatefulWidget {
   @override
-  _MoviePersonState createState() => _MoviePersonState();
+  _TvPersonState createState() => _TvPersonState();
 }
 
-class _MoviePersonState extends State<MoviePerson> {
-  late MovieProvider _movieController;
+class _TvPersonState extends State<TvPerson> {
+  late TvProvider _tvController;
 
   @override
   void initState() {
     super.initState();
-    this._movieController = Provider.of<MovieProvider>(
+    this._tvController = Provider.of<TvProvider>(
       context,
       listen: false,
     );
@@ -25,10 +25,10 @@ class _MoviePersonState extends State<MoviePerson> {
   Widget build(BuildContext context) {
     return Container(
       child: FutureBuilder(
-        future: this._movieController.moviePerson(),
-        builder: (BuildContext context, AsyncSnapshot<List<MoviePersonModel>> snapshot) {
+        future: this._tvController.tvPerson(),
+        builder: (BuildContext context, AsyncSnapshot<List<TvPersonModel>> snapshot) {
           if (snapshot.hasData) {
-            return Consumer<MovieProvider>(
+            return Consumer<TvProvider>(
               builder: (context, value, child) {
                 return Column(
                   crossAxisAlignment: CrossAxisAlignment.start,

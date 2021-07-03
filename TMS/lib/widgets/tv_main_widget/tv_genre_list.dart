@@ -18,7 +18,7 @@ class TvGenreList extends StatelessWidget {
                 return SingleChildScrollView(
                   scrollDirection: Axis.horizontal,
                   child: Row(
-                    children: List.generate(controller.tvs.length, (index) => tvWidget(controller.tvs[index], context)),
+                    children: List.generate(controller.tvs.length, (index) => movieWidget(controller.tvs[index], context)),
                   ),
                 );
               },
@@ -30,64 +30,82 @@ class TvGenreList extends StatelessWidget {
     );
   }
 
-  Widget tvWidget(TvModel tv, BuildContext context) {
+  Widget movieWidget(TvModel tv, BuildContext context) {
     return GestureDetector(
       onTap: () {},
-      child: Container(
-        padding: EdgeInsets.only(left: 10.0, top: 10.0),
-        width: 150,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            ClipRRect(
-              borderRadius: BorderRadius.circular(15.0),
-              child: CachedNetworkImage(
-                fit: BoxFit.cover,
-                imageUrl: 'https://image.tmdb.org/t/p/original/${tv.posterPath}',
-              ),
-            ),
-            Container(
-              padding: EdgeInsets.only(top: 5.0),
-              child: Text(
-                tv.name,
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  color: Colors.white,
-                ),
-                overflow: TextOverflow.ellipsis,
-              ),
-            ),
-            Row(
-              children: [
-                tv.voteAverage == 0
-                    ? Center(
-                        child: Container(),
-                      )
-                    : Container(
-                        child: Icon(
-                          Icons.star,
-                          size: 14.0,
-                          color: Colors.yellow,
-                        ),
-                      ),
-                tv.voteAverage == 0
-                    ? Center(
-                        child: Container(),
-                      )
-                    : Container(
-                        padding: EdgeInsets.only(left: 5.0),
+      child: tv.posterPath.isEmpty
+          ? Container(
+              padding: EdgeInsets.only(left: 10.0, top: 10.0),
+              width: 150,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(15.0),
+                    child: Center(
                         child: Text(
-                          tv.voteAverage.toString(),
-                          style: TextStyle(
-                            color: Colors.white,
-                          ),
-                        ),
-                      )
-              ],
+                      'Image preparation..',
+                      style: TextStyle(color: Colors.white),
+                    )),
+                  ),
+                ],
+              ),
+            )
+          : Container(
+              padding: EdgeInsets.only(left: 10.0, top: 10.0),
+              width: 150,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(15.0),
+                    child: CachedNetworkImage(
+                      fit: BoxFit.cover,
+                      imageUrl: 'https://image.tmdb.org/t/p/original/${tv.posterPath}',
+                    ),
+                  ),
+                  Container(
+                    padding: EdgeInsets.only(top: 5.0),
+                    child: Text(
+                      tv.name,
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                      ),
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ),
+                  Row(
+                    children: [
+                      tv.voteAverage == 0
+                          ? Center(
+                              child: Container(),
+                            )
+                          : Container(
+                              child: Icon(
+                                Icons.star,
+                                size: 14.0,
+                                color: Colors.yellow,
+                              ),
+                            ),
+                      tv.voteAverage == 0
+                          ? Center(
+                              child: Container(),
+                            )
+                          : Container(
+                              padding: EdgeInsets.only(left: 5.0),
+                              child: Text(
+                                tv.voteAverage.toString(),
+                                style: TextStyle(
+                                  color: Colors.white,
+                                ),
+                              ),
+                            )
+                    ],
+                  ),
+                ],
+              ),
             ),
-          ],
-        ),
-      ),
     );
   }
 }

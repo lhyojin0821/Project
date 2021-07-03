@@ -22,7 +22,9 @@ class MovieRepo {
       return resultList.map<MovieModel>((dynamic e) {
         return MovieModel.fromJson(json: e);
       }).toList();
-    } catch (e) {}
+    } catch (e) {
+      print(e);
+    }
     return [];
   }
 
@@ -37,7 +39,9 @@ class MovieRepo {
       return resultList.map<MovieGenreModel>((dynamic e) {
         return MovieGenreModel.fromJson(json: e);
       }).toList();
-    } catch (e) {}
+    } catch (e) {
+      print(e);
+    }
     return [];
   }
 
@@ -52,7 +56,9 @@ class MovieRepo {
       return resultList.map<MovieModel>((dynamic e) {
         return MovieModel.fromJson(json: e);
       }).toList();
-    } catch (e) {}
+    } catch (e) {
+      print(e);
+    }
     return [];
   }
 
@@ -67,7 +73,9 @@ class MovieRepo {
       return resultList.map<MoviePersonModel>((dynamic e) {
         return MoviePersonModel.fromJson(json: e);
       }).toList();
-    } catch (e) {}
+    } catch (e) {
+      print(e);
+    }
     return [];
   }
 
@@ -82,7 +90,9 @@ class MovieRepo {
       return resultList.map<MovieModel>((dynamic e) {
         return MovieModel.fromJson(json: e);
       }).toList();
-    } catch (e) {}
+    } catch (e) {
+      print(e);
+    }
     return [];
   }
 
@@ -95,7 +105,9 @@ class MovieRepo {
       Map<String, dynamic> result = jsonDecode(res.body);
       MovieDetailModel movieDetail = MovieDetailModel.fromJson(result);
       return movieDetail;
-    } catch (e) {}
+    } catch (e) {
+      print(e);
+    }
     return MovieDetailModel.fromJson({});
   }
 
@@ -110,7 +122,9 @@ class MovieRepo {
       return resultList.map<MovieVideoModel>((dynamic e) {
         return MovieVideoModel.fromJson(json: e);
       }).toList();
-    } catch (e) {}
+    } catch (e) {
+      print(e);
+    }
     return [];
   }
 
@@ -125,7 +139,9 @@ class MovieRepo {
       return castList.map<MovieCastModel>((dynamic e) {
         return MovieCastModel.fromJson(json: e);
       }).toList();
-    } catch (e) {}
+    } catch (e) {
+      print(e);
+    }
     return [];
   }
 
@@ -138,10 +154,11 @@ class MovieRepo {
       Map<String, dynamic> result = jsonDecode(res.body);
       List resultList = result['results'];
       return resultList.map<MovieModel>((dynamic e) {
-        print(resultList);
         return MovieModel.fromJson(json: e);
       }).toList();
-    } catch (e) {}
+    } catch (e) {
+      print(e);
+    }
     return [];
   }
 
@@ -156,7 +173,9 @@ class MovieRepo {
       return resultList.map<MovieModel>((dynamic e) {
         return MovieModel.fromJson(json: e);
       }).toList();
-    } catch (e) {}
+    } catch (e) {
+      print(e);
+    }
     return [];
   }
 

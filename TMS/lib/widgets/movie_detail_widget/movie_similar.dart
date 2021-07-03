@@ -34,8 +34,6 @@ class _MovieSimilarState extends State<MovieSimilar> {
         future: this._movieController.similar(movieId: movieData.id),
         builder: (BuildContext context, AsyncSnapshot<List<MovieModel>> snapshot) {
           if (snapshot.hasData) {
-            print(movieData.id);
-            print(snapshot.data!.length);
             return Consumer<MovieDetailProvider>(
               builder: (context, value, child) {
                 return Column(
@@ -52,14 +50,12 @@ class _MovieSimilarState extends State<MovieSimilar> {
                       ),
                     ),
                     snapshot.data!.isEmpty
-                        ? Center(
-                            child: Container(
-                              padding: EdgeInsets.all(10.0),
-                              child: Text(
-                                'Similar Movies in preparation...',
-                                style: TextStyle(color: Colors.white),
-                              ),
-                            ),
+                        ? Container(
+                            child: Center(
+                                child: Text(
+                              'Image preparation..',
+                              style: TextStyle(color: Colors.white),
+                            )),
                           )
                         : SingleChildScrollView(
                             scrollDirection: Axis.horizontal,

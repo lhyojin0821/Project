@@ -42,61 +42,79 @@ class MovieGenreList extends StatelessWidget {
           ),
         );
       },
-      child: Container(
-        padding: EdgeInsets.only(left: 10.0, top: 10.0),
-        width: 150,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            ClipRRect(
-              borderRadius: BorderRadius.circular(15.0),
-              child: CachedNetworkImage(
-                fit: BoxFit.cover,
-                imageUrl: 'https://image.tmdb.org/t/p/original/${movie.posterPath}',
-              ),
-            ),
-            Container(
-              padding: EdgeInsets.only(top: 5.0),
-              child: Text(
-                movie.title,
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  color: Colors.white,
-                ),
-                overflow: TextOverflow.ellipsis,
-              ),
-            ),
-            Row(
-              children: [
-                movie.voteAverage == 0
-                    ? Center(
-                        child: Container(),
-                      )
-                    : Container(
-                        child: Icon(
-                          Icons.star,
-                          size: 14.0,
-                          color: Colors.yellow,
-                        ),
-                      ),
-                movie.voteAverage == 0
-                    ? Center(
-                        child: Container(),
-                      )
-                    : Container(
-                        padding: EdgeInsets.only(left: 5.0),
+      child: movie.posterPath.isEmpty
+          ? Container(
+              padding: EdgeInsets.only(left: 10.0, top: 10.0),
+              width: 150,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(15.0),
+                    child: Center(
                         child: Text(
-                          movie.voteAverage.toString(),
-                          style: TextStyle(
-                            color: Colors.white,
-                          ),
-                        ),
-                      )
-              ],
+                      'Image preparation..',
+                      style: TextStyle(color: Colors.white),
+                    )),
+                  ),
+                ],
+              ),
+            )
+          : Container(
+              padding: EdgeInsets.only(left: 10.0, top: 10.0),
+              width: 150,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(15.0),
+                    child: CachedNetworkImage(
+                      fit: BoxFit.cover,
+                      imageUrl: 'https://image.tmdb.org/t/p/original/${movie.posterPath}',
+                    ),
+                  ),
+                  Container(
+                    padding: EdgeInsets.only(top: 5.0),
+                    child: Text(
+                      movie.title,
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                      ),
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ),
+                  Row(
+                    children: [
+                      movie.voteAverage == 0
+                          ? Center(
+                              child: Container(),
+                            )
+                          : Container(
+                              child: Icon(
+                                Icons.star,
+                                size: 14.0,
+                                color: Colors.yellow,
+                              ),
+                            ),
+                      movie.voteAverage == 0
+                          ? Center(
+                              child: Container(),
+                            )
+                          : Container(
+                              padding: EdgeInsets.only(left: 5.0),
+                              child: Text(
+                                movie.voteAverage.toString(),
+                                style: TextStyle(
+                                  color: Colors.white,
+                                ),
+                              ),
+                            )
+                    ],
+                  ),
+                ],
+              ),
             ),
-          ],
-        ),
-      ),
     );
   }
 }

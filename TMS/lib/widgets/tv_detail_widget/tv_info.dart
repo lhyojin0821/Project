@@ -3,29 +3,32 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:tms/models/movie_models/movie_detail_model.dart';
 import 'package:tms/models/movie_models/movie_model.dart';
+import 'package:tms/models/tv_models/tv_detail_model.dart';
+import 'package:tms/models/tv_models/tv_model.dart';
 import 'package:tms/providers/movie_provider/movie_detail_provider.dart';
+import 'package:tms/providers/tv_provider/tv_detail_provider.dart';
 
-class MovieInfo extends StatefulWidget {
-  final MovieModel movieData;
-  MovieInfo({required this.movieData});
+class TvInfo extends StatefulWidget {
+  final TvModel tvData;
+  TvInfo({required this.tvData});
 
   @override
-  _MovieInfoState createState() => _MovieInfoState(this.movieData);
+  _TvInfoState createState() => _TvInfoState(this.tvData);
 }
 
-class _MovieInfoState extends State<MovieInfo> {
-  late MovieModel movieData;
+class _TvInfoState extends State<TvInfo> {
+  late TvModel tvData;
 
-  _MovieInfoState(this.movieData);
+  _TvInfoState(this.tvData);
 
-  late MovieDetailProvider _movieController;
+  late TvDetailProvider _tvController;
 
   final formatCurrency = new NumberFormat.simpleCurrency(decimalDigits: 0);
 
   @override
   void initState() {
     super.initState();
-    this._movieController = Provider.of<MovieDetailProvider>(
+    this._tvController = Provider.of<TvDetailProvider>(
       context,
       listen: false,
     );
@@ -37,10 +40,10 @@ class _MovieInfoState extends State<MovieInfo> {
       child: Column(
         children: [
           FutureBuilder(
-            future: this._movieController.movieDetail(movieId: movieData.id),
-            builder: (BuildContext context, AsyncSnapshot<MovieDetailModel> snapshot) {
+            future: this._tvController.tvDetail(tvId: tvData.id),
+            builder: (BuildContext context, AsyncSnapshot<TvDetailModel> snapshot) {
               if (snapshot.hasData) {
-                return Consumer<MovieDetailProvider>(
+                return Consumer<TvDetailProvider>(
                   builder: (context, value, child) {
                     return Container(
                       child: Column(
@@ -61,7 +64,7 @@ class _MovieInfoState extends State<MovieInfo> {
                                 Container(
                                   padding: EdgeInsets.only(left: 5.0),
                                   child: Text(
-                                    this.movieData.voteAverage.toString(),
+                                    this.tvData.voteAverage.toString(),
                                     style: TextStyle(fontSize: 16.0, color: Colors.white),
                                   ),
                                 ),
@@ -78,17 +81,31 @@ class _MovieInfoState extends State<MovieInfo> {
                               ),
                             ),
                           ),
-                          Container(
-                            padding: EdgeInsets.all(10.0),
-                            child: Text(
-                              this.movieData.overView,
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 12.0,
-                                height: 1.5,
-                              ),
-                            ),
-                          ),
+                          this.tvData.overView.isEmpty
+                              ? Container(
+                                  padding: EdgeInsets.all(10.0),
+                                  child: Center(
+                                    child: Text(
+                                      'Preparation..',
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 12.0,
+                                        height: 1.5,
+                                      ),
+                                    ),
+                                  ),
+                                )
+                              : Container(
+                                  padding: EdgeInsets.all(10.0),
+                                  child: Text(
+                                    this.tvData.overView,
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 12.0,
+                                      height: 1.5,
+                                    ),
+                                  ),
+                                ),
                           Container(
                             padding: EdgeInsets.only(top: 20.0),
                             child: Row(
@@ -99,7 +116,7 @@ class _MovieInfoState extends State<MovieInfo> {
                                   children: [
                                     Container(
                                       child: Text(
-                                        "RUN TIME",
+                                        "FIRST AIR DATE",
                                         style: TextStyle(
                                           color: Colors.grey,
                                           fontWeight: FontWeight.w500,
@@ -109,7 +126,7 @@ class _MovieInfoState extends State<MovieInfo> {
                                     Container(
                                       padding: EdgeInsets.only(top: 5.0),
                                       child: Text(
-                                        snapshot.data!.runtime.toString() + ' min',
+                                        snapshot.data!.firstAirDate.toString(),
                                         style: TextStyle(color: Colors.yellow, fontWeight: FontWeight.bold, fontSize: 12.0),
                                       ),
                                     ),
@@ -120,7 +137,7 @@ class _MovieInfoState extends State<MovieInfo> {
                                   children: [
                                     Container(
                                       child: Text(
-                                        "RELEASE DATE",
+                                        "LAST AIR DATE",
                                         style: TextStyle(
                                           color: Colors.grey,
                                           fontWeight: FontWeight.w500,
@@ -130,7 +147,7 @@ class _MovieInfoState extends State<MovieInfo> {
                                     Container(
                                       padding: EdgeInsets.only(top: 5.0),
                                       child: Text(
-                                        snapshot.data!.releaseDate.toString(),
+                                        snapshot.data!.lastAirDate.toString(),
                                         style: TextStyle(color: Colors.yellow, fontWeight: FontWeight.bold, fontSize: 12.0),
                                       ),
                                     ),
@@ -141,7 +158,7 @@ class _MovieInfoState extends State<MovieInfo> {
                                   children: [
                                     Container(
                                       child: Text(
-                                        "BUDGET",
+                                        "NETWORK",
                                         style: TextStyle(
                                           color: Colors.grey,
                                           fontWeight: FontWeight.w500,
@@ -151,9 +168,7 @@ class _MovieInfoState extends State<MovieInfo> {
                                     Container(
                                       padding: EdgeInsets.only(top: 5.0),
                                       child: Text(
-                                        this.formatCurrency.format(
-                                              snapshot.data!.budget,
-                                            ),
+                                        snapshot.data!.networks[0].name.toString(),
                                         style: TextStyle(color: Colors.yellow, fontWeight: FontWeight.bold, fontSize: 12.0),
                                       ),
                                     ),

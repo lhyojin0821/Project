@@ -6,6 +6,7 @@ import 'package:provider/provider.dart';
 import 'package:tms/models/tv_models/tv_model.dart';
 
 import 'package:tms/providers/tv_provider/tv_provider.dart';
+import 'package:tms/screens/tv_screens/tv_detail_screen.dart';
 
 class OnTheAir extends StatefulWidget {
   @override
@@ -36,18 +37,32 @@ class _OnTheAirState extends State<OnTheAir> {
                   itemCount: snapshot.data!.length,
                   itemBuilder: (BuildContext context, int i, int? b) {
                     return GestureDetector(
-                      onTap: () {},
+                      onTap: () {
+                        Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) {
+                          return TvDetailScreen(tvData: snapshot.data![i]);
+                        }));
+                      },
                       child: Stack(
                         alignment: Alignment.bottomLeft,
                         children: [
-                          ClipRRect(
-                            child: CachedNetworkImage(
-                              imageUrl: 'https://image.tmdb.org/t/p/original/${snapshot.data![i].backdropPath}',
-                              height: MediaQuery.of(context).size.height,
-                              fit: BoxFit.cover,
-                            ),
-                            borderRadius: BorderRadius.circular(20.0),
-                          ),
+                          snapshot.data![i].backdropPath.isEmpty
+                              ? ClipRRect(
+                                  child: Container(
+                                  child: Center(
+                                    child: Text(
+                                      'Image preparation..',
+                                      style: TextStyle(color: Colors.white),
+                                    ),
+                                  ),
+                                ))
+                              : ClipRRect(
+                                  child: CachedNetworkImage(
+                                    imageUrl: 'https://image.tmdb.org/t/p/original/${snapshot.data![i].backdropPath}',
+                                    height: MediaQuery.of(context).size.height,
+                                    fit: BoxFit.cover,
+                                  ),
+                                  borderRadius: BorderRadius.circular(20.0),
+                                ),
                           Container(
                             padding: EdgeInsets.only(
                               bottom: 15.0,

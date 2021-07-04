@@ -2,7 +2,6 @@ import 'package:flutter/foundation.dart';
 import 'package:tms/models/movie_models/movie_cast_model.dart';
 import 'package:tms/models/movie_models/movie_detail_model.dart';
 import 'package:tms/models/movie_models/movie_model.dart';
-import 'package:tms/models/movie_models/movie_video_model.dart';
 import 'package:tms/repository/movie_repo.dart';
 
 class MovieDetailProvider with ChangeNotifier {
@@ -24,11 +23,5 @@ class MovieDetailProvider with ChangeNotifier {
     List<MovieModel> similarList = await _movieRepo.getSimilarMovies(movieId);
     notifyListeners();
     return similarList;
-  }
-
-  Future<List<MovieVideoModel>> movieVideoDetail({required int movieId}) async {
-    List<MovieVideoModel> movieVideoList = await new MovieRepo().getMovieVideo(movieId);
-    notifyListeners();
-    return movieVideoList;
   }
 }

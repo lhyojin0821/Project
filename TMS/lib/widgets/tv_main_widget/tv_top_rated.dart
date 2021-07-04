@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:tms/models/tv_models/tv_model.dart';
 import 'package:tms/providers/tv_provider/tv_provider.dart';
-import 'package:tms/widgets/tv_main_widget/tv_genre_list.dart';
+import 'package:tms/widgets/tv_main_widget/tv_tile.dart';
 
 class TvTopRated extends StatefulWidget {
   @override
@@ -11,7 +11,6 @@ class TvTopRated extends StatefulWidget {
 
 class _TvTopRatedState extends State<TvTopRated> {
   late TvProvider _tvController;
-  TvGenreList _tvWidget = TvGenreList();
 
   @override
   void initState() {
@@ -51,7 +50,11 @@ class _TvTopRatedState extends State<TvTopRated> {
                     SingleChildScrollView(
                       scrollDirection: Axis.horizontal,
                       child: Row(
-                        children: List.generate(snapshot.data!.length, (index) => _tvWidget.movieWidget(snapshot.data![index], context)),
+                        children: List.generate(
+                          snapshot.data!.length,
+                          (index) => TvTile(snapshot.data![index]),
+                          // _tvWidget.tvWidget(snapshot.data![index], context)
+                        ),
                       ),
                     ),
                   ],
@@ -59,9 +62,7 @@ class _TvTopRatedState extends State<TvTopRated> {
               },
             );
           } else {
-            return Center(
-              child: Text(''),
-            );
+            return Container();
           }
         },
       ),

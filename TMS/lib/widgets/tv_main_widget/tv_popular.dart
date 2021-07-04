@@ -1,8 +1,13 @@
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:carousel_slider/carousel_options.dart';
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:tms/models/tv_models/tv_model.dart';
+import 'package:tms/providers/tv_provider/tv_detail_provider.dart';
 import 'package:tms/providers/tv_provider/tv_provider.dart';
-import 'package:tms/widgets/tv_main_widget/tv_genre_list.dart';
+import 'package:tms/providers/tv_provider/tv_video_provider.dart';
+import 'package:tms/screens/tv_screens/tv_detail_screen.dart';
 
 class TvPopular extends StatefulWidget {
   @override
@@ -11,15 +16,13 @@ class TvPopular extends StatefulWidget {
 
 class _TvPopularState extends State<TvPopular> {
   late TvProvider _tvController;
-  TvGenreList _tvWidget = TvGenreList();
-
   @override
   void initState() {
+    super.initState();
     this._tvController = Provider.of<TvProvider>(
       context,
       listen: false,
     );
-    super.initState();
   }
 
   @override
@@ -31,36 +34,98 @@ class _TvPopularState extends State<TvPopular> {
           if (snapshot.hasData) {
             return Consumer<TvProvider>(
               builder: (context, value, child) {
-                return Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Container(
-                      padding: EdgeInsets.only(
-                        left: 10.0,
-                        top: 20.0,
-                        bottom: 10.0,
+                return CarouselSlider.builder(
+                  itemCount: snapshot.data!.length,
+                  itemBuilder: (BuildContext context, int i, int? b) {
+                    return GestureDetector(
+                      onTap: () {
+                        Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) {
+                          return MultiProvider(
+                              providers: [
+                                ChangeNotifierProvider(
+                                    create: (BuildContext context) => TvDetailProvider()),
+                                ChangeNotifierProvider(
+                                    create: (BuildContext context) => TvVideoProvider()),
+                              ],
+                              child: TvDetailScreen(tvData: snapshot.data![i]));
+                        }));
+                      },
+                      child: Stack(
+                        alignment: Alignment.bottomLeft,
+                        children: [
+                          snapshot.data![i].backdropPath.isEmpty
+                              ? ClipRRect(
+                                  child: Container(
+                                    height: MediaQuery.of(context).size.height,
+                                    child: Center(
+                                      child: Text(
+                                        'Image preparation',
+                                        style: TextStyle(color: Colors.white),
+                                      ),
+                                    ),
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(20.0),
+                                    ),
+                                  ),
+                                )
+                              : ClipRRect(
+                                  child: CachedNetworkImage(
+                                    imageUrl: 'https://image.tmdb.org/t/p/original/${snapshot.data![i].backdropPath}',
+                                    height: MediaQuery.of(context).size.height,
+                                    fit: BoxFit.cover,
+                                  ),
+                                  borderRadius: BorderRadius.circular(20.0),
+                                ),
+                          snapshot.data![i].name.isEmpty
+                              ? Container(
+                                  padding: EdgeInsets.only(
+                                    bottom: 15.0,
+                                    left: 15.0,
+                                  ),
+                                  child: Text(
+                                    'preparation',
+                                    style: TextStyle(
+                                      fontSize: 18.0,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.white,
+                                    ),
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                )
+                              : Container(
+                                  padding: EdgeInsets.only(
+                                    bottom: 15.0,
+                                    left: 15.0,
+                                  ),
+                                  child: Text(
+                                    snapshot.data![i].name,
+                                    style: TextStyle(
+                                      fontSize: 18.0,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.white,
+                                    ),
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                ),
+                        ],
                       ),
-                      child: Text(
-                        'POPULAR TV PROGRAMS',
-                        style: TextStyle(
-                          color: Colors.grey,
-                          fontWeight: FontWeight.w500,
-                        ),
-                      ),
-                    ),
-                    SingleChildScrollView(
-                      scrollDirection: Axis.horizontal,
-                      child: Row(
-                        children: List.generate(snapshot.data!.length, (index) => _tvWidget.movieWidget(snapshot.data![index], context)),
-                      ),
-                    ),
-                  ],
+                    );
+                  },
+                  options: CarouselOptions(
+                    enableInfiniteScroll: true,
+                    autoPlay: true,
+                    autoPlayInterval: Duration(seconds: 3),
+                    autoPlayAnimationDuration: Duration(microseconds: 500),
+                    pauseAutoPlayOnTouch: true,
+                    viewportFraction: 0.8,
+                    enlargeCenterPage: true,
+                  ),
                 );
               },
             );
           } else {
             return Center(
-              child: Text(''),
+              child: Container(),
             );
           }
         },

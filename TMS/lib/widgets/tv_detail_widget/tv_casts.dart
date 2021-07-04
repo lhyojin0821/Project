@@ -1,28 +1,28 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:tms/models/movie_models/movie_cast_model.dart';
-import 'package:tms/models/movie_models/movie_model.dart';
-import 'package:tms/providers/movie_provider/movie_detail_provider.dart';
+import 'package:tms/models/tv_models/tv_cast_model.dart';
+import 'package:tms/models/tv_models/tv_model.dart';
+import 'package:tms/providers/tv_provider/tv_detail_provider.dart';
 
-class MovieCast extends StatefulWidget {
-  final MovieModel movieData;
-  MovieCast({required this.movieData});
+class TvCast extends StatefulWidget {
+  final TvModel tvData;
+  TvCast({required this.tvData});
 
   @override
-  _MovieCastState createState() => _MovieCastState(this.movieData);
+  _TvCastState createState() => _TvCastState(this.tvData);
 }
 
-class _MovieCastState extends State<MovieCast> {
-  late MovieModel movieData;
+class _TvCastState extends State<TvCast> {
+  late TvModel tvData;
 
-  _MovieCastState(this.movieData);
+  _TvCastState(this.tvData);
 
-  late MovieDetailProvider _movieController;
+  late TvDetailProvider _tvController;
 
   @override
   void initState() {
-    this._movieController = Provider.of<MovieDetailProvider>(
+    this._tvController = Provider.of<TvDetailProvider>(
       context,
       listen: false,
     );
@@ -33,10 +33,10 @@ class _MovieCastState extends State<MovieCast> {
   Widget build(BuildContext context) {
     return Container(
       child: FutureBuilder(
-        future: this._movieController.movieCast(movieId: movieData.id),
-        builder: (BuildContext context, AsyncSnapshot<List<MovieCastModel>> snapshot) {
+        future: this._tvController.tvCast(tvId: tvData.id),
+        builder: (BuildContext context, AsyncSnapshot<List<TvCastModel>> snapshot) {
           if (snapshot.hasData) {
-            return Consumer<MovieDetailProvider>(
+            return Consumer<TvDetailProvider>(
               builder: (context, value, child) {
                 return Container(
                   child: Column(

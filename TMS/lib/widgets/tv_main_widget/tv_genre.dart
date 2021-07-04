@@ -14,11 +14,11 @@ class _TvGenreState extends State<TvGenre> {
 
   @override
   void didChangeDependencies() {
-    super.didChangeDependencies();
     this._tvController = Provider.of<TvGenreProvider>(
       context,
       listen: false,
     );
+    super.didChangeDependencies();
   }
 
   @override
@@ -29,14 +29,16 @@ class _TvGenreState extends State<TvGenre> {
         children: [
           FutureBuilder(
             future: this._tvController.loadGenre(),
-            builder: (BuildContext context, AsyncSnapshot<List<TvGenreModel>> snapshot) {
+            builder: (BuildContext context,
+                AsyncSnapshot<List<TvGenreModel>> snapshot) {
               if (snapshot.hasData) {
                 return Consumer<TvGenreProvider>(
                   builder: (context, value, child) {
                     return SingleChildScrollView(
                       scrollDirection: Axis.horizontal,
                       child: Row(
-                        children: List.generate(snapshot.data!.length, (index) => _genreTag(snapshot.data![index])),
+                        children: List.generate(snapshot.data!.length,
+                            (index) => _genreTag(snapshot.data![index])),
                       ),
                     );
                   },
@@ -70,16 +72,27 @@ class _TvGenreState extends State<TvGenre> {
           borderRadius: BorderRadius.all(Radius.circular(25.0)),
           color: isSelected ? Colors.white : Colors.black,
         ),
-        child: Container(
-          child: Text(
-            genre.name,
-            style: TextStyle(
-              fontSize: 12.0,
-              fontWeight: FontWeight.bold,
-              color: isSelected ? Colors.black : Colors.white,
-            ),
-          ),
-        ),
+        child: genre.name.isEmpty
+            ? Container(
+                child: Text(
+                  'preparation',
+                  style: TextStyle(
+                    fontSize: 12.0,
+                    fontWeight: FontWeight.bold,
+                    color: isSelected ? Colors.black : Colors.white,
+                  ),
+                ),
+              )
+            : Container(
+                child: Text(
+                  genre.name,
+                  style: TextStyle(
+                    fontSize: 12.0,
+                    fontWeight: FontWeight.bold,
+                    color: isSelected ? Colors.black : Colors.white,
+                  ),
+                ),
+              ),
       ),
     );
   }

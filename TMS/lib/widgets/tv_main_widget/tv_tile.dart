@@ -3,41 +3,21 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:tms/models/tv_models/tv_model.dart';
 import 'package:tms/providers/tv_provider/tv_detail_provider.dart';
-import 'package:tms/providers/tv_provider/tv_genre_provider.dart';
 import 'package:tms/providers/tv_provider/tv_video_provider.dart';
 import 'package:tms/screens/tv_screens/tv_detail_screen.dart';
 
-class TvGenreList extends StatelessWidget {
+class TvTile extends StatefulWidget {
+  final TvModel tv;
+  TvTile(this.tv);
+  @override
+  _TvTileState createState() => _TvTileState(this.tv);
+}
+
+class _TvTileState extends State<TvTile> {
+  TvModel tv;
+  _TvTileState(this.tv);
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          SingleChildScrollView(
-            scrollDirection: Axis.horizontal,
-            child: Consumer<TvGenreProvider>(
-              builder: (context, controller, child) {
-                return SingleChildScrollView(
-                  scrollDirection: Axis.horizontal,
-                  child: Row(
-                    children: List.generate(
-                        controller.tvs.length,
-                        (index) =>
-                            // TvTile(controller.tvs[index]),
-                            tvWidget(controller.tvs[index], context)),
-                  ),
-                );
-              },
-              child: TvGenreList(),
-            ),
-          )
-        ],
-      ),
-    );
-  }
-
-  Widget tvWidget(TvModel tv, BuildContext context) {
     return GestureDetector(
       onTap: () {
         Navigator.of(context).push(

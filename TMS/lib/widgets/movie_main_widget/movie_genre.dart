@@ -29,14 +29,16 @@ class _MovieGenreState extends State<MovieGenre> {
         children: [
           FutureBuilder(
             future: this._movieController.loadGenre(),
-            builder: (BuildContext context, AsyncSnapshot<List<MovieGenreModel>> snapshot) {
+            builder: (BuildContext context,
+                AsyncSnapshot<List<MovieGenreModel>> snapshot) {
               if (snapshot.hasData) {
                 return Consumer<MovieGenreProvider>(
                   builder: (context, value, child) {
                     return SingleChildScrollView(
                       scrollDirection: Axis.horizontal,
                       child: Row(
-                        children: List.generate(snapshot.data!.length, (index) => _genreTag(snapshot.data![index])),
+                        children: List.generate(snapshot.data!.length,
+                            (index) => _genreTag(snapshot.data![index])),
                       ),
                     );
                   },
@@ -70,16 +72,27 @@ class _MovieGenreState extends State<MovieGenre> {
           borderRadius: BorderRadius.all(Radius.circular(25.0)),
           color: isSelected ? Colors.white : Colors.black,
         ),
-        child: Container(
-          child: Text(
-            genre.name,
-            style: TextStyle(
-              fontSize: 12.0,
-              fontWeight: FontWeight.bold,
-              color: isSelected ? Colors.black : Colors.white,
-            ),
-          ),
-        ),
+        child: genre.name.isEmpty
+            ? Container(
+                child: Text(
+                  'preparation',
+                  style: TextStyle(
+                    fontSize: 12.0,
+                    fontWeight: FontWeight.bold,
+                    color: isSelected ? Colors.black : Colors.white,
+                  ),
+                ),
+              )
+            : Container(
+                child: Text(
+                  genre.name,
+                  style: TextStyle(
+                    fontSize: 12.0,
+                    fontWeight: FontWeight.bold,
+                    color: isSelected ? Colors.black : Colors.white,
+                  ),
+                ),
+              ),
       ),
     );
   }

@@ -1,5 +1,3 @@
-import 'package:flutter/foundation.dart';
-
 class TvVideoModel {
   final String id;
   final String key;
@@ -11,11 +9,11 @@ class TvVideoModel {
 
   factory TvVideoModel.fromJson({required Map<String, dynamic> json}) {
     return TvVideoModel(
-      id: json['id'],
-      key: json['key'],
-      name: json['name'],
-      site: json['site'],
-      type: json['type'],
+      id: json['id'] == null ? '' : json['id'].toString(),
+      key: json['key'] == null ? '' : json['key'].toString(),
+      name: json['name'] == null ? '' : json['name'].toString(),
+      site: json['site'] == null ? '' : json['site'].toString(),
+      type: json['type'] == null ? '' : json['type'].toString(),
     );
   }
 }

@@ -1,27 +1,24 @@
-import 'package:cached_network_image/cached_network_image.dart';
-import 'package:carousel_slider/carousel_options.dart';
-import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:tms/models/tv_models/tv_model.dart';
-
 import 'package:tms/providers/tv_provider/tv_provider.dart';
-import 'package:tms/screens/tv_screens/tv_detail_screen.dart';
+import 'package:tms/widgets/tv_main_widget/tv_tile.dart';
 
-class OnTheAir extends StatefulWidget {
+class TvOnTheAir extends StatefulWidget {
   @override
-  _OnTheAirState createState() => _OnTheAirState();
+  _TvOnTheAirState createState() => _TvOnTheAirState();
 }
 
-class _OnTheAirState extends State<OnTheAir> {
+class _TvOnTheAirState extends State<TvOnTheAir> {
   late TvProvider _tvController;
+
   @override
   void initState() {
-    super.initState();
     this._tvController = Provider.of<TvProvider>(
       context,
       listen: false,
     );
+    super.initState();
   }
 
   @override
@@ -33,71 +30,39 @@ class _OnTheAirState extends State<OnTheAir> {
           if (snapshot.hasData) {
             return Consumer<TvProvider>(
               builder: (context, value, child) {
-                return CarouselSlider.builder(
-                  itemCount: snapshot.data!.length,
-                  itemBuilder: (BuildContext context, int i, int? b) {
-                    return GestureDetector(
-                      onTap: () {
-                        Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) {
-                          return TvDetailScreen(tvData: snapshot.data![i]);
-                        }));
-                      },
-                      child: Stack(
-                        alignment: Alignment.bottomLeft,
-                        children: [
-                          snapshot.data![i].backdropPath.isEmpty
-                              ? ClipRRect(
-                                  child: Container(
-                                  child: Center(
-                                    child: Text(
-                                      'Image preparation..',
-                                      style: TextStyle(color: Colors.white),
-                                    ),
-                                  ),
-                                ))
-                              : ClipRRect(
-                                  child: CachedNetworkImage(
-                                    imageUrl: 'https://image.tmdb.org/t/p/original/${snapshot.data![i].backdropPath}',
-                                    height: MediaQuery.of(context).size.height,
-                                    fit: BoxFit.cover,
-                                  ),
-                                  borderRadius: BorderRadius.circular(20.0),
-                                ),
-                          Container(
-                            padding: EdgeInsets.only(
-                              bottom: 15.0,
-                              left: 15.0,
-                            ),
-                            child: Text(
-                              snapshot.data![i].name,
-                              style: TextStyle(
-                                fontSize: 18.0,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.white,
-                              ),
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                          ),
-                        ],
+                return Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Container(
+                      padding: EdgeInsets.only(
+                        left: 10.0,
+                        top: 20.0,
+                        bottom: 10.0,
                       ),
-                    );
-                  },
-                  options: CarouselOptions(
-                    enableInfiniteScroll: true,
-                    autoPlay: true,
-                    autoPlayInterval: Duration(seconds: 3),
-                    autoPlayAnimationDuration: Duration(microseconds: 500),
-                    pauseAutoPlayOnTouch: true,
-                    viewportFraction: 0.8,
-                    enlargeCenterPage: true,
-                  ),
+                      child: Text(
+                        'ON THE AIR TV PROGRAMS',
+                        style: TextStyle(
+                          color: Colors.grey,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                    ),
+                    SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: Row(
+                        children: List.generate(
+                          snapshot.data!.length,
+                          (index) => TvTile(snapshot.data![index]),
+                          // _tvWidget.tvWidget(snapshot.data![index], context)
+                        ),
+                      ),
+                    ),
+                  ],
                 );
               },
             );
           } else {
-            return Center(
-              child: Container(),
-            );
+            return Container();
           }
         },
       ),

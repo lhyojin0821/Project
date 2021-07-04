@@ -1,25 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:tms/models/movie_models/movie_model.dart';
-import 'package:tms/providers/movie_provider/movie_detail_provider.dart';
-import 'package:tms/widgets/movie_main_widget/movie_tile.dart';
+import 'package:tms/models/tv_models/tv_model.dart';
+import 'package:tms/providers/tv_provider/tv_detail_provider.dart';
+import 'package:tms/widgets/tv_main_widget/tv_tile.dart';
 
-class MovieSimilar extends StatefulWidget {
-  final MovieModel movieData;
-  MovieSimilar({required this.movieData});
+class TvSimilar extends StatefulWidget {
+  final TvModel tvData;
+  TvSimilar({required this.tvData});
   @override
-  _MovieSimilarState createState() => _MovieSimilarState(this.movieData);
+  _TvSimilarState createState() => _TvSimilarState(this.tvData);
 }
 
-class _MovieSimilarState extends State<MovieSimilar> {
-  final MovieModel movieData;
-  _MovieSimilarState(this.movieData);
+class _TvSimilarState extends State<TvSimilar> {
+  final TvModel tvData;
+  _TvSimilarState(this.tvData);
 
-  late MovieDetailProvider _movieController;
+  late TvDetailProvider _tvController;
 
   @override
   void initState() {
-    this._movieController = Provider.of<MovieDetailProvider>(
+    this._tvController = Provider.of<TvDetailProvider>(
       context,
       listen: false,
     );
@@ -30,11 +30,10 @@ class _MovieSimilarState extends State<MovieSimilar> {
   Widget build(BuildContext context) {
     return Container(
       child: FutureBuilder(
-        future: this._movieController.similar(movieId: movieData.id),
-        builder:
-            (BuildContext context, AsyncSnapshot<List<MovieModel>> snapshot) {
+        future: this._tvController.similar(tvId: tvData.id),
+        builder: (BuildContext context, AsyncSnapshot<List<TvModel>> snapshot) {
           if (snapshot.hasData) {
-            return Consumer<MovieDetailProvider>(
+            return Consumer<TvDetailProvider>(
               builder: (context, value, child) {
                 return Container(
                   child: Column(
@@ -46,7 +45,7 @@ class _MovieSimilarState extends State<MovieSimilar> {
                           top: 20.0,
                         ),
                         child: Text(
-                          'SIMILAR MOVIES',
+                          'SIMILAR TV PROGRAMS',
                           style: TextStyle(
                               color: Colors.grey, fontWeight: FontWeight.w500),
                         ),
@@ -65,8 +64,8 @@ class _MovieSimilarState extends State<MovieSimilar> {
                               child: Row(
                                 children: List.generate(
                                   snapshot.data!.length,
-                                  (index) => MovieTile(snapshot.data![index]),
-                                  // _movieWidget.movieWidget(snapshot.data![index], context)
+                                  (index) => TvTile(snapshot.data![index]),
+                                  // _tvWidget.tvWidget(snapshot.data![index], context)
                                 ),
                               ),
                             ),

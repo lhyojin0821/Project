@@ -58,13 +58,34 @@ class _MovieInfoState extends State<MovieInfo> {
                                     size: 16.0,
                                   ),
                                 ),
-                                Container(
-                                  padding: EdgeInsets.only(left: 5.0),
-                                  child: Text(
-                                    this.movieData.voteAverage.toString(),
-                                    style: TextStyle(fontSize: 16.0, color: Colors.white),
+                                this.movieData.voteAverage.toString().isEmpty
+                                    ? Container(
+                                        padding: EdgeInsets.only(left: 5.0),
+                                        child: Text(
+                                          'Preparation',
+                                          style: TextStyle(fontSize: 16.0, color: Colors.white),
+                                        ),
+                                      )
+                                    : Container(
+                                        padding: EdgeInsets.only(left: 5.0),
+                                        child: Text(
+                                          this.movieData.voteAverage.toString(),
+                                          style: TextStyle(fontSize: 16.0, color: Colors.white),
+                                        ),
+                                      ),
+                                Expanded(
+                                  child: Container(
+                                    padding: EdgeInsets.only(right: 20.0),
+                                    alignment: Alignment.bottomRight,
+                                    child: IconButton(
+                                        onPressed: () {},
+                                        icon: Icon(
+                                          Icons.favorite_border,
+                                          color: Colors.white,
+                                          size: 30.0,
+                                        )),
                                   ),
-                                ),
+                                )
                               ],
                             ),
                           ),
@@ -78,17 +99,31 @@ class _MovieInfoState extends State<MovieInfo> {
                               ),
                             ),
                           ),
-                          Container(
-                            padding: EdgeInsets.all(10.0),
-                            child: Text(
-                              this.movieData.overView,
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 12.0,
-                                height: 1.5,
-                              ),
-                            ),
-                          ),
+                          this.movieData.overView.isEmpty
+                              ? Container(
+                                  padding: EdgeInsets.all(10.0),
+                                  child: Center(
+                                    child: Text(
+                                      'Preparation',
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 12.0,
+                                        height: 1.5,
+                                      ),
+                                    ),
+                                  ),
+                                )
+                              : Container(
+                                  padding: EdgeInsets.all(10.0),
+                                  child: Text(
+                                    this.movieData.overView,
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 12.0,
+                                      height: 1.5,
+                                    ),
+                                  ),
+                                ),
                           Container(
                             padding: EdgeInsets.only(top: 20.0),
                             child: Row(
@@ -99,20 +134,28 @@ class _MovieInfoState extends State<MovieInfo> {
                                   children: [
                                     Container(
                                       child: Text(
-                                        "RUN TIME",
+                                        "RUNTIME",
                                         style: TextStyle(
                                           color: Colors.grey,
                                           fontWeight: FontWeight.w500,
                                         ),
                                       ),
                                     ),
-                                    Container(
-                                      padding: EdgeInsets.only(top: 5.0),
-                                      child: Text(
-                                        snapshot.data!.runtime.toString() + ' min',
-                                        style: TextStyle(color: Colors.yellow, fontWeight: FontWeight.bold, fontSize: 12.0),
-                                      ),
-                                    ),
+                                    snapshot.data!.runtime.toString().isEmpty
+                                        ? Container(
+                                            padding: EdgeInsets.only(top: 5.0),
+                                            child: Text(
+                                              'Preparation',
+                                              style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 12.0),
+                                            ),
+                                          )
+                                        : Container(
+                                            padding: EdgeInsets.only(top: 5.0),
+                                            child: Text(
+                                              snapshot.data!.runtime.toString() + ' min',
+                                              style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 12.0),
+                                            ),
+                                          ),
                                   ],
                                 ),
                                 Column(
@@ -127,13 +170,21 @@ class _MovieInfoState extends State<MovieInfo> {
                                         ),
                                       ),
                                     ),
-                                    Container(
-                                      padding: EdgeInsets.only(top: 5.0),
-                                      child: Text(
-                                        snapshot.data!.releaseDate.toString(),
-                                        style: TextStyle(color: Colors.yellow, fontWeight: FontWeight.bold, fontSize: 12.0),
-                                      ),
-                                    ),
+                                    snapshot.data!.releaseDate.toString().isEmpty
+                                        ? Container(
+                                            padding: EdgeInsets.only(top: 5.0),
+                                            child: Text(
+                                              'Preparation',
+                                              style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 12.0),
+                                            ),
+                                          )
+                                        : Container(
+                                            padding: EdgeInsets.only(top: 5.0),
+                                            child: Text(
+                                              snapshot.data!.releaseDate.toString(),
+                                              style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 12.0),
+                                            ),
+                                          ),
                                   ],
                                 ),
                                 Column(
@@ -148,15 +199,23 @@ class _MovieInfoState extends State<MovieInfo> {
                                         ),
                                       ),
                                     ),
-                                    Container(
-                                      padding: EdgeInsets.only(top: 5.0),
-                                      child: Text(
-                                        this.formatCurrency.format(
-                                              snapshot.data!.budget,
+                                    snapshot.data!.budget.toString().isEmpty
+                                        ? Container(
+                                            padding: EdgeInsets.only(top: 5.0),
+                                            child: Text(
+                                              this.formatCurrency.format('Preparation'),
+                                              style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 12.0),
                                             ),
-                                        style: TextStyle(color: Colors.yellow, fontWeight: FontWeight.bold, fontSize: 12.0),
-                                      ),
-                                    ),
+                                          )
+                                        : Container(
+                                            padding: EdgeInsets.only(top: 5.0),
+                                            child: Text(
+                                              this.formatCurrency.format(
+                                                    snapshot.data!.budget,
+                                                  ),
+                                              style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 12.0),
+                                            ),
+                                          ),
                                   ],
                                 ),
                               ],
@@ -174,38 +233,67 @@ class _MovieInfoState extends State<MovieInfo> {
                                     style: TextStyle(color: Colors.grey, fontWeight: FontWeight.w500),
                                   ),
                                 ),
-                                Container(
-                                    height: 38.0,
-                                    child: ListView.separated(
-                                      scrollDirection: Axis.horizontal,
-                                      itemCount: snapshot.data!.genres.length,
-                                      separatorBuilder: (BuildContext context, int i) {
-                                        return VerticalDivider(
-                                          color: Colors.transparent,
-                                          width: 12.0,
-                                        );
-                                      },
-                                      itemBuilder: (BuildContext context, int i) {
-                                        return Container(
-                                          padding: EdgeInsets.all(10.0),
-                                          decoration: BoxDecoration(
-                                            borderRadius: BorderRadius.circular(5.0),
-                                            border: Border.all(
-                                              width: 1.0,
-                                              color: Colors.white,
-                                            ),
-                                          ),
+                                snapshot.data!.genres.isEmpty
+                                    ? Container(
+                                        height: 38.0,
+                                        child: Center(
                                           child: Text(
-                                            snapshot.data!.genres[i].name,
-                                            style: TextStyle(
-                                              color: Colors.white,
-                                              fontWeight: FontWeight.w300,
-                                              fontSize: 10.0,
-                                            ),
+                                            'Preparation',
+                                            style: TextStyle(color: Colors.white),
                                           ),
-                                        );
-                                      },
-                                    )),
+                                        ),
+                                      )
+                                    : Container(
+                                        height: 38.0,
+                                        child: ListView.separated(
+                                          scrollDirection: Axis.horizontal,
+                                          itemCount: snapshot.data!.genres.length,
+                                          separatorBuilder: (BuildContext context, int i) {
+                                            return VerticalDivider(
+                                              color: Colors.transparent,
+                                              width: 12.0,
+                                            );
+                                          },
+                                          itemBuilder: (BuildContext context, int i) {
+                                            return snapshot.data!.genres[i].name.isEmpty
+                                                ? Container(
+                                                    padding: EdgeInsets.all(10.0),
+                                                    decoration: BoxDecoration(
+                                                      borderRadius: BorderRadius.circular(5.0),
+                                                      border: Border.all(
+                                                        width: 1.0,
+                                                        color: Colors.white,
+                                                      ),
+                                                    ),
+                                                    child: Text(
+                                                      'Preparation',
+                                                      style: TextStyle(
+                                                        color: Colors.white,
+                                                        fontWeight: FontWeight.w300,
+                                                        fontSize: 10.0,
+                                                      ),
+                                                    ),
+                                                  )
+                                                : Container(
+                                                    padding: EdgeInsets.all(10.0),
+                                                    decoration: BoxDecoration(
+                                                      borderRadius: BorderRadius.circular(5.0),
+                                                      border: Border.all(
+                                                        width: 1.0,
+                                                        color: Colors.white,
+                                                      ),
+                                                    ),
+                                                    child: Text(
+                                                      snapshot.data!.genres[i].name,
+                                                      style: TextStyle(
+                                                        color: Colors.white,
+                                                        fontWeight: FontWeight.w300,
+                                                        fontSize: 10.0,
+                                                      ),
+                                                    ),
+                                                  );
+                                          },
+                                        )),
                               ],
                             ),
                           )
@@ -215,9 +303,7 @@ class _MovieInfoState extends State<MovieInfo> {
                   },
                 );
               } else {
-                return Center(
-                  child: Text(''),
-                );
+                return Container();
               }
             },
           ),

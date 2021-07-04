@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:tms/models/movie_models/movie_model.dart';
 import 'package:tms/providers/movie_provider/movie_provider.dart';
-import 'package:tms/widgets/movie_main_widget/movie_genre_list.dart';
+import 'package:tms/widgets/movie_main_widget/movie_tile.dart';
 
 class MovieUpcoming extends StatefulWidget {
   @override
@@ -11,7 +11,6 @@ class MovieUpcoming extends StatefulWidget {
 
 class _MovieUpcomingState extends State<MovieUpcoming> {
   late MovieProvider _movieController;
-  MovieGenreList _movieWidget = MovieGenreList();
 
   @override
   void initState() {
@@ -27,7 +26,8 @@ class _MovieUpcomingState extends State<MovieUpcoming> {
     return Container(
       child: FutureBuilder(
         future: this._movieController.upcoming(),
-        builder: (BuildContext context, AsyncSnapshot<List<MovieModel>> snapshot) {
+        builder:
+            (BuildContext context, AsyncSnapshot<List<MovieModel>> snapshot) {
           if (snapshot.hasData) {
             return Consumer<MovieProvider>(
               builder: (context, value, child) {
@@ -50,7 +50,12 @@ class _MovieUpcomingState extends State<MovieUpcoming> {
                     SingleChildScrollView(
                       scrollDirection: Axis.horizontal,
                       child: Row(
-                        children: List.generate(snapshot.data!.length, (index) => _movieWidget.movieWidget(snapshot.data![index], context)),
+                        children: List.generate(
+                          snapshot.data!.length,
+                          (index) => MovieTile(snapshot.data![index]),
+                          // _movieWidget.movieWidget(
+                          // snapshot.data![index], context)
+                        ),
                       ),
                     ),
                   ],
@@ -58,9 +63,7 @@ class _MovieUpcomingState extends State<MovieUpcoming> {
               },
             );
           } else {
-            return Center(
-              child: Text(''),
-            );
+            return Container();
           }
         },
       ),

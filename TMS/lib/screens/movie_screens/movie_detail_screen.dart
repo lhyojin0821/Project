@@ -5,6 +5,7 @@ import 'package:tms/models/movie_models/movie_detail_model.dart';
 import 'package:tms/models/movie_models/movie_model.dart';
 import 'package:tms/models/movie_models/movie_video_model.dart';
 import 'package:tms/providers/movie_provider/movie_detail_provider.dart';
+import 'package:tms/providers/movie_provider/movie_video_provider.dart';
 import 'package:tms/widgets/movie_detail_widget/movie_casts.dart';
 import 'package:tms/widgets/movie_detail_widget/movie_info.dart';
 import 'package:tms/widgets/movie_detail_widget/movie_similar.dart';
@@ -16,7 +17,8 @@ class MovieDetailScreen extends StatefulWidget {
   MovieDetailScreen({required this.movieData});
 
   @override
-  _MovieDetailScreenState createState() => _MovieDetailScreenState(this.movieData);
+  _MovieDetailScreenState createState() =>
+      _MovieDetailScreenState(this.movieData);
 }
 
 class _MovieDetailScreenState extends State<MovieDetailScreen> {
@@ -24,7 +26,7 @@ class _MovieDetailScreenState extends State<MovieDetailScreen> {
   _MovieDetailScreenState(this.movieData);
 
   late MovieDetailProvider _movieController;
-  late MovieDetailProvider _videoController;
+  late MovieVideoProvider _videoController;
 
   @override
   void initState() {
@@ -33,7 +35,7 @@ class _MovieDetailScreenState extends State<MovieDetailScreen> {
       context,
       listen: false,
     );
-    this._videoController = Provider.of<MovieDetailProvider>(
+    this._videoController = Provider.of<MovieVideoProvider>(
       context,
       listen: false,
     );
@@ -42,7 +44,7 @@ class _MovieDetailScreenState extends State<MovieDetailScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey[900],
+      backgroundColor: Colors.black,
       body: SafeArea(
         child: SingleChildScrollView(
           child: Column(
@@ -58,31 +60,41 @@ class _MovieDetailScreenState extends State<MovieDetailScreen> {
     );
   }
 
-  Widget _videoImage(Future<MovieDetailModel> movieDetail, MovieModel movieData) {
+  Widget _videoImage(
+      Future<MovieDetailModel> movieDetail, MovieModel movieData) {
     return Container(
       child: Column(
         children: [
           FutureBuilder(
             future: movieDetail,
-            builder: (BuildContext context, AsyncSnapshot<MovieDetailModel> snapshot) {
+            builder: (BuildContext context,
+                AsyncSnapshot<MovieDetailModel> snapshot) {
               if (snapshot.hasData) {
                 return Consumer<MovieDetailProvider>(
                   builder: (context, value, child) {
                     return Stack(
                       children: [
                         ClipPath(
-                          child: ClipRRect(
-                            child: CachedNetworkImage(
-                              imageUrl: 'https://image.tmdb.org/t/p/original/${movieData.backdropPath}',
-                              height: MediaQuery.of(context).size.height / 2,
-                              width: MediaQuery.of(context).size.width,
-                              fit: BoxFit.cover,
-                            ),
-                            borderRadius: BorderRadius.only(
-                              bottomLeft: Radius.circular(60.0),
-                              bottomRight: Radius.circular(60.0),
-                            ),
-                          ),
+                          child: movieData.backdropPath.isEmpty
+                              ? Container(
+                                  height:
+                                      MediaQuery.of(context).size.height / 2,
+                                  width: MediaQuery.of(context).size.width,
+                                )
+                              : ClipRRect(
+                                  child: CachedNetworkImage(
+                                    imageUrl:
+                                        'https://image.tmdb.org/t/p/original/${movieData.backdropPath}',
+                                    height:
+                                        MediaQuery.of(context).size.height / 2,
+                                    width: MediaQuery.of(context).size.width,
+                                    fit: BoxFit.cover,
+                                  ),
+                                  borderRadius: BorderRadius.only(
+                                    bottomLeft: Radius.circular(60.0),
+                                    bottomRight: Radius.circular(60.0),
+                                  ),
+                                ),
                         ),
                         Column(
                           mainAxisAlignment: MainAxisAlignment.start,
@@ -92,7 +104,9 @@ class _MovieDetailScreenState extends State<MovieDetailScreen> {
                               elevation: 0.0,
                             ),
                             _videoPlay(
-                              this._videoController.movieVideoDetail(movieId: movieData.id),
+                              this
+                                  ._videoController
+                                  .movieVideoDetail(movieId: movieData.id),
                               this.movieData,
                             ),
                           ],
@@ -102,9 +116,7 @@ class _MovieDetailScreenState extends State<MovieDetailScreen> {
                   },
                 );
               } else {
-                return Center(
-                  child: Text(''),
-                );
+                return Container();
               }
             },
           ),
@@ -122,23 +134,55 @@ class _MovieDetailScreenState extends State<MovieDetailScreen> {
   ) {
     return FutureBuilder(
       future: videoPlay,
-      builder: (BuildContext context, AsyncSnapshot<List<MovieVideoModel>> snapshot) {
+      builder: (BuildContext context,
+          AsyncSnapshot<List<MovieVideoModel>> snapshot) {
         if (snapshot.hasData) {
-          return Consumer<MovieDetailProvider>(
+          return Consumer<MovieVideoProvider>(
             builder: (context, value, child) {
               return Container(
                 padding: EdgeInsets.only(top: 150.0),
                 child: GestureDetector(
                   onTap: () async {
-                    Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) {
-                      return MovieVideoPlayer(
-                        controller: YoutubePlayerController(
-                            initialVideoId: snapshot.data![0].key,
-                            flags: YoutubePlayerFlags(
-                              autoPlay: true,
-                            )),
-                      );
-                    }));
+                    snapshot.data!.isEmpty
+                        ? Navigator.of(context).push(
+                            MaterialPageRoute(builder: (BuildContext context) {
+                            return Scaffold(
+                              backgroundColor: Colors.black,
+                              body: Stack(
+                                children: [
+                                  Center(
+                                      child: Text(
+                                    'Video Preparation',
+                                    style: TextStyle(color: Colors.white),
+                                  )),
+                                  Positioned(
+                                    top: 40.0,
+                                    right: 2.0,
+                                    child: IconButton(
+                                      onPressed: () {
+                                        Navigator.of(context).pop(context);
+                                      },
+                                      icon: Icon(
+                                        Icons.close_sharp,
+                                        color: Colors.white,
+                                        size: 30.0,
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            );
+                          }))
+                        : Navigator.of(context).push(
+                            MaterialPageRoute(builder: (BuildContext context) {
+                            return MovieVideoPlayer(
+                              controller: YoutubePlayerController(
+                                  initialVideoId: snapshot.data![0].key,
+                                  flags: YoutubePlayerFlags(
+                                    autoPlay: true,
+                                  )),
+                            );
+                          }));
                   },
                   child: Center(
                     child: Column(
@@ -146,7 +190,7 @@ class _MovieDetailScreenState extends State<MovieDetailScreen> {
                         Icon(
                           Icons.play_circle_outline,
                           size: 60.0,
-                          color: Colors.yellow,
+                          color: Colors.white,
                         ),
                         Text(
                           movieData.title,
@@ -167,9 +211,7 @@ class _MovieDetailScreenState extends State<MovieDetailScreen> {
             },
           );
         } else {
-          return Center(
-            child: Text(''),
-          );
+          return Container();
         }
       },
     );

@@ -4,8 +4,9 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:tms/models/movie_models/movie_model.dart';
+import 'package:tms/providers/movie_provider/movie_detail_provider.dart';
 import 'package:tms/providers/movie_provider/movie_provider.dart';
-
+import 'package:tms/providers/movie_provider/movie_video_provider.dart';
 import 'package:tms/screens/movie_screens/movie_detail_screen.dart';
 
 class MovieNowPlaying extends StatefulWidget {
@@ -29,7 +30,8 @@ class _MovieNowPlayingState extends State<MovieNowPlaying> {
     return Container(
       child: FutureBuilder(
         future: this._movieController.nowPlaying(),
-        builder: (BuildContext context, AsyncSnapshot<List<MovieModel>> snapshot) {
+        builder:
+            (BuildContext context, AsyncSnapshot<List<MovieModel>> snapshot) {
           if (snapshot.hasData) {
             return Consumer<MovieProvider>(
               builder: (context, value, child) {
@@ -41,7 +43,18 @@ class _MovieNowPlayingState extends State<MovieNowPlaying> {
                         Navigator.of(context).push(
                           MaterialPageRoute(
                             builder: (BuildContext context) {
-                              return MovieDetailScreen(movieData: snapshot.data![i]);
+                              return MultiProvider(
+                                providers: [
+                                  ChangeNotifierProvider(
+                                      create: (BuildContext context) =>
+                                          MovieDetailProvider()),
+                                  ChangeNotifierProvider(
+                                      create: (BuildContext context) =>
+                                          MovieVideoProvider()),
+                                ],
+                                child: MovieDetailScreen(
+                                    movieData: snapshot.data![i]),
+                              );
                             },
                           ),
                         );
@@ -49,29 +62,59 @@ class _MovieNowPlayingState extends State<MovieNowPlaying> {
                       child: Stack(
                         alignment: Alignment.bottomLeft,
                         children: [
-                          ClipRRect(
-                            child: CachedNetworkImage(
-                              imageUrl: 'https://image.tmdb.org/t/p/original/${snapshot.data![i].backdropPath}',
-                              height: MediaQuery.of(context).size.height,
-                              fit: BoxFit.cover,
-                            ),
-                            borderRadius: BorderRadius.circular(20.0),
-                          ),
-                          Container(
-                            padding: EdgeInsets.only(
-                              bottom: 15.0,
-                              left: 15.0,
-                            ),
-                            child: Text(
-                              snapshot.data![i].title,
-                              style: TextStyle(
-                                fontSize: 18.0,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.white,
-                              ),
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                          ),
+                          snapshot.data!.isEmpty
+                              ? Container(
+                                  height: MediaQuery.of(context).size.height,
+                                  child: Center(
+                                    child: Text(
+                                      'Image preparation',
+                                      style: TextStyle(color: Colors.white),
+                                    ),
+                                  ),
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(20.0),
+                                  ),
+                                )
+                              : ClipRRect(
+                                  child: CachedNetworkImage(
+                                    imageUrl:
+                                        'https://image.tmdb.org/t/p/original/${snapshot.data![i].backdropPath}',
+                                    height: MediaQuery.of(context).size.height,
+                                    fit: BoxFit.cover,
+                                  ),
+                                  borderRadius: BorderRadius.circular(20.0),
+                                ),
+                          snapshot.data![i].title.isEmpty
+                              ? Container(
+                                  padding: EdgeInsets.only(
+                                    bottom: 15.0,
+                                    left: 15.0,
+                                  ),
+                                  child: Text(
+                                    'preparation',
+                                    style: TextStyle(
+                                      fontSize: 18.0,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.white,
+                                    ),
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                )
+                              : Container(
+                                  padding: EdgeInsets.only(
+                                    bottom: 15.0,
+                                    left: 15.0,
+                                  ),
+                                  child: Text(
+                                    snapshot.data![i].title,
+                                    style: TextStyle(
+                                      fontSize: 18.0,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.white,
+                                    ),
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                ),
                         ],
                       ),
                     );

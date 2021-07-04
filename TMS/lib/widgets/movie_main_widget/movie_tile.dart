@@ -1,43 +1,25 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:tms/models/tv_models/tv_model.dart';
-import 'package:tms/providers/tv_provider/tv_detail_provider.dart';
-import 'package:tms/providers/tv_provider/tv_genre_provider.dart';
-import 'package:tms/providers/tv_provider/tv_video_provider.dart';
-import 'package:tms/screens/tv_screens/tv_detail_screen.dart';
+import 'package:tms/models/movie_models/movie_model.dart';
+import 'package:tms/providers/movie_provider/movie_detail_provider.dart';
+import 'package:tms/providers/movie_provider/movie_video_provider.dart';
+import 'package:tms/screens/movie_screens/movie_detail_screen.dart';
 
-class TvGenreList extends StatelessWidget {
+class MovieTile extends StatefulWidget {
+  final MovieModel movie;
+  MovieTile(this.movie);
+
+  @override
+  _MovieTileState createState() => _MovieTileState(this.movie);
+}
+
+class _MovieTileState extends State<MovieTile> {
+  MovieModel movie;
+  _MovieTileState(this.movie);
+
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          SingleChildScrollView(
-            scrollDirection: Axis.horizontal,
-            child: Consumer<TvGenreProvider>(
-              builder: (context, controller, child) {
-                return SingleChildScrollView(
-                  scrollDirection: Axis.horizontal,
-                  child: Row(
-                    children: List.generate(
-                        controller.tvs.length,
-                        (index) =>
-                            // TvTile(controller.tvs[index]),
-                            tvWidget(controller.tvs[index], context)),
-                  ),
-                );
-              },
-              child: TvGenreList(),
-            ),
-          )
-        ],
-      ),
-    );
-  }
-
-  Widget tvWidget(TvModel tv, BuildContext context) {
     return GestureDetector(
       onTap: () {
         Navigator.of(context).push(
@@ -45,15 +27,15 @@ class TvGenreList extends StatelessWidget {
             builder: (BuildContext context) {
               return MultiProvider(providers: [
                 ChangeNotifierProvider(
-                    create: (BuildContext context) => TvDetailProvider()),
+                    create: (BuildContext context) => MovieDetailProvider()),
                 ChangeNotifierProvider(
-                    create: (BuildContext context) => TvVideoProvider()),
-              ], child: TvDetailScreen(tvData: tv));
+                    create: (BuildContext context) => MovieVideoProvider()),
+              ], child: MovieDetailScreen(movieData: movie));
             },
           ),
         );
       },
-      child: tv.posterPath.isEmpty
+      child: movie.posterPath.isEmpty
           ? Container(
               padding: EdgeInsets.only(left: 10.0, top: 10.0),
               width: 150,
@@ -82,10 +64,10 @@ class TvGenreList extends StatelessWidget {
                     child: CachedNetworkImage(
                       fit: BoxFit.cover,
                       imageUrl:
-                          'https://image.tmdb.org/t/p/original/${tv.posterPath}',
+                          'https://image.tmdb.org/t/p/original/${movie.posterPath}',
                     ),
                   ),
-                  tv.name.isEmpty
+                  movie.title.isEmpty
                       ? Container(
                           padding: EdgeInsets.only(top: 5.0),
                           child: Text(
@@ -100,7 +82,7 @@ class TvGenreList extends StatelessWidget {
                       : Container(
                           padding: EdgeInsets.only(top: 5.0),
                           child: Text(
-                            tv.name,
+                            movie.title,
                             style: TextStyle(
                               fontWeight: FontWeight.bold,
                               color: Colors.white,
@@ -117,7 +99,7 @@ class TvGenreList extends StatelessWidget {
                           color: Colors.yellow,
                         ),
                       ),
-                      tv.voteAverage.toString().isEmpty
+                      movie.voteAverage.toString().isEmpty
                           ? Center(
                               child: Container(
                                 padding: EdgeInsets.only(left: 5.0),
@@ -126,7 +108,7 @@ class TvGenreList extends StatelessWidget {
                           : Container(
                               padding: EdgeInsets.only(left: 5.0),
                               child: Text(
-                                tv.voteAverage.toString(),
+                                movie.voteAverage.toString(),
                                 style: TextStyle(
                                   color: Colors.white,
                                 ),

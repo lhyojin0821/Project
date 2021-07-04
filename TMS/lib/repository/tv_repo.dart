@@ -11,9 +11,9 @@ class TvRepo {
   String mainUrl = 'https://api.themoviedb.org/3';
   String apiKey = 'api_key=d14708f2fca792ff1266207b85ee13f4';
 
-  Future<List<TvModel>> getOnTheAir() async {
+  Future<List<TvModel>> getPopular() async {
     try {
-      http.Response res = await http.get(Uri.parse('$mainUrl/tv/on_the_air?$apiKey&page=1')).timeout(Duration(seconds: 8), onTimeout: () async => new http.Response('{}', 404));
+      http.Response res = await http.get(Uri.parse('$mainUrl/tv/popular?$apiKey')).timeout(Duration(seconds: 8), onTimeout: () async => new http.Response('{}', 404));
       if (res.statusCode == 404) {
         return [];
       }
@@ -23,7 +23,7 @@ class TvRepo {
         return TvModel.fromJson(json: e);
       }).toList();
     } catch (e) {
-      print(e);
+      print('TvPopular $e');
     }
     return [];
   }
@@ -40,14 +40,14 @@ class TvRepo {
         return TvGenreModel.fromJson(json: e);
       }).toList();
     } catch (e) {
-      print(e);
+      print('TvGenreList $e');
     }
     return [];
   }
 
   Future<List<TvModel>> getLoadTvListWithGenre(int genreId) async {
     try {
-      http.Response res = await http.get(Uri.parse('$mainUrl/discover/tv?with_genres=$genreId&primary_release_date.lte=2021-07-01&page=1&$apiKey')).timeout(Duration(seconds: 8), onTimeout: () async => new http.Response('{}', 404));
+      http.Response res = await http.get(Uri.parse('$mainUrl/discover/tv?with_genres=$genreId&$apiKey')).timeout(Duration(seconds: 8), onTimeout: () async => new http.Response('{}', 404));
       if (res.statusCode == 404) {
         return [];
       }
@@ -57,7 +57,7 @@ class TvRepo {
         return TvModel.fromJson(json: e);
       }).toList();
     } catch (e) {
-      print(e);
+      print('TvListWithGenre $e');
     }
     return [];
   }
@@ -73,13 +73,15 @@ class TvRepo {
       return resultList.map<TvPersonModel>((dynamic e) {
         return TvPersonModel.fromJson(json: e);
       }).toList();
-    } catch (e) {}
+    } catch (e) {
+      print('TvPerson $e');
+    }
     return [];
   }
 
-  Future<List<TvModel>> getPopular() async {
+  Future<List<TvModel>> getOnTheAir() async {
     try {
-      http.Response res = await http.get(Uri.parse('$mainUrl/tv/popular?$apiKey')).timeout(Duration(seconds: 8), onTimeout: () async => new http.Response('{}', 404));
+      http.Response res = await http.get(Uri.parse('$mainUrl/tv/on_the_air?$apiKey')).timeout(Duration(seconds: 8), onTimeout: () async => new http.Response('{}', 404));
       if (res.statusCode == 404) {
         return [];
       }
@@ -89,14 +91,14 @@ class TvRepo {
         return TvModel.fromJson(json: e);
       }).toList();
     } catch (e) {
-      print(e);
+      print('TvOnTheAir $e');
     }
     return [];
   }
 
   Future<List<TvModel>> getAiringToday() async {
     try {
-      http.Response res = await http.get(Uri.parse('$mainUrl/tv/airing_today?$apiKey')).timeout(Duration(seconds: 8), onTimeout: () async => new http.Response('{}', 404));
+      http.Response res = await http.get(Uri.parse('$mainUrl/tv/airing_today?$apiKey&page=1')).timeout(Duration(seconds: 8), onTimeout: () async => new http.Response('{}', 404));
       if (res.statusCode == 404) {
         return [];
       }
@@ -106,7 +108,7 @@ class TvRepo {
         return TvModel.fromJson(json: e);
       }).toList();
     } catch (e) {
-      print(e);
+      print('TvAiringToday $e');
     }
     return [];
   }
@@ -123,7 +125,7 @@ class TvRepo {
         return TvModel.fromJson(json: e);
       }).toList();
     } catch (e) {
-      print(e);
+      print('TvDetail $e');
     }
     return [];
   }
@@ -138,7 +140,7 @@ class TvRepo {
       TvDetailModel tvDetail = TvDetailModel.fromJson(result);
       return tvDetail;
     } catch (e) {
-      print('tvDetail: $e');
+      print('TvDetail: $e');
     }
     return TvDetailModel.fromJson({});
   }
@@ -155,7 +157,7 @@ class TvRepo {
         return TvVideoModel.fromJson(json: e);
       }).toList();
     } catch (e) {
-      print('video: $e');
+      print('TvVideo: $e');
     }
     return [];
   }
@@ -172,14 +174,14 @@ class TvRepo {
         return TvCastModel.fromJson(json: e);
       }).toList();
     } catch (e) {
-      print('cast: $e');
+      print('TvCast: $e');
     }
     return [];
   }
 
   Future<List<TvModel>> getSimilarTvs(int tvId) async {
     try {
-      http.Response res = await http.get(Uri.parse('$mainUrl/tv/$tvId/similar?$apiKey&language=en-US&page=1')).timeout(Duration(seconds: 8), onTimeout: () async => new http.Response('{}', 404));
+      http.Response res = await http.get(Uri.parse('$mainUrl/tv/$tvId/similar?$apiKey&page=1')).timeout(Duration(seconds: 8), onTimeout: () async => new http.Response('{}', 404));
       if (res.statusCode == 404) {
         return [];
       }
@@ -189,7 +191,7 @@ class TvRepo {
         return TvModel.fromJson(json: e);
       }).toList();
     } catch (e) {
-      print('similar: $e');
+      print('TvSimilar: $e');
     }
     return [];
   }

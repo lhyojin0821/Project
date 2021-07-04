@@ -13,7 +13,10 @@ class MovieRepo {
 
   Future<List<MovieModel>> getNowPlayingMovie() async {
     try {
-      http.Response res = await http.get(Uri.parse('$mainUrl/movie/now_playing?&page=1&$apiKey')).timeout(Duration(seconds: 8), onTimeout: () async => new http.Response('{}', 404));
+      http.Response res = await http
+          .get(Uri.parse('$mainUrl/movie/now_playing?&page=1&$apiKey'))
+          .timeout(Duration(seconds: 8),
+              onTimeout: () async => new http.Response('{}', 404));
       if (res.statusCode == 404) {
         return [];
       }
@@ -23,14 +26,17 @@ class MovieRepo {
         return MovieModel.fromJson(json: e);
       }).toList();
     } catch (e) {
-      print(e);
+      print('MovieNowPlaying $e');
     }
     return [];
   }
 
   Future<List<MovieGenreModel>> getGenreList() async {
     try {
-      http.Response res = await http.get(Uri.parse('$mainUrl/genre/movie/list?$apiKey')).timeout(Duration(seconds: 8), onTimeout: () async => new http.Response('{}', 404));
+      http.Response res = await http
+          .get(Uri.parse('$mainUrl/genre/movie/list?$apiKey'))
+          .timeout(Duration(seconds: 8),
+              onTimeout: () async => new http.Response('{}', 404));
       if (res.statusCode == 404) {
         return [];
       }
@@ -40,14 +46,18 @@ class MovieRepo {
         return MovieGenreModel.fromJson(json: e);
       }).toList();
     } catch (e) {
-      print(e);
+      print('MovieGenreList $e');
     }
     return [];
   }
 
   Future<List<MovieModel>> getLoadMovieListWithGenre(int genreId) async {
     try {
-      http.Response res = await http.get(Uri.parse('$mainUrl/discover/movie?with_genres=$genreId&primary_release_date.lte=2021-07-01&page=1&$apiKey')).timeout(Duration(seconds: 8), onTimeout: () async => new http.Response('{}', 404));
+      http.Response res = await http
+          .get(Uri.parse(
+              '$mainUrl/discover/movie?with_genres=$genreId&primary_release_date.lte=2021-07-01&page=1&$apiKey'))
+          .timeout(Duration(seconds: 8),
+              onTimeout: () async => new http.Response('{}', 404));
       if (res.statusCode == 404) {
         return [];
       }
@@ -57,14 +67,17 @@ class MovieRepo {
         return MovieModel.fromJson(json: e);
       }).toList();
     } catch (e) {
-      print(e);
+      print('MovieListWithGenre $e');
     }
     return [];
   }
 
   Future<List<MoviePersonModel>> getPerson() async {
     try {
-      http.Response res = await http.get(Uri.parse('$mainUrl/trending/person/week?$apiKey')).timeout(Duration(seconds: 8), onTimeout: () async => new http.Response('{}', 404));
+      http.Response res = await http
+          .get(Uri.parse('$mainUrl/trending/person/week?$apiKey'))
+          .timeout(Duration(seconds: 8),
+              onTimeout: () async => new http.Response('{}', 404));
       if (res.statusCode == 404) {
         return [];
       }
@@ -74,14 +87,17 @@ class MovieRepo {
         return MoviePersonModel.fromJson(json: e);
       }).toList();
     } catch (e) {
-      print(e);
+      print('MoviePerson $e');
     }
     return [];
   }
 
   Future<List<MovieModel>> getTopRated() async {
     try {
-      http.Response res = await http.get(Uri.parse('$mainUrl/movie/top_rated?$apiKey')).timeout(Duration(seconds: 8), onTimeout: () async => new http.Response('{}', 404));
+      http.Response res = await http
+          .get(Uri.parse('$mainUrl/movie/top_rated?$apiKey&page=1'))
+          .timeout(Duration(seconds: 8),
+              onTimeout: () async => new http.Response('{}', 404));
       if (res.statusCode == 404) {
         return [];
       }
@@ -91,14 +107,17 @@ class MovieRepo {
         return MovieModel.fromJson(json: e);
       }).toList();
     } catch (e) {
-      print(e);
+      print('MovieTopRated $e');
     }
     return [];
   }
 
   Future<MovieDetailModel> getMovieDetail(int movieId) async {
     try {
-      http.Response res = await http.get(Uri.parse('$mainUrl/movie/$movieId?$apiKey')).timeout(Duration(seconds: 8), onTimeout: () async => new http.Response('{}', 404));
+      http.Response res = await http
+          .get(Uri.parse('$mainUrl/movie/$movieId?$apiKey'))
+          .timeout(Duration(seconds: 8),
+              onTimeout: () async => new http.Response('{}', 404));
       if (res.statusCode == 404) {
         return MovieDetailModel.fromJson({});
       }
@@ -106,14 +125,17 @@ class MovieRepo {
       MovieDetailModel movieDetail = MovieDetailModel.fromJson(result);
       return movieDetail;
     } catch (e) {
-      print(e);
+      print('MovieDetail $e');
     }
     return MovieDetailModel.fromJson({});
   }
 
   Future<List<MovieVideoModel>> getMovieVideo(int movieId) async {
     try {
-      http.Response res = await http.get(Uri.parse('$mainUrl/movie/$movieId/videos?$apiKey')).timeout(Duration(seconds: 8), onTimeout: () async => new http.Response('{}', 404));
+      http.Response res = await http
+          .get(Uri.parse('$mainUrl/movie/$movieId/videos?$apiKey'))
+          .timeout(Duration(seconds: 8),
+              onTimeout: () async => new http.Response('{}', 404));
       if (res.statusCode == 404) {
         return [];
       }
@@ -123,14 +145,17 @@ class MovieRepo {
         return MovieVideoModel.fromJson(json: e);
       }).toList();
     } catch (e) {
-      print(e);
+      print('MovieVideo $e');
     }
     return [];
   }
 
   Future<List<MovieCastModel>> getMovieCast(int movieId) async {
     try {
-      http.Response res = await http.get(Uri.parse('$mainUrl/movie/$movieId/credits?$apiKey')).timeout(Duration(seconds: 8), onTimeout: () async => new http.Response('{}', 404));
+      http.Response res = await http
+          .get(Uri.parse('$mainUrl/movie/$movieId/credits?$apiKey'))
+          .timeout(Duration(seconds: 8),
+              onTimeout: () async => new http.Response('{}', 404));
       if (res.statusCode == 404) {
         return [];
       }
@@ -140,14 +165,17 @@ class MovieRepo {
         return MovieCastModel.fromJson(json: e);
       }).toList();
     } catch (e) {
-      print(e);
+      print('MovieCast $e');
     }
     return [];
   }
 
   Future<List<MovieModel>> getSimilarMovies(int movieId) async {
     try {
-      http.Response res = await http.get(Uri.parse('$mainUrl/movie/$movieId/similar?$apiKey&language=en-US&page=1')).timeout(Duration(seconds: 8), onTimeout: () async => new http.Response('{}', 404));
+      http.Response res = await http
+          .get(Uri.parse('$mainUrl/movie/$movieId/similar?$apiKey&page=1'))
+          .timeout(Duration(seconds: 8),
+              onTimeout: () async => new http.Response('{}', 404));
       if (res.statusCode == 404) {
         return [];
       }
@@ -157,14 +185,17 @@ class MovieRepo {
         return MovieModel.fromJson(json: e);
       }).toList();
     } catch (e) {
-      print(e);
+      print('SimilarMovie $e');
     }
     return [];
   }
 
   Future<List<MovieModel>> getPopular() async {
     try {
-      http.Response res = await http.get(Uri.parse('$mainUrl/movie/popular?$apiKey')).timeout(Duration(seconds: 8), onTimeout: () async => new http.Response('{}', 404));
+      http.Response res = await http
+          .get(Uri.parse('$mainUrl/movie/popular?$apiKey&page=1'))
+          .timeout(Duration(seconds: 8),
+              onTimeout: () async => new http.Response('{}', 404));
       if (res.statusCode == 404) {
         return [];
       }
@@ -174,14 +205,18 @@ class MovieRepo {
         return MovieModel.fromJson(json: e);
       }).toList();
     } catch (e) {
-      print(e);
+      print('MoviePopular $e');
     }
     return [];
   }
 
   Future<List<MovieModel>> getUpcoming() async {
     try {
-      http.Response res = await http.get(Uri.parse('$mainUrl/movie/upcoming?primary_release_date.gte=2021-07-01&$apiKey')).timeout(Duration(seconds: 8), onTimeout: () async => new http.Response('{}', 404));
+      http.Response res = await http
+          .get(Uri.parse(
+              '$mainUrl/movie/upcoming?primary_release_date.gte=2021-07-01&$apiKey&page=1'))
+          .timeout(Duration(seconds: 8),
+              onTimeout: () async => new http.Response('{}', 404));
       if (res.statusCode == 404) {
         return [];
       }
@@ -190,7 +225,9 @@ class MovieRepo {
       return resultList.map<MovieModel>((dynamic e) {
         return MovieModel.fromJson(json: e);
       }).toList();
-    } catch (e) {}
+    } catch (e) {
+      print('MovieUpcoming $e');
+    }
     return [];
   }
 }

@@ -39,15 +39,16 @@ class _TvPopularState extends State<TvPopular> {
                   itemBuilder: (BuildContext context, int i, int? b) {
                     return GestureDetector(
                       onTap: () {
-                        Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) {
-                          return MultiProvider(
-                              providers: [
-                                ChangeNotifierProvider(
-                                    create: (BuildContext context) => TvDetailProvider()),
-                                ChangeNotifierProvider(
-                                    create: (BuildContext context) => TvVideoProvider()),
-                              ],
-                              child: TvDetailScreen(tvData: snapshot.data![i]));
+                        Navigator.of(context).push(
+                            MaterialPageRoute(builder: (BuildContext context) {
+                          return MultiProvider(providers: [
+                            ChangeNotifierProvider(
+                                create: (BuildContext context) =>
+                                    TvDetailProvider()),
+                            ChangeNotifierProvider(
+                                create: (BuildContext context) =>
+                                    TvVideoProvider()),
+                          ], child: TvDetailScreen(tvData: snapshot.data![i]));
                         }));
                       },
                       child: Stack(
@@ -70,7 +71,8 @@ class _TvPopularState extends State<TvPopular> {
                                 )
                               : ClipRRect(
                                   child: CachedNetworkImage(
-                                    imageUrl: 'https://image.tmdb.org/t/p/original/${snapshot.data![i].backdropPath}',
+                                    imageUrl:
+                                        'https://image.tmdb.org/t/p/original/${snapshot.data![i].backdropPath}',
                                     height: MediaQuery.of(context).size.height,
                                     fit: BoxFit.cover,
                                   ),

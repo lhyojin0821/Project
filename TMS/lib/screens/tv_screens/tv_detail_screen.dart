@@ -65,7 +65,8 @@ class _TvDetailScreenState extends State<TvDetailScreen> {
         children: [
           FutureBuilder(
             future: tvDetail,
-            builder: (BuildContext context, AsyncSnapshot<TvDetailModel> snapshot) {
+            builder:
+                (BuildContext context, AsyncSnapshot<TvDetailModel> snapshot) {
               if (snapshot.hasData) {
                 return Consumer<TvDetailProvider>(
                   builder: (context, value, child) {
@@ -75,12 +76,15 @@ class _TvDetailScreenState extends State<TvDetailScreen> {
                           child: ClipRRect(
                             child: tvData.backdropPath.isEmpty
                                 ? Container(
-                                    height: MediaQuery.of(context).size.height / 2,
+                                    height:
+                                        MediaQuery.of(context).size.height / 2,
                                     width: MediaQuery.of(context).size.width,
                                   )
                                 : CachedNetworkImage(
-                                    imageUrl: 'https://image.tmdb.org/t/p/original/${tvData.backdropPath}',
-                                    height: MediaQuery.of(context).size.height / 2,
+                                    imageUrl:
+                                        'https://image.tmdb.org/t/p/original/${tvData.backdropPath}',
+                                    height:
+                                        MediaQuery.of(context).size.height / 2,
                                     width: MediaQuery.of(context).size.width,
                                     fit: BoxFit.cover,
                                   ),
@@ -98,7 +102,9 @@ class _TvDetailScreenState extends State<TvDetailScreen> {
                               elevation: 0.0,
                             ),
                             _videoPlay(
-                              this._videoController.tvVideoDetail(tvId: tvData.id),
+                              this
+                                  ._videoController
+                                  .tvVideoDetail(tvId: tvData.id),
                               this.tvData,
                             ),
                           ],
@@ -126,7 +132,8 @@ class _TvDetailScreenState extends State<TvDetailScreen> {
   ) {
     return FutureBuilder(
       future: videoPlay,
-      builder: (BuildContext context, AsyncSnapshot<List<TvVideoModel>> snapshot) {
+      builder:
+          (BuildContext context, AsyncSnapshot<List<TvVideoModel>> snapshot) {
         if (snapshot.hasData) {
           return Consumer<TvVideoProvider>(
             builder: (context, value, child) {
@@ -135,7 +142,8 @@ class _TvDetailScreenState extends State<TvDetailScreen> {
                 child: GestureDetector(
                   onTap: () async {
                     snapshot.data!.isEmpty
-                        ? Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) {
+                        ? Navigator.of(context).push(
+                            MaterialPageRoute(builder: (BuildContext context) {
                             return Scaffold(
                               backgroundColor: Colors.black,
                               body: Stack(
@@ -163,7 +171,8 @@ class _TvDetailScreenState extends State<TvDetailScreen> {
                               ),
                             );
                           }))
-                        : Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) {
+                        : Navigator.of(context).push(
+                            MaterialPageRoute(builder: (BuildContext context) {
                             return TvVideoPlayer(
                               controller: YoutubePlayerController(
                                   initialVideoId: snapshot.data![0].key,

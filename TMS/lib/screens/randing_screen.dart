@@ -1,7 +1,6 @@
 import 'dart:async';
-
 import 'package:flutter/material.dart';
-import 'package:tms/screens/movie_screens/movie_screen.dart';
+import 'package:tms/screens/login_screen.dart';
 
 class LandingScreen extends StatefulWidget {
   @override
@@ -13,7 +12,7 @@ class _LandingScreenState extends State<LandingScreen> {
   void initState() {
     Timer(Duration(seconds: 3), () async {
       await Navigator.of(context).pushReplacement(
-          MaterialPageRoute(builder: (BuildContext context) => MovieScreen()));
+          MaterialPageRoute(builder: (BuildContext context) => LoginScreen()));
     });
     super.initState();
   }

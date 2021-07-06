@@ -6,6 +6,7 @@ import 'package:tms/models/movie_models/movie_model.dart';
 import 'package:http/http.dart' as http;
 import 'package:tms/models/movie_models/movie_person_model.dart';
 import 'package:tms/models/movie_models/movie_video_model.dart';
+import 'package:tms/models/search_model.dart';
 
 class MovieRepo {
   String mainUrl = 'https://api.themoviedb.org/3';
@@ -122,6 +123,7 @@ class MovieRepo {
         return MovieDetailModel.fromJson({});
       }
       Map<String, dynamic> result = jsonDecode(res.body);
+
       MovieDetailModel movieDetail = MovieDetailModel.fromJson(result);
       return movieDetail;
     } catch (e) {
@@ -227,6 +229,49 @@ class MovieRepo {
       }).toList();
     } catch (e) {
       print('MovieUpcoming $e');
+    }
+    return [];
+  }
+
+  Future<List<SearchModel>> getSearchMovie(String movieName) async {
+    try {
+      http.Response res = await http
+          .get(Uri.parse('$mainUrl/search/movie?$apiKey&query=$movieName'))
+          .timeout(Duration(seconds: 8),
+              onTimeout: () async => new http.Response('{}', 404));
+      if (res.statusCode == 404) {
+        return [];
+      }
+      Map<String, dynamic> result = jsonDecode(res.body);
+
+      List resultList = result['results'];
+      // if (resultList[0]['poster_path'] != null)
+      return resultList.map<SearchModel>((dynamic e) {
+        return SearchModel.fromJson(json: e);
+      }).toList();
+    } catch (e) {
+      print('SearchMovie : $e');
+    }
+    return [];
+  }
+
+  Future<List<SearchModel>> getSearchTv(String movieName) async {
+    try {
+      http.Response res = await http
+          .get(Uri.parse('$mainUrl/search/tv?$apiKey&query=$movieName'))
+          .timeout(Duration(seconds: 8),
+              onTimeout: () async => new http.Response('{}', 404));
+      if (res.statusCode == 404) {
+        return [];
+      }
+      Map<String, dynamic> result = jsonDecode(res.body);
+      List resultList = result['results'];
+      if (resultList.isNotEmpty)
+        return resultList.map<SearchModel>((dynamic e) {
+          return SearchModel.fromJson(json: e);
+        }).toList();
+    } catch (e) {
+      print('SearchTv : $e');
     }
     return [];
   }

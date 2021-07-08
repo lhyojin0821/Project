@@ -11,28 +11,20 @@ class MovieGenreList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          SingleChildScrollView(
+      child: Consumer<MovieGenreProvider>(
+        builder: (context, controller, child) {
+          return SingleChildScrollView(
             scrollDirection: Axis.horizontal,
-            child: Consumer<MovieGenreProvider>(
-              builder: (context, controller, child) {
-                return SingleChildScrollView(
-                  scrollDirection: Axis.horizontal,
-                  child: Row(
-                    children: List.generate(
-                        controller.movies.length,
-                        (index) =>
-                            // => MovieTile(controller.movies[index]),
-                            movieWidget(controller.movies[index], context)),
-                  ),
-                );
-              },
-              child: MovieGenreList(),
+            child: Row(
+              children: List.generate(
+                  controller.movies.length,
+                  (index) =>
+                      // => MovieTile(controller.movies[index]),
+                      movieWidget(controller.movies[index], context)),
             ),
-          )
-        ],
+          );
+        },
+        child: MovieGenreList(),
       ),
     );
   }

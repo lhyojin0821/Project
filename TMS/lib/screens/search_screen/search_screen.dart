@@ -208,43 +208,40 @@ class _SearchScreenState extends State<SearchScreen>
                             snapshot.data!.length,
                             (index) => ClipRRect(
                               borderRadius: BorderRadius.circular(15.0),
-                              child: snapshot.data![index].posterPath.isEmpty
-                                  ? Container(
-                                      child: Center(
-                                        child: Text(
-                                          'Image preparation',
-                                          style: TextStyle(color: Colors.white),
+                              child: GestureDetector(
+                                onTap: () {
+                                  Navigator.of(context).push(MaterialPageRoute(
+                                      builder: (BuildContext context) {
+                                    return MultiProvider(
+                                      providers: [
+                                        ChangeNotifierProvider(
+                                            create: (BuildContext context) =>
+                                                MovieDetailProvider()),
+                                        ChangeNotifierProvider(
+                                            create: (BuildContext context) =>
+                                                MovieVideoProvider()),
+                                      ],
+                                      child: SearchMovieDetailScreen(
+                                          movieData: snapshot.data![index]),
+                                    );
+                                  }));
+                                },
+                                child: snapshot.data![index].posterPath.isEmpty
+                                    ? Container(
+                                        child: Center(
+                                          child: Text(
+                                            'Image preparation',
+                                            style:
+                                                TextStyle(color: Colors.white),
+                                          ),
                                         ),
-                                      ),
-                                    )
-                                  : GestureDetector(
-                                      onTap: () {
-                                        Navigator.of(context).push(
-                                            MaterialPageRoute(builder:
-                                                (BuildContext context) {
-                                          return MultiProvider(
-                                            providers: [
-                                              ChangeNotifierProvider(
-                                                  create: (BuildContext
-                                                          context) =>
-                                                      MovieDetailProvider()),
-                                              ChangeNotifierProvider(
-                                                  create:
-                                                      (BuildContext context) =>
-                                                          MovieVideoProvider()),
-                                            ],
-                                            child: SearchMovieDetailScreen(
-                                                movieData:
-                                                    snapshot.data![index]),
-                                          );
-                                        }));
-                                      },
-                                      child: CachedNetworkImage(
+                                      )
+                                    : CachedNetworkImage(
                                         fit: BoxFit.cover,
                                         imageUrl:
                                             'https://image.tmdb.org/t/p/original/${snapshot.data![index].posterPath}',
                                       ),
-                                    ),
+                              ),
                             ),
                           ),
                         ),
@@ -269,54 +266,54 @@ class _SearchScreenState extends State<SearchScreen>
             builder: (context, value, child) {
               return snapshot.data!.isEmpty
                   ? Container()
-                  : Container(
-                      // height: MediaQuery.of(context).size.height - 280.0,
-                      child: GridView.count(
-                        scrollDirection: Axis.vertical,
-                        childAspectRatio: 2 / 3,
-                        mainAxisSpacing: 10.0,
-                        crossAxisSpacing: 10.0,
-                        crossAxisCount: 3,
-                        children: List.generate(
-                          snapshot.data!.length,
-                          (index) => ClipRRect(
-                            borderRadius: BorderRadius.circular(15.0),
-                            child: snapshot.data![index].posterPath.isEmpty
-                                ? Container(
-                                    child: Center(
-                                      child: Text(
-                                        'Image preparation',
-                                        style: TextStyle(color: Colors.white),
+                  : SingleChildScrollView(
+                      child: Container(
+                        height: MediaQuery.of(context).size.height - 280.0,
+                        child: GridView.count(
+                          scrollDirection: Axis.vertical,
+                          childAspectRatio: 2 / 3,
+                          mainAxisSpacing: 10.0,
+                          crossAxisSpacing: 10.0,
+                          crossAxisCount: 3,
+                          children: List.generate(
+                            snapshot.data!.length,
+                            (index) => ClipRRect(
+                              borderRadius: BorderRadius.circular(15.0),
+                              child: GestureDetector(
+                                onTap: () {
+                                  Navigator.of(context).push(MaterialPageRoute(
+                                      builder: (BuildContext context) {
+                                    return MultiProvider(
+                                      providers: [
+                                        ChangeNotifierProvider(
+                                            create: (BuildContext context) =>
+                                                TvDetailProvider()),
+                                        ChangeNotifierProvider(
+                                            create: (BuildContext context) =>
+                                                TvVideoProvider()),
+                                      ],
+                                      child: SearchTvDetailScreen(
+                                          tvData: snapshot.data![index]),
+                                    );
+                                  }));
+                                },
+                                child: snapshot.data![index].posterPath.isEmpty
+                                    ? Container(
+                                        child: Center(
+                                          child: Text(
+                                            'Image preparation',
+                                            style:
+                                                TextStyle(color: Colors.white),
+                                          ),
+                                        ),
+                                      )
+                                    : CachedNetworkImage(
+                                        fit: BoxFit.cover,
+                                        imageUrl:
+                                            'https://image.tmdb.org/t/p/original/${snapshot.data![index].posterPath}',
                                       ),
-                                    ),
-                                  )
-                                : GestureDetector(
-                                    onTap: () {
-                                      Navigator.of(context).push(
-                                          MaterialPageRoute(
-                                              builder: (BuildContext context) {
-                                        return MultiProvider(
-                                          providers: [
-                                            ChangeNotifierProvider(
-                                                create:
-                                                    (BuildContext context) =>
-                                                        TvDetailProvider()),
-                                            ChangeNotifierProvider(
-                                                create:
-                                                    (BuildContext context) =>
-                                                        TvVideoProvider()),
-                                          ],
-                                          child: SearchTvDetailScreen(
-                                              tvData: snapshot.data![index]),
-                                        );
-                                      }));
-                                    },
-                                    child: CachedNetworkImage(
-                                      fit: BoxFit.cover,
-                                      imageUrl:
-                                          'https://image.tmdb.org/t/p/original/${snapshot.data![index].posterPath}',
-                                    ),
-                                  ),
+                              ),
+                            ),
                           ),
                         ),
                       ),

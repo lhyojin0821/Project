@@ -11,28 +11,20 @@ class TvGenreList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          SingleChildScrollView(
+      child: Consumer<TvGenreProvider>(
+        builder: (context, controller, child) {
+          return SingleChildScrollView(
             scrollDirection: Axis.horizontal,
-            child: Consumer<TvGenreProvider>(
-              builder: (context, controller, child) {
-                return SingleChildScrollView(
-                  scrollDirection: Axis.horizontal,
-                  child: Row(
-                    children: List.generate(
-                        controller.tvs.length,
-                        (index) =>
-                            // TvTile(controller.tvs[index]),
-                            tvWidget(controller.tvs[index], context)),
-                  ),
-                );
-              },
-              child: TvGenreList(),
+            child: Row(
+              children: List.generate(
+                  controller.tvs.length,
+                  (index) =>
+                      // TvTile(controller.tvs[index]),
+                      tvWidget(controller.tvs[index], context)),
             ),
-          )
-        ],
+          );
+        },
+        child: TvGenreList(),
       ),
     );
   }

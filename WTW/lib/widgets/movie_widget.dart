@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:wtw/models/selected_model.dart';
+import 'package:wtw/models/select_model.dart';
 import 'package:wtw/screens/movie_detail_screen.dart';
 
 class MovieWidget extends StatefulWidget {

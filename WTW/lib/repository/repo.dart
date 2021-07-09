@@ -6,8 +6,8 @@ import 'package:http/http.dart' as http;
 class MovieRepo {
   String mainUrl = 'https://api.themoviedb.org/3';
   String apiKey = 'api_key=d14708f2fca792ff1266207b85ee13f4';
-
-  Future<MovieDetailModel> getMovie(int movieId) async {
+  List<int> movieList = [];
+  Future<MovieDetailModel> getMovie({int? movieId}) async {
     try {
       http.Response res = await http
           .get(Uri.parse('$mainUrl/movie/$movieId?$apiKey'))
@@ -16,11 +16,12 @@ class MovieRepo {
       if (res.statusCode == 404) {
         return MovieDetailModel.fromJson({});
       }
-      if (res.statusCode == 200) {
-        Map<String, dynamic> result = jsonDecode(res.body);
-        MovieDetailModel movies = MovieDetailModel.fromJson(result);
-        return movies;
-      }
+
+      Map<String, dynamic> result = jsonDecode(res.body);
+      this.movieList.addAll(result['id']);
+      print(movieList);
+      MovieDetailModel movies = MovieDetailModel.fromJson(result);
+      return movies;
     } catch (e) {
       print('MovieDetail $e');
     }

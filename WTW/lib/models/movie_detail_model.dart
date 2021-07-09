@@ -1,6 +1,5 @@
 class MovieDetailModel {
   final int id;
-
   final List companies;
   final String releaseDate;
   final int runtime;

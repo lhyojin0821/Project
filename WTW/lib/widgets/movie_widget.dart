@@ -206,7 +206,7 @@ class _MovieWidgetState extends State<MovieWidget> {
                     ),
                   ),
                   onPressed: () {
-                    Navigator.of(context).pushReplacement(
+                    Navigator.of(context).push(
                         MaterialPageRoute(builder: (BuildContext context) {
                       return MovieDetailScreen(
                         selectedGenre: this._selectedGenre.value,

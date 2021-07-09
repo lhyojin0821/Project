@@ -7,7 +7,7 @@ class MovieProvider with ChangeNotifier {
   MovieRepo _movieRepo = new MovieRepo();
 
   Future<MovieDetailModel> movies(int movieId) async {
-    MovieDetailModel movieList = await _movieRepo.getMovie(movieId);
+    MovieDetailModel movieList = await _movieRepo.getMovie(movieId: movieId);
     notifyListeners();
     return movieList;
   }

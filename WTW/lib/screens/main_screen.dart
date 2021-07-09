@@ -46,21 +46,7 @@ class _MainScreenState extends State<MainScreen>
           controller: this._tabController,
           children: [
             MovieWidget(),
-            Container(
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.all(Radius.circular(15.0)),
-                  gradient: LinearGradient(
-                      begin: Alignment.bottomCenter,
-                      end: Alignment.topCenter,
-                      colors: [
-                        Colors.black.withOpacity(0.9),
-                        Colors.black.withOpacity(0.0)
-                      ],
-                      stops: [
-                        0.0,
-                        0.5
-                      ])),
-            ),
+            MovieWidget(),
           ],
         ));
   }

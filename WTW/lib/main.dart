@@ -8,11 +8,8 @@ void main() => runApp(App());
 class App extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MultiProvider(
-      providers: [
-        ChangeNotifierProvider(
-            create: (BuildContext context) => MovieProvider()),
-      ],
+    return ChangeNotifierProvider(
+      create: (BuildContext context) => MovieProvider(),
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         home: MainScreen(),

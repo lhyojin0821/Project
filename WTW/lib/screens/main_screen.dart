@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:wtw/widgets/movie_widget.dart';
+import 'package:wtw/widgets/movie_widget/movie_select_widget.dart';
+import 'package:wtw/widgets/tv_widget/tv_select_widget.dart';
 
 class MainScreen extends StatefulWidget {
   @override
@@ -27,10 +28,16 @@ class _MainScreenState extends State<MainScreen>
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
+          actions: [
+            IconButton(
+              onPressed: () {},
+              icon: Icon(Icons.settings),
+            ),
+          ],
           centerTitle: true,
           backgroundColor: this.mainColor,
           title: Text(
-            '무엇을 볼 것인가?',
+            '뭐 볼까?',
             style: TextStyle(color: Colors.white),
           ),
           bottom: TabBar(
@@ -45,8 +52,8 @@ class _MainScreenState extends State<MainScreen>
         body: TabBarView(
           controller: this._tabController,
           children: [
-            MovieWidget(),
-            MovieWidget(),
+            MovieSelectWidget(),
+            TvSelectWidget(),
           ],
         ));
   }

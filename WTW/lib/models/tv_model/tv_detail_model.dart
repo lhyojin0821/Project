@@ -1,9 +1,10 @@
-import 'package:wtw/models/tv_model/tv_networks_model.dart';
+import 'package:wtw/models/tv_model/tv_network_model.dart';
 
 class TvDetailModel {
   final int id;
-  final List<TvNetWorksModel> networks;
+  final List<TvNetWorkModel> networks;
   final String lastAirDate;
+  final String firstAirDate;
   final List runtime;
   final String posterPath;
   final double voteAverage;
@@ -14,6 +15,7 @@ class TvDetailModel {
       {required this.id,
       required this.networks,
       required this.lastAirDate,
+      required this.firstAirDate,
       required this.runtime,
       required this.posterPath,
       required this.voteAverage,
@@ -24,9 +26,11 @@ class TvDetailModel {
     return TvDetailModel(
       id: json["id"] == null ? 0 : json['id'],
       networks: (json["networks"] as List)
-          .map((i) => new TvNetWorksModel.fromJson(json: i))
+          .map((i) => new TvNetWorkModel.fromJson(json: i))
           .toList(),
       lastAirDate: json["last_air_date"] == null ? null : json['last_air_date'],
+      firstAirDate:
+          json["first_air_date"] == null ? null : json['first_air_date'],
       runtime:
           json["episode_run_time"] == null ? [] : (json['episode_run_time']),
       posterPath: json["poster_path"] == null ? '' : json['poster_path'],

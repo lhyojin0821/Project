@@ -1,13 +1,13 @@
-class TvNetWorksModel {
+class TvNetWorkModel {
   final int id;
   final String name;
   final String logoPath;
 
-  TvNetWorksModel(
+  TvNetWorkModel(
       {required this.id, required this.name, required this.logoPath});
 
-  factory TvNetWorksModel.fromJson({required Map<String, dynamic> json}) {
-    return TvNetWorksModel(
+  factory TvNetWorkModel.fromJson({required Map<String, dynamic> json}) {
+    return TvNetWorkModel(
       id: json['id'],
       name: json['name'] == null ? '' : json['name'],
       logoPath: json['logo_path'] == null ? '' : json['logo_path'],

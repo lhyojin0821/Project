@@ -12,6 +12,7 @@ class MovieModel {
   final bool video;
   final double voteAverage;
   final int voteCount;
+  final String releaseDate;
 
   MovieModel({
     required this.id,
@@ -27,6 +28,7 @@ class MovieModel {
     required this.video,
     required this.voteAverage,
     required this.voteCount,
+    required this.releaseDate,
   });
 
   factory MovieModel.fromJson({required Map<String, dynamic> json}) =>
@@ -50,5 +52,6 @@ class MovieModel {
             ? 0.0
             : json['vote_average'].toDouble(),
         voteCount: json["vote_count"] == null ? 0 : json['vote_count'],
+        releaseDate: json["release_date"] == null ? '' : json['release_date'],
       );
 }

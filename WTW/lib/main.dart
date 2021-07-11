@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:wtw/providers/movie_provider/movie_provider.dart';
-import 'package:wtw/providers/tv_provider/tv_provider.dart';
+import 'package:wtw/providers/movie_provider/movie_nowplaying_provider.dart';
+import 'package:wtw/providers/tv_provider/tv_popular_provider.dart';
 import 'package:wtw/screens/lading_screen.dart';
-import 'package:wtw/screens/main_screen.dart';
 
 void main() => runApp(App());
 
@@ -13,8 +12,9 @@ class App extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(
-            create: (BuildContext context) => MovieProvider()),
-        ChangeNotifierProvider(create: (BuildContext context) => TvProvider()),
+            create: (BuildContext context) => MovieNowPlayingProvider()),
+        ChangeNotifierProvider(
+            create: (BuildContext context) => TvPopularProvider()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:wtw/models/movie_model/movie_detail_model.dart';
 import 'package:wtw/providers/movie_provider/movie_detail_provider.dart';
-import 'package:wtw/providers/movie_provider/movie_provider.dart';
+import 'package:wtw/providers/movie_provider/movie_nowplaying_provider.dart';
 import 'package:wtw/screens/main_screen.dart';
 import 'package:wtw/widgets/movie_widget/movie_video_widget.dart';
 
@@ -44,7 +44,8 @@ class _MovieNowPlayingScreenState extends State<MovieNowPlayingScreen> {
         builder:
             (BuildContext context, AsyncSnapshot<MovieDetailModel> snapshot) {
           if (snapshot.hasData) {
-            return Consumer<MovieProvider>(builder: (context, value, child) {
+            return Consumer<MovieNowPlayingProvider>(
+                builder: (context, value, child) {
               return SafeArea(
                   child: Stack(
                 children: [
@@ -70,7 +71,7 @@ class _MovieNowPlayingScreenState extends State<MovieNowPlayingScreen> {
                             end: Alignment.topCenter,
                             colors: [
                               Colors.black.withOpacity(0.9),
-                              Colors.black.withOpacity(0.0)
+                              Colors.black.withOpacity(0.2)
                             ],
                             stops: [
                               0.0,
@@ -205,7 +206,7 @@ class _MovieNowPlayingScreenState extends State<MovieNowPlayingScreen> {
                       ),
                     ),
                   ),
-                  MovieVideoWidget(movieData: snapshot.data!),
+                  MovieVideoWidget(movieData: snapshot.data!.id),
                 ],
               ));
             });

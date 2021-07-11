@@ -1,27 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:wtw/models/movie_model/movie_video_model.dart';
-import 'package:wtw/providers/movie_provider/movie_video_provider.dart';
-import 'package:wtw/widgets/movie_widget/movie_video_player.dart';
+import 'package:wtw/models/tv_model/tv_video_model.dart';
+import 'package:wtw/providers/tv_provider/tv_video_provider.dart';
+import 'package:wtw/widgets/tv_widget/tv_video_player.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
-class MovieVideoWidget extends StatefulWidget {
-  final int movieData;
-  MovieVideoWidget({required this.movieData});
+class TvVideoWidget extends StatefulWidget {
+  final int tvData;
+  TvVideoWidget({required this.tvData});
 
   @override
-  _MovieVideoWidgetState createState() =>
-      _MovieVideoWidgetState(this.movieData);
+  _TvVideoWidgetState createState() => _TvVideoWidgetState(this.tvData);
 }
 
-class _MovieVideoWidgetState extends State<MovieVideoWidget> {
-  final int movieData;
-  _MovieVideoWidgetState(this.movieData);
-  late MovieVideoProvider _movieVideoProvider;
+class _TvVideoWidgetState extends State<TvVideoWidget> {
+  final int tvData;
+  _TvVideoWidgetState(this.tvData);
+  late TvVideoProvider _tvVideoProvider;
 
   @override
   void initState() {
-    this._movieVideoProvider = Provider.of<MovieVideoProvider>(
+    this._tvVideoProvider = Provider.of<TvVideoProvider>(
       context,
       listen: false,
     );
@@ -32,12 +31,11 @@ class _MovieVideoWidgetState extends State<MovieVideoWidget> {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-      future:
-          this._movieVideoProvider.movieVideoDetail(movieId: this.movieData),
-      builder: (BuildContext context,
-          AsyncSnapshot<List<MovieVideoModel>> snapshot) {
+      future: this._tvVideoProvider.tvVideoDetail(tvId: this.tvData),
+      builder:
+          (BuildContext context, AsyncSnapshot<List<TvVideoModel>> snapshot) {
         if (snapshot.hasData) {
-          return Consumer<MovieVideoProvider>(
+          return Consumer<TvVideoProvider>(
             builder: (context, value, child) {
               return Center(
                 child: Container(
@@ -45,7 +43,7 @@ class _MovieVideoWidgetState extends State<MovieVideoWidget> {
                     onTap: () {
                       Navigator.of(context).push(
                           MaterialPageRoute(builder: (BuildContext context) {
-                        return MovieVideoPlayer(
+                        return TvVideoPlayer(
                           controller: YoutubePlayerController(
                               initialVideoId: snapshot.data![0].key,
                               flags: YoutubePlayerFlags(

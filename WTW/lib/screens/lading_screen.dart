@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:wtw/main.dart';
 import 'package:wtw/screens/main_screen.dart';
 
 class LandingScreen extends StatefulWidget {

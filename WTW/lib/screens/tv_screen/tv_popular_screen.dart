@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:wtw/models/tv_model/tv_detail_model.dart';
 import 'package:wtw/providers/tv_provider/tv_detail_provider.dart';
-import 'package:wtw/providers/tv_provider/tv_provider.dart';
+import 'package:wtw/providers/tv_provider/tv_popular_provider.dart';
 import 'package:wtw/screens/main_screen.dart';
+import 'package:wtw/widgets/tv_widget/tv_video_widget.dart';
 
 class TvPopularScreen extends StatefulWidget {
   final int tvId;
@@ -25,7 +26,6 @@ class _TvPopularScreenState extends State<TvPopularScreen> {
   );
 
   late TvDetailProvider _tvDetailProvider;
-
   @override
   void initState() {
     this._tvDetailProvider = Provider.of<TvDetailProvider>(
@@ -43,19 +43,13 @@ class _TvPopularScreenState extends State<TvPopularScreen> {
         future: this._tvDetailProvider.tvs(this.tvId),
         builder: (BuildContext context, AsyncSnapshot<TvDetailModel> snapshot) {
           if (snapshot.hasData) {
-            return Consumer<TvProvider>(builder: (context, value, child) {
+            return Consumer<TvPopularProvider>(
+                builder: (context, value, child) {
               return SafeArea(
                   child: Stack(
                 children: [
                   snapshot.data!.posterPath.isEmpty
-                      ? Container(
-                          child: Center(
-                            child: Text(
-                              '이미지 준비중..',
-                              style: TextStyle(color: Colors.white),
-                            ),
-                          ),
-                        )
+                      ? Container()
                       : Container(
                           decoration: BoxDecoration(
                             borderRadius:
@@ -76,7 +70,7 @@ class _TvPopularScreenState extends State<TvPopularScreen> {
                             end: Alignment.topCenter,
                             colors: [
                               Colors.black.withOpacity(0.9),
-                              Colors.black.withOpacity(0.0)
+                              Colors.black.withOpacity(0.2)
                             ],
                             stops: [
                               0.0,
@@ -132,107 +126,108 @@ class _TvPopularScreenState extends State<TvPopularScreen> {
                         ),
                       )),
                   Positioned(
-                      bottom: 50.0,
-                      left: 10.0,
-                      child: Container(
-                        width: MediaQuery.of(context).size.width - 50,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              snapshot.data!.name,
-                              overflow: TextOverflow.ellipsis,
-                              maxLines: 2,
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 20.0,
-                                  fontWeight: FontWeight.bold),
-                            ),
-                            SizedBox(
-                              height: 10.0,
-                            ),
-                            Text(
-                              snapshot.data!.overView,
-                              overflow: TextOverflow.ellipsis,
-                              maxLines: 4,
-                              style: TextStyle(
+                    bottom: 50.0,
+                    left: 10.0,
+                    child: Container(
+                      width: MediaQuery.of(context).size.width - 50,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            snapshot.data!.name,
+                            overflow: TextOverflow.ellipsis,
+                            style: TextStyle(
                                 color: Colors.white,
-                                fontSize: 14.0,
+                                fontSize: 20.0,
+                                fontWeight: FontWeight.bold),
+                          ),
+                          SizedBox(
+                            height: 10.0,
+                          ),
+                          Text(
+                            snapshot.data!.overView,
+                            overflow: TextOverflow.ellipsis,
+                            maxLines: 8,
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 14.0,
+                            ),
+                          ),
+                          SizedBox(
+                            height: 10.0,
+                          ),
+                          Row(
+                            children: [
+                              Row(
+                                children: [
+                                  Icon(
+                                    Icons.timer,
+                                    color: Colors.white,
+                                    size: 15.0,
+                                  ),
+                                  SizedBox(
+                                    width: 5.0,
+                                  ),
+                                  Text(
+                                    '${snapshot.data!.runtime.join()} min',
+                                    style: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 12.0,
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                ],
                               ),
-                            ),
-                            SizedBox(
-                              height: 10.0,
-                            ),
-                            Row(
-                              children: [
-                                Row(
-                                  children: [
-                                    Icon(
-                                      Icons.lock_clock_outlined,
-                                      color: Colors.white,
-                                      size: 15.0,
-                                    ),
-                                    SizedBox(
-                                      width: 3.0,
-                                    ),
-                                    Text(
-                                      '${snapshot.data!.runtime.join()} min',
-                                      style: TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 12.0,
-                                          fontWeight: FontWeight.bold),
-                                    ),
-                                  ],
-                                ),
-                                SizedBox(
-                                  width: 10.0,
-                                ),
-                                Row(
-                                  children: [
-                                    Icon(
-                                      Icons.calendar_today_outlined,
-                                      color: Colors.white,
-                                      size: 15.0,
-                                    ),
-                                    SizedBox(
-                                      width: 3.0,
-                                    ),
-                                    Text(
-                                      '${snapshot.data!.lastAirDate} ',
-                                      style: TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 12.0,
-                                          fontWeight: FontWeight.bold),
-                                    ),
-                                  ],
-                                ),
-                                SizedBox(
-                                  width: 10.0,
-                                ),
-                                Row(
-                                  children: [
-                                    Icon(
-                                      Icons.network_wifi,
-                                      color: Colors.white,
-                                      size: 15.0,
-                                    ),
-                                    SizedBox(
-                                      width: 3.0,
-                                    ),
-                                    Text(
-                                      '${snapshot.data!.networks[0].name} ',
-                                      style: TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 12.0,
-                                          fontWeight: FontWeight.bold),
-                                    ),
-                                  ],
-                                ),
-                              ],
-                            )
-                          ],
-                        ),
-                      )),
+                              SizedBox(
+                                width: 10.0,
+                              ),
+                              Row(
+                                children: [
+                                  Icon(
+                                    Icons.calendar_today_outlined,
+                                    color: Colors.white,
+                                    size: 15.0,
+                                  ),
+                                  SizedBox(
+                                    width: 5.0,
+                                  ),
+                                  Text(
+                                    '${snapshot.data!.lastAirDate} ',
+                                    style: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 12.0,
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                ],
+                              ),
+                              SizedBox(
+                                width: 10.0,
+                              ),
+                              Row(
+                                children: [
+                                  Icon(
+                                    Icons.network_wifi,
+                                    color: Colors.white,
+                                    size: 15.0,
+                                  ),
+                                  SizedBox(
+                                    width: 3.0,
+                                  ),
+                                  Text(
+                                    '${snapshot.data!.networks[0].name} ',
+                                    style: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 12.0,
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          )
+                        ],
+                      ),
+                    ),
+                  ),
+                  TvVideoWidget(tvData: snapshot.data!.id),
                 ],
               ));
             });

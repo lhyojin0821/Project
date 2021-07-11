@@ -3,7 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:wtw/models/tv_model/tv_model.dart';
 import 'package:wtw/providers/tv_provider/tv_detail_provider.dart';
-import 'package:wtw/providers/tv_provider/tv_provider.dart';
+import 'package:wtw/providers/tv_provider/tv_popular_provider.dart';
+import 'package:wtw/providers/tv_provider/tv_video_provider.dart';
 import 'package:wtw/screens/tv_screen/tv_popular_screen.dart';
 
 class TvTileWidget extends StatefulWidget {
@@ -12,13 +13,13 @@ class TvTileWidget extends StatefulWidget {
 }
 
 class _TvTileWidgetState extends State<TvTileWidget> {
-  late TvProvider _tvController;
+  late TvPopularProvider _tvPopularProvider;
   Color subColor = Color(0xff141414);
   Color mainColor = Color(0xffe50815);
 
   @override
   void initState() {
-    this._tvController = Provider.of<TvProvider>(
+    this._tvPopularProvider = Provider.of<TvPopularProvider>(
       context,
       listen: false,
     );
@@ -30,108 +31,117 @@ class _TvTileWidgetState extends State<TvTileWidget> {
     return Expanded(
       child: Container(
         child: FutureBuilder(
-          future: this._tvController.popular(),
+          future: this._tvPopularProvider.popular(),
           builder:
               (BuildContext context, AsyncSnapshot<List<TvModel>> snapshot) {
             if (snapshot.hasData) {
-              return Consumer<TvProvider>(builder: (context, value, child) {
+              return Consumer<TvPopularProvider>(
+                  builder: (context, value, child) {
                 return CarouselSlider.builder(
                   itemCount: snapshot.data!.length,
                   itemBuilder: (BuildContext context, int i, int? b) {
-                    return GestureDetector(
-                      onTap: () {
-                        Navigator.of(context).pushReplacement(
-                            MaterialPageRoute(builder: (BuildContext context) {
-                          return ChangeNotifierProvider(
-                            create: (BuildContext context) =>
-                                TvDetailProvider(),
-                            child: TvPopularScreen(tvId: snapshot.data![i].id),
-                          );
-                        }));
-                      },
-                      child: Stack(
-                        children: [
-                          snapshot.data![i].posterPath.isEmpty
-                              ? Container(
-                                  child: Center(
-                                    child: Text(
-                                      '이미지 준비중..',
-                                      style: TextStyle(color: Colors.white),
-                                    ),
-                                  ),
-                                )
-                              : Container(
-                                  decoration: BoxDecoration(
-                                    borderRadius:
-                                        BorderRadius.all(Radius.circular(15.0)),
-                                    image: DecorationImage(
-                                        image: NetworkImage(
-                                          "https://image.tmdb.org/t/p/original/${snapshot.data![i].posterPath}",
-                                        ),
-                                        fit: BoxFit.cover),
-                                  ),
-                                ),
-                          Container(
-                            decoration: BoxDecoration(
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(15.0)),
-                                gradient: LinearGradient(
-                                    begin: Alignment.bottomCenter,
-                                    end: Alignment.topCenter,
-                                    colors: [
-                                      Colors.black.withOpacity(0.9),
-                                      Colors.black.withOpacity(0.0)
-                                    ],
-                                    stops: [
-                                      0.0,
-                                      0.5
-                                    ])),
-                          ),
-                          Positioned(
-                              top: 10.0,
-                              right: 10.0,
-                              child: Container(
-                                padding: EdgeInsets.all(10.0),
-                                decoration: BoxDecoration(
-                                    borderRadius:
-                                        BorderRadius.all(Radius.circular(5.0)),
-                                    color: Colors.black45),
-                                child: Row(
-                                  children: [
-                                    Icon(
-                                      Icons.credit_score_outlined,
-                                      color: Colors.yellow,
-                                      size: 25.0,
-                                    ),
-                                    SizedBox(
-                                      width: 5.0,
-                                    ),
-                                    Text(
-                                      snapshot.data![i].voteAverage.toString(),
-                                      style: TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 14.0,
-                                          fontWeight: FontWeight.bold),
-                                    ),
+                    return snapshot.data!.isEmpty
+                        ? Container()
+                        : GestureDetector(
+                            onTap: () {
+                              Navigator.of(context).pushReplacement(
+                                  MaterialPageRoute(
+                                      builder: (BuildContext context) {
+                                return MultiProvider(
+                                  providers: [
+                                    ChangeNotifierProvider(
+                                        create: (BuildContext context) =>
+                                            TvPopularProvider()),
+                                    ChangeNotifierProvider(
+                                        create: (BuildContext context) =>
+                                            TvDetailProvider()),
+                                    ChangeNotifierProvider(
+                                        create: (BuildContext context) =>
+                                            TvVideoProvider()),
                                   ],
+                                  child: TvPopularScreen(
+                                      tvId: snapshot.data![i].id),
+                                );
+                              }));
+                            },
+                            child: Stack(
+                              children: [
+                                snapshot.data![i].posterPath.isEmpty
+                                    ? Container()
+                                    : Container(
+                                        decoration: BoxDecoration(
+                                          borderRadius: BorderRadius.all(
+                                              Radius.circular(15.0)),
+                                          image: DecorationImage(
+                                              image: NetworkImage(
+                                                "https://image.tmdb.org/t/p/original/${snapshot.data![i].posterPath}",
+                                              ),
+                                              fit: BoxFit.cover),
+                                        ),
+                                      ),
+                                Container(
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.all(
+                                          Radius.circular(15.0)),
+                                      gradient: LinearGradient(
+                                          begin: Alignment.bottomCenter,
+                                          end: Alignment.topCenter,
+                                          colors: [
+                                            Colors.black.withOpacity(0.9),
+                                            Colors.black.withOpacity(0.0)
+                                          ],
+                                          stops: [
+                                            0.0,
+                                            0.5
+                                          ])),
                                 ),
-                              )),
-                          Container(
-                            padding: EdgeInsets.only(left: 10.0, bottom: 20.0),
-                            alignment: Alignment.bottomLeft,
-                            child: Text(
-                              snapshot.data![i].name,
-                              overflow: TextOverflow.ellipsis,
-                              maxLines: 2,
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 20.0,
-                                  fontWeight: FontWeight.bold),
+                                Positioned(
+                                    top: 10.0,
+                                    right: 10.0,
+                                    child: Container(
+                                      padding: EdgeInsets.all(10.0),
+                                      decoration: BoxDecoration(
+                                          borderRadius: BorderRadius.all(
+                                              Radius.circular(5.0)),
+                                          color: Colors.black45),
+                                      child: Row(
+                                        children: [
+                                          Icon(
+                                            Icons.credit_score_outlined,
+                                            color: Colors.yellow,
+                                            size: 25.0,
+                                          ),
+                                          SizedBox(
+                                            width: 5.0,
+                                          ),
+                                          Text(
+                                            snapshot.data![i].voteAverage
+                                                .toString(),
+                                            style: TextStyle(
+                                                color: Colors.white,
+                                                fontSize: 14.0,
+                                                fontWeight: FontWeight.bold),
+                                          ),
+                                        ],
+                                      ),
+                                    )),
+                                Container(
+                                  alignment: Alignment.bottomLeft,
+                                  padding:
+                                      EdgeInsets.only(left: 10.0, bottom: 10.0),
+                                  child: Text(
+                                    snapshot.data![i].name,
+                                    overflow: TextOverflow.ellipsis,
+                                    maxLines: 2,
+                                    style: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 20.0,
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                ),
+                              ],
                             ),
-                          ),
-                        ],
-                      ),
-                    );
+                          );
                   },
                   options: CarouselOptions(
                     height: MediaQuery.of(context).size.height / 1.5,

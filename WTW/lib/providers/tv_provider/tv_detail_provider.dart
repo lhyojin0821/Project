@@ -6,7 +6,7 @@ class TvDetailProvider with ChangeNotifier {
   TvRepo _tvRepo = new TvRepo();
 
   Future<TvDetailModel> tvs(int tvId) async {
-    TvDetailModel tvList = await _tvRepo.getTv(tvId: tvId);
+    TvDetailModel tvList = await _tvRepo.getTvDetail(tvId);
     notifyListeners();
     return tvList;
   }

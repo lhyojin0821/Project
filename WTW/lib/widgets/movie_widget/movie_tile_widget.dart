@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:wtw/models/movie_model/movie_model.dart';
 import 'package:wtw/providers/movie_provider/movie_detail_provider.dart';
-import 'package:wtw/providers/movie_provider/movie_provider.dart';
+import 'package:wtw/providers/movie_provider/movie_nowplaying_provider.dart';
 import 'package:wtw/providers/movie_provider/movie_video_provider.dart';
 import 'package:wtw/screens/movie_screen/movie_nowplaying_screen.dart';
 
@@ -13,13 +13,13 @@ class MovieTileWidget extends StatefulWidget {
 }
 
 class _MovieTileWidgetState extends State<MovieTileWidget> {
-  late MovieProvider _movieController;
+  late MovieNowPlayingProvider _movieNowPlayingProvider;
   Color subColor = Color(0xff141414);
   Color mainColor = Color(0xffe50815);
 
   @override
   void initState() {
-    this._movieController = Provider.of<MovieProvider>(
+    this._movieNowPlayingProvider = Provider.of<MovieNowPlayingProvider>(
       context,
       listen: false,
     );
@@ -31,11 +31,12 @@ class _MovieTileWidgetState extends State<MovieTileWidget> {
     return Expanded(
       child: Container(
         child: FutureBuilder(
-          future: this._movieController.nowPlaying(),
+          future: this._movieNowPlayingProvider.nowPlaying(),
           builder:
               (BuildContext context, AsyncSnapshot<List<MovieModel>> snapshot) {
             if (snapshot.hasData) {
-              return Consumer<MovieProvider>(builder: (context, value, child) {
+              return Consumer<MovieNowPlayingProvider>(
+                  builder: (context, value, child) {
                 return CarouselSlider.builder(
                   itemCount: snapshot.data!.length,
                   itemBuilder: (BuildContext context, int i, int? b) {

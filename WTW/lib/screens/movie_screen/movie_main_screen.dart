@@ -1,5 +1,6 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:wtw/models/select_model.dart';
 import 'package:wtw/providers/movie_provider/movie_detail_provider.dart';
@@ -8,12 +9,12 @@ import 'package:wtw/providers/movie_provider/movie_video_provider.dart';
 import 'package:wtw/screens/movie_screen/movie_detail_screen.dart';
 import 'package:wtw/widgets/movie_widget/movie_tile_widget.dart';
 
-class MovieSelectWidget extends StatefulWidget {
+class MovieMainScreen extends StatefulWidget {
   @override
-  _MovieSelectWidgetState createState() => _MovieSelectWidgetState();
+  _MovieMainScreenState createState() => _MovieMainScreenState();
 }
 
-class _MovieSelectWidgetState extends State<MovieSelectWidget> {
+class _MovieMainScreenState extends State<MovieMainScreen> {
   late SelectModel _selectedGenre;
   late List<SelectModel> genres;
   late int randomPage;
@@ -26,7 +27,6 @@ class _MovieSelectWidgetState extends State<MovieSelectWidget> {
     this.genres = [
       SelectModel(title: '장르', value: 0),
       SelectModel(title: '액션', value: 28),
-      SelectModel(title: '애니메이션', value: 16),
       SelectModel(title: '코미디', value: 35),
       SelectModel(title: '범죄', value: 80),
       SelectModel(title: '드라마', value: 18),
@@ -143,7 +143,11 @@ class _MovieSelectWidgetState extends State<MovieSelectWidget> {
               },
               child: Row(
                 children: [
-                  Icon(Icons.search, color: Colors.white),
+                  FaIcon(
+                    FontAwesomeIcons.dice,
+                    color: Colors.white,
+                    size: 20.0,
+                  ),
                   SizedBox(
                     width: 5.0,
                   ),

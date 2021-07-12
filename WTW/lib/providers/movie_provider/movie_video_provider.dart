@@ -8,7 +8,7 @@ class MovieVideoProvider with ChangeNotifier {
   Future<List<MovieVideoModel>> movieVideoDetail({required int movieId}) async {
     List<MovieVideoModel> movieVideoList =
         await _movieRepo.getMovieVideo(movieId);
-    notifyListeners();
+    if (movieVideoList[0].key.isNotEmpty) notifyListeners();
     return movieVideoList;
   }
 }

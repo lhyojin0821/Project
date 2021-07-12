@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:wtw/models/tv_model/tv_detail_model.dart';
 import 'package:wtw/providers/tv_provider/tv_detail_provider.dart';
@@ -49,7 +50,14 @@ class _TvPopularScreenState extends State<TvPopularScreen> {
                   child: Stack(
                 children: [
                   snapshot.data!.posterPath.isEmpty
-                      ? Container()
+                      ? Center(
+                          child: Container(
+                              margin: EdgeInsets.only(bottom: 100.0),
+                              child: FaIcon(
+                                FontAwesomeIcons.solidImage,
+                                color: Colors.white,
+                                size: 50.0,
+                              )))
                       : Container(
                           decoration: BoxDecoration(
                             borderRadius:
@@ -89,10 +97,10 @@ class _TvPopularScreenState extends State<TvPopularScreen> {
                               return MainScreen();
                             }));
                           },
-                          icon: Icon(
-                            Icons.keyboard_arrow_left_outlined,
+                          icon: FaIcon(
+                            FontAwesomeIcons.arrowLeft,
                             color: Colors.white,
-                            size: 40.0,
+                            size: 25.0,
                           )),
                     ),
                   ),
@@ -107,21 +115,29 @@ class _TvPopularScreenState extends State<TvPopularScreen> {
                             color: Colors.black45),
                         child: Row(
                           children: [
-                            Icon(
-                              Icons.credit_score_outlined,
+                            FaIcon(
+                              FontAwesomeIcons.solidStar,
                               color: Colors.yellow,
-                              size: 25.0,
+                              size: 20.0,
                             ),
                             SizedBox(
                               width: 5.0,
                             ),
-                            Text(
-                              snapshot.data!.voteAverage.toString(),
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 14.0,
-                                  fontWeight: FontWeight.bold),
-                            ),
+                            snapshot.data!.voteAverage.toString().isEmpty
+                                ? Text(
+                                    '',
+                                    style: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 14.0,
+                                        fontWeight: FontWeight.bold),
+                                  )
+                                : Text(
+                                    snapshot.data!.voteAverage.toString(),
+                                    style: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 14.0,
+                                        fontWeight: FontWeight.bold),
+                                  ),
                           ],
                         ),
                       )),
@@ -133,26 +149,40 @@ class _TvPopularScreenState extends State<TvPopularScreen> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(
-                            snapshot.data!.name,
-                            overflow: TextOverflow.ellipsis,
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 20.0,
-                                fontWeight: FontWeight.bold),
-                          ),
+                          snapshot.data!.name.isEmpty
+                              ? Text(
+                                  '',
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 20.0,
+                                      fontWeight: FontWeight.bold),
+                                )
+                              : Text(
+                                  snapshot.data!.name,
+                                  overflow: TextOverflow.ellipsis,
+                                  maxLines: 2,
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 20.0,
+                                      fontWeight: FontWeight.bold),
+                                ),
                           SizedBox(
                             height: 10.0,
                           ),
-                          Text(
-                            snapshot.data!.overView,
-                            overflow: TextOverflow.ellipsis,
-                            maxLines: 8,
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 14.0,
-                            ),
-                          ),
+                          snapshot.data!.overView.isEmpty
+                              ? FaIcon(
+                                  FontAwesomeIcons.solidMehBlank,
+                                  color: Colors.white,
+                                )
+                              : Text(
+                                  snapshot.data!.overView,
+                                  overflow: TextOverflow.ellipsis,
+                                  maxLines: 10,
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 14.0,
+                                  ),
+                                ),
                           SizedBox(
                             height: 10.0,
                           ),
@@ -160,21 +190,29 @@ class _TvPopularScreenState extends State<TvPopularScreen> {
                             children: [
                               Row(
                                 children: [
-                                  Icon(
-                                    Icons.timer,
+                                  FaIcon(
+                                    FontAwesomeIcons.calendar,
                                     color: Colors.white,
                                     size: 15.0,
                                   ),
                                   SizedBox(
                                     width: 5.0,
                                   ),
-                                  Text(
-                                    '${snapshot.data!.runtime.join()} min',
-                                    style: TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 12.0,
-                                        fontWeight: FontWeight.bold),
-                                  ),
+                                  snapshot.data!.firstAirDate.isEmpty
+                                      ? Text(
+                                          '',
+                                          style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 12.0,
+                                              fontWeight: FontWeight.bold),
+                                        )
+                                      : Text(
+                                          '${snapshot.data!.firstAirDate} ',
+                                          style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 12.0,
+                                              fontWeight: FontWeight.bold),
+                                        ),
                                 ],
                               ),
                               SizedBox(
@@ -182,21 +220,29 @@ class _TvPopularScreenState extends State<TvPopularScreen> {
                               ),
                               Row(
                                 children: [
-                                  Icon(
-                                    Icons.calendar_today_outlined,
+                                  FaIcon(
+                                    FontAwesomeIcons.calendarWeek,
                                     color: Colors.white,
                                     size: 15.0,
                                   ),
                                   SizedBox(
                                     width: 5.0,
                                   ),
-                                  Text(
-                                    '${snapshot.data!.lastAirDate} ',
-                                    style: TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 12.0,
-                                        fontWeight: FontWeight.bold),
-                                  ),
+                                  snapshot.data!.lastAirDate.isEmpty
+                                      ? Text(
+                                          '',
+                                          style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 12.0,
+                                              fontWeight: FontWeight.bold),
+                                        )
+                                      : Text(
+                                          '${snapshot.data!.lastAirDate} ',
+                                          style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 12.0,
+                                              fontWeight: FontWeight.bold),
+                                        ),
                                 ],
                               ),
                               SizedBox(
@@ -204,20 +250,35 @@ class _TvPopularScreenState extends State<TvPopularScreen> {
                               ),
                               Row(
                                 children: [
-                                  Icon(
-                                    Icons.network_wifi,
+                                  FaIcon(
+                                    FontAwesomeIcons.tv,
                                     color: Colors.white,
                                     size: 15.0,
                                   ),
                                   SizedBox(
-                                    width: 3.0,
+                                    width: 5.0,
                                   ),
-                                  Text(
-                                    '${snapshot.data!.networks[0].name} ',
-                                    style: TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 12.0,
-                                        fontWeight: FontWeight.bold),
+                                  snapshot.data!.networks.isEmpty
+                                      ? Text(
+                                          '',
+                                          style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 12.0,
+                                              fontWeight: FontWeight.bold),
+                                        )
+                                      : Text(
+                                          '${snapshot.data!.networks[0].name} ',
+                                          style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 12.0,
+                                              fontWeight: FontWeight.bold),
+                                        ),
+                                  IconButton(
+                                    onPressed: () {},
+                                    icon: Icon(
+                                      Icons.favorite_border,
+                                    ),
+                                    color: Colors.white,
                                   ),
                                 ],
                               ),
@@ -227,7 +288,7 @@ class _TvPopularScreenState extends State<TvPopularScreen> {
                       ),
                     ),
                   ),
-                  TvVideoWidget(tvData: snapshot.data!.id),
+                  TvVideoWidget(tvData: snapshot.data!),
                 ],
               ));
             });

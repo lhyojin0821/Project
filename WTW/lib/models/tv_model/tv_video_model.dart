@@ -14,11 +14,11 @@ class TvVideoModel {
 
   factory TvVideoModel.fromJson({required Map<String, dynamic> json}) {
     return TvVideoModel(
-      id: json['id'],
-      key: json['key'],
-      name: json['name'],
-      site: json['site'],
-      type: json['type'],
+      id: json['id'] == null ? '' : json['id'],
+      key: json['key'] == null ? '' : json['key'],
+      name: json['name'] == null ? '' : json['name'],
+      site: json['site'] == null ? '' : json['site'],
+      type: json['type'] == null ? '' : json['type'],
     );
   }
 }

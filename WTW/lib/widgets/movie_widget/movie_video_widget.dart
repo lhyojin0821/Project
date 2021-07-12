@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
+import 'package:wtw/models/movie_model/movie_detail_model.dart';
 import 'package:wtw/models/movie_model/movie_video_model.dart';
 import 'package:wtw/providers/movie_provider/movie_video_provider.dart';
 import 'package:wtw/widgets/movie_widget/movie_video_player.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
 class MovieVideoWidget extends StatefulWidget {
-  final int movieData;
+  final MovieDetailModel movieData;
   MovieVideoWidget({required this.movieData});
 
   @override
@@ -15,7 +17,7 @@ class MovieVideoWidget extends StatefulWidget {
 }
 
 class _MovieVideoWidgetState extends State<MovieVideoWidget> {
-  final int movieData;
+  final MovieDetailModel movieData;
   _MovieVideoWidgetState(this.movieData);
   late MovieVideoProvider _movieVideoProvider;
 
@@ -33,7 +35,7 @@ class _MovieVideoWidgetState extends State<MovieVideoWidget> {
   Widget build(BuildContext context) {
     return FutureBuilder(
       future:
-          this._movieVideoProvider.movieVideoDetail(movieId: this.movieData),
+          this._movieVideoProvider.movieVideoDetail(movieId: this.movieData.id),
       builder: (BuildContext context,
           AsyncSnapshot<List<MovieVideoModel>> snapshot) {
         if (snapshot.hasData) {
@@ -55,9 +57,9 @@ class _MovieVideoWidgetState extends State<MovieVideoWidget> {
                       }));
                     },
                     child: Container(
-                      child: Icon(
-                        Icons.play_circle_outline,
-                        size: 60.0,
+                      child: FaIcon(
+                        FontAwesomeIcons.solidPlayCircle,
+                        size: 50.0,
                         color: Colors.white,
                       ),
                     ),

@@ -1,5 +1,6 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:wtw/models/tv_model/tv_model.dart';
 import 'package:wtw/providers/tv_provider/tv_detail_provider.dart';
@@ -40,81 +41,95 @@ class _TvTileWidgetState extends State<TvTileWidget> {
                 return CarouselSlider.builder(
                   itemCount: snapshot.data!.length,
                   itemBuilder: (BuildContext context, int i, int? b) {
-                    return snapshot.data!.isEmpty
-                        ? Container()
-                        : GestureDetector(
-                            onTap: () {
-                              Navigator.of(context).pushReplacement(
-                                  MaterialPageRoute(
-                                      builder: (BuildContext context) {
-                                return MultiProvider(
-                                  providers: [
-                                    ChangeNotifierProvider(
-                                        create: (BuildContext context) =>
-                                            TvPopularProvider()),
-                                    ChangeNotifierProvider(
-                                        create: (BuildContext context) =>
-                                            TvDetailProvider()),
-                                    ChangeNotifierProvider(
-                                        create: (BuildContext context) =>
-                                            TvVideoProvider()),
-                                  ],
-                                  child: TvPopularScreen(
-                                      tvId: snapshot.data![i].id),
-                                );
-                              }));
-                            },
-                            child: Stack(
-                              children: [
-                                snapshot.data![i].posterPath.isEmpty
-                                    ? Container()
-                                    : Container(
-                                        decoration: BoxDecoration(
-                                          borderRadius: BorderRadius.all(
-                                              Radius.circular(15.0)),
-                                          image: DecorationImage(
-                                              image: NetworkImage(
-                                                "https://image.tmdb.org/t/p/original/${snapshot.data![i].posterPath}",
-                                              ),
-                                              fit: BoxFit.cover),
-                                        ),
-                                      ),
-                                Container(
+                    return GestureDetector(
+                      onTap: () {
+                        Navigator.of(context).pushReplacement(
+                            MaterialPageRoute(builder: (BuildContext context) {
+                          return MultiProvider(
+                            providers: [
+                              ChangeNotifierProvider(
+                                  create: (BuildContext context) =>
+                                      TvPopularProvider()),
+                              ChangeNotifierProvider(
+                                  create: (BuildContext context) =>
+                                      TvDetailProvider()),
+                              ChangeNotifierProvider(
+                                  create: (BuildContext context) =>
+                                      TvVideoProvider()),
+                            ],
+                            child: TvPopularScreen(tvId: snapshot.data![i].id),
+                          );
+                        }));
+                      },
+                      child: Stack(
+                        children: [
+                          snapshot.data![i].posterPath.isEmpty
+                              ? Container(
+                                  child: Center(
+                                    child: FaIcon(
+                                      FontAwesomeIcons.solidImage,
+                                      color: Colors.white,
+                                      size: 30.0,
+                                    ),
+                                  ),
+                                )
+                              : Container(
                                   decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.all(
-                                          Radius.circular(15.0)),
-                                      gradient: LinearGradient(
-                                          begin: Alignment.bottomCenter,
-                                          end: Alignment.topCenter,
-                                          colors: [
-                                            Colors.black.withOpacity(0.9),
-                                            Colors.black.withOpacity(0.0)
-                                          ],
-                                          stops: [
-                                            0.0,
-                                            0.5
-                                          ])),
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(15.0)),
+                                    image: DecorationImage(
+                                        image: NetworkImage(
+                                          "https://image.tmdb.org/t/p/original/${snapshot.data![i].posterPath}",
+                                        ),
+                                        fit: BoxFit.cover),
+                                  ),
                                 ),
-                                Positioned(
-                                    top: 10.0,
-                                    right: 10.0,
-                                    child: Container(
-                                      padding: EdgeInsets.all(10.0),
-                                      decoration: BoxDecoration(
-                                          borderRadius: BorderRadius.all(
-                                              Radius.circular(5.0)),
-                                          color: Colors.black45),
-                                      child: Row(
-                                        children: [
-                                          Icon(
-                                            Icons.credit_score_outlined,
-                                            color: Colors.yellow,
-                                            size: 25.0,
-                                          ),
-                                          SizedBox(
-                                            width: 5.0,
-                                          ),
-                                          Text(
+                          Container(
+                            decoration: BoxDecoration(
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(15.0)),
+                                gradient: LinearGradient(
+                                    begin: Alignment.bottomCenter,
+                                    end: Alignment.topCenter,
+                                    colors: [
+                                      Colors.black.withOpacity(0.9),
+                                      Colors.black.withOpacity(0.0)
+                                    ],
+                                    stops: [
+                                      0.0,
+                                      0.5
+                                    ])),
+                          ),
+                          Positioned(
+                              top: 10.0,
+                              right: 10.0,
+                              child: Container(
+                                padding: EdgeInsets.all(10.0),
+                                decoration: BoxDecoration(
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(5.0)),
+                                    color: Colors.black45),
+                                child: Row(
+                                  children: [
+                                    FaIcon(
+                                      FontAwesomeIcons.solidStar,
+                                      color: Colors.yellow,
+                                      size: 20.0,
+                                    ),
+                                    SizedBox(
+                                      width: 5.0,
+                                    ),
+                                    snapshot.data![i].voteAverage
+                                            .toString()
+                                            .isEmpty
+                                        ? Text(
+                                            '',
+                                            style: TextStyle(
+                                                color: Colors.white,
+                                                fontSize: 14.0,
+                                                fontWeight: FontWeight.bold),
+                                          )
+                                        : Text(
                                             snapshot.data![i].voteAverage
                                                 .toString(),
                                             style: TextStyle(
@@ -122,14 +137,18 @@ class _TvTileWidgetState extends State<TvTileWidget> {
                                                 fontSize: 14.0,
                                                 fontWeight: FontWeight.bold),
                                           ),
-                                        ],
-                                      ),
-                                    )),
-                                Container(
-                                  alignment: Alignment.bottomLeft,
-                                  padding:
-                                      EdgeInsets.only(left: 10.0, bottom: 10.0),
-                                  child: Text(
+                                  ],
+                                ),
+                              )),
+                          Container(
+                            alignment: Alignment.bottomLeft,
+                            padding: EdgeInsets.only(left: 10.0, bottom: 10.0),
+                            child: snapshot.data![i].name.isEmpty
+                                ? FaIcon(
+                                    FontAwesomeIcons.solidMehBlank,
+                                    color: Colors.white,
+                                  )
+                                : Text(
                                     snapshot.data![i].name,
                                     overflow: TextOverflow.ellipsis,
                                     maxLines: 2,
@@ -138,10 +157,10 @@ class _TvTileWidgetState extends State<TvTileWidget> {
                                         fontSize: 20.0,
                                         fontWeight: FontWeight.bold),
                                   ),
-                                ),
-                              ],
-                            ),
-                          );
+                          ),
+                        ],
+                      ),
+                    );
                   },
                   options: CarouselOptions(
                     height: MediaQuery.of(context).size.height / 1.5,

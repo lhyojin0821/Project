@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:wtw/models/movie_model/movie_detail_model.dart';
 import 'package:wtw/models/movie_model/movie_model.dart';
@@ -83,7 +84,14 @@ class _MovieDetailScreenState extends State<MovieDetailScreen> {
                 child: Stack(
               children: [
                 snapshot.data!.posterPath.isEmpty
-                    ? Container()
+                    ? Center(
+                        child: Container(
+                            margin: EdgeInsets.only(bottom: 100.0),
+                            child: FaIcon(
+                              FontAwesomeIcons.solidImage,
+                              color: Colors.white,
+                              size: 50.0,
+                            )))
                     : Container(
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.all(Radius.circular(15.0)),
@@ -122,10 +130,10 @@ class _MovieDetailScreenState extends State<MovieDetailScreen> {
                             return MainScreen();
                           }));
                         },
-                        icon: Icon(
-                          Icons.keyboard_arrow_left_outlined,
+                        icon: FaIcon(
+                          FontAwesomeIcons.arrowLeft,
                           color: Colors.white,
-                          size: 40.0,
+                          size: 25.0,
                         )),
                   ),
                 ),
@@ -139,21 +147,29 @@ class _MovieDetailScreenState extends State<MovieDetailScreen> {
                           color: Colors.black45),
                       child: Row(
                         children: [
-                          Icon(
-                            Icons.credit_score_outlined,
+                          FaIcon(
+                            FontAwesomeIcons.solidStar,
                             color: Colors.yellow,
-                            size: 25.0,
+                            size: 20.0,
                           ),
                           SizedBox(
                             width: 5.0,
                           ),
-                          Text(
-                            snapshot.data!.voteAverage.toString(),
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 14.0,
-                                fontWeight: FontWeight.bold),
-                          ),
+                          snapshot.data!.voteAverage.toString().isEmpty
+                              ? Text(
+                                  '',
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 14.0,
+                                      fontWeight: FontWeight.bold),
+                                )
+                              : Text(
+                                  snapshot.data!.voteAverage.toString(),
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 14.0,
+                                      fontWeight: FontWeight.bold),
+                                ),
                         ],
                       ),
                     )),
@@ -165,26 +181,39 @@ class _MovieDetailScreenState extends State<MovieDetailScreen> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(
-                          snapshot.data!.title,
-                          overflow: TextOverflow.ellipsis,
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 20.0,
-                              fontWeight: FontWeight.bold),
-                        ),
+                        snapshot.data!.title.isEmpty
+                            ? Text(
+                                '',
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 20.0,
+                                    fontWeight: FontWeight.bold),
+                              )
+                            : Text(
+                                snapshot.data!.title,
+                                overflow: TextOverflow.ellipsis,
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 20.0,
+                                    fontWeight: FontWeight.bold),
+                              ),
                         SizedBox(
                           height: 10.0,
                         ),
-                        Text(
-                          snapshot.data!.overView,
-                          overflow: TextOverflow.ellipsis,
-                          maxLines: 8,
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 14.0,
-                          ),
-                        ),
+                        snapshot.data!.overView.isEmpty
+                            ? FaIcon(
+                                FontAwesomeIcons.solidMehBlank,
+                                color: Colors.white,
+                              )
+                            : Text(
+                                snapshot.data!.overView,
+                                overflow: TextOverflow.ellipsis,
+                                maxLines: 8,
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 14.0,
+                                ),
+                              ),
                         SizedBox(
                           height: 10.0,
                         ),
@@ -200,13 +229,21 @@ class _MovieDetailScreenState extends State<MovieDetailScreen> {
                                 SizedBox(
                                   width: 5.0,
                                 ),
-                                Text(
-                                  '${snapshot.data!.runtime.toString()} min',
-                                  style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 12.0,
-                                      fontWeight: FontWeight.bold),
-                                ),
+                                snapshot.data!.runtime.toString().isEmpty
+                                    ? Text(
+                                        '',
+                                        style: TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 12.0,
+                                            fontWeight: FontWeight.bold),
+                                      )
+                                    : Text(
+                                        '${snapshot.data!.runtime.toString()} min',
+                                        style: TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 12.0,
+                                            fontWeight: FontWeight.bold),
+                                      ),
                               ],
                             ),
                             SizedBox(
@@ -214,20 +251,35 @@ class _MovieDetailScreenState extends State<MovieDetailScreen> {
                             ),
                             Row(
                               children: [
-                                Icon(
-                                  Icons.calendar_today_outlined,
+                                FaIcon(
+                                  FontAwesomeIcons.calendar,
                                   color: Colors.white,
                                   size: 15.0,
                                 ),
                                 SizedBox(
                                   width: 5.0,
                                 ),
-                                Text(
-                                  '${snapshot.data!.releaseDate} ',
-                                  style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 12.0,
-                                      fontWeight: FontWeight.bold),
+                                snapshot.data!.releaseDate.isEmpty
+                                    ? Text(
+                                        '',
+                                        style: TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 12.0,
+                                            fontWeight: FontWeight.bold),
+                                      )
+                                    : Text(
+                                        '${snapshot.data!.releaseDate} ',
+                                        style: TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 12.0,
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                IconButton(
+                                  onPressed: () {},
+                                  icon: Icon(
+                                    Icons.favorite_border,
+                                  ),
+                                  color: Colors.white,
                                 ),
                               ],
                             )
@@ -237,7 +289,7 @@ class _MovieDetailScreenState extends State<MovieDetailScreen> {
                     ),
                   ),
                 ),
-                MovieVideoWidget(movieData: snapshot.data!.id),
+                MovieVideoWidget(movieData: snapshot.data!),
               ],
             ));
           });

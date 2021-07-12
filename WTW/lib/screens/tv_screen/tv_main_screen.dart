@@ -1,5 +1,6 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:wtw/models/select_model.dart';
 import 'package:wtw/providers/tv_provider/tv_detail_provider.dart';
@@ -8,12 +9,12 @@ import 'package:wtw/providers/tv_provider/tv_video_provider.dart';
 import 'package:wtw/screens/tv_screen/tv_detail_screen.dart';
 import 'package:wtw/widgets/tv_widget/tv_tile_widget.dart';
 
-class TvSelectWidget extends StatefulWidget {
+class TvMainScreen extends StatefulWidget {
   @override
-  _TvSelectWidgetState createState() => _TvSelectWidgetState();
+  _TvMainScreenState createState() => _TvMainScreenState();
 }
 
-class _TvSelectWidgetState extends State<TvSelectWidget> {
+class _TvMainScreenState extends State<TvMainScreen> {
   late SelectModel _selectedGenre;
   late List<SelectModel> genres;
   late int randomPage;
@@ -26,7 +27,6 @@ class _TvSelectWidgetState extends State<TvSelectWidget> {
     this.genres = [
       SelectModel(title: '장르', value: 0),
       SelectModel(title: '액션 & 모험', value: 10759),
-      SelectModel(title: '애니메이션', value: 16),
       SelectModel(title: '코미디', value: 35),
       SelectModel(title: '범죄', value: 80),
       SelectModel(title: '드라마', value: 18),
@@ -142,7 +142,11 @@ class _TvSelectWidgetState extends State<TvSelectWidget> {
               },
               child: Row(
                 children: [
-                  Icon(Icons.search, color: Colors.white),
+                  FaIcon(
+                    FontAwesomeIcons.dice,
+                    color: Colors.white,
+                    size: 20.0,
+                  ),
                   SizedBox(
                     width: 5.0,
                   ),

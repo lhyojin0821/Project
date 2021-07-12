@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
+import 'package:wtw/models/tv_model/tv_detail_model.dart';
 import 'package:wtw/models/tv_model/tv_video_model.dart';
 import 'package:wtw/providers/tv_provider/tv_video_provider.dart';
 import 'package:wtw/widgets/tv_widget/tv_video_player.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
 class TvVideoWidget extends StatefulWidget {
-  final int tvData;
+  final TvDetailModel tvData;
   TvVideoWidget({required this.tvData});
 
   @override
@@ -14,7 +16,7 @@ class TvVideoWidget extends StatefulWidget {
 }
 
 class _TvVideoWidgetState extends State<TvVideoWidget> {
-  final int tvData;
+  final TvDetailModel tvData;
   _TvVideoWidgetState(this.tvData);
   late TvVideoProvider _tvVideoProvider;
 
@@ -24,14 +26,13 @@ class _TvVideoWidgetState extends State<TvVideoWidget> {
       context,
       listen: false,
     );
-
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-      future: this._tvVideoProvider.tvVideoDetail(tvId: this.tvData),
+      future: this._tvVideoProvider.tvVideoDetail(tvId: this.tvData.id),
       builder:
           (BuildContext context, AsyncSnapshot<List<TvVideoModel>> snapshot) {
         if (snapshot.hasData) {
@@ -53,9 +54,9 @@ class _TvVideoWidgetState extends State<TvVideoWidget> {
                       }));
                     },
                     child: Container(
-                      child: Icon(
-                        Icons.play_circle_outline,
-                        size: 60.0,
+                      child: FaIcon(
+                        FontAwesomeIcons.solidPlayCircle,
+                        size: 50.0,
                         color: Colors.white,
                       ),
                     ),

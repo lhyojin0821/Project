@@ -1,6 +1,6 @@
 class SelectModel {
   final String title;
-  final int value;
+  int value;
 
   SelectModel({required this.title, required this.value});
 }

@@ -7,7 +7,7 @@ class TvVideoProvider with ChangeNotifier {
 
   Future<List<TvVideoModel>> tvVideoDetail({required int tvId}) async {
     List<TvVideoModel> tvVideoList = await _tvRepo.getTvVideo(tvId);
-    notifyListeners();
+    if (tvVideoList[0].key.isNotEmpty) notifyListeners();
     return tvVideoList;
   }
 }

@@ -33,7 +33,7 @@ class TvRepo {
     try {
       http.Response res = await http
           .get(Uri.parse(
-              '$mainUrl/discover/tv?$apiKey&sort_by=popularity.desc&language=en-US&with_genres=$genreId&page=$pageId&primary_release_date.gte=2010-01-01&primary_release_date.lte=2021-07-01&include_adult=false'))
+              '$mainUrl/discover/tv?$apiKey&sort_by=popularity.desc&language=en-US&with_genres=$genreId&page=$pageId&first_air_date.gte=2010-01-01&first_air_date.lte=2021-07-01&include_adult=false&without_genres=16'))
           .timeout(Duration(seconds: 8),
               onTimeout: () async => new http.Response('{}', 404));
       if (res.statusCode == 404) {

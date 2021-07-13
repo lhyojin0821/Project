@@ -1,0 +1,54 @@
+{
+  "project_info": {
+    "project_number": "306239494179",
+    "project_id": "what-to-watch-2b374",
+    "storage_bucket": "what-to-watch-2b374.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:306239494179:android:6405ae6d30abfbe535f996",
+        "android_client_info": {
+          "package_name": "com.hyojin.wtw"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "306239494179-vtaalpn5i26r5a84g19ori95s9404h88.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.hyojin.wtw",
+            "certificate_hash": "c3f7b86fa0afbf372425ce3edbdeab859702de88"
+          }
+        },
+        {
+          "client_id": "306239494179-l0f72bi77aieeksbd4ugt322fcmnd5v1.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD_7JuCwIud_r9X8ssr6UUXlYS6vSEaCBs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "306239494179-l0f72bi77aieeksbd4ugt322fcmnd5v1.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "306239494179-djm35h77lfs96r6635nslfr6ibvkeg2k.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.hyojin.wtw"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

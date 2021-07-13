@@ -4,9 +4,9 @@ import 'package:wtw/providers/movie_provider/movie_nowplaying_provider.dart';
 import 'package:wtw/providers/tv_provider/tv_popular_provider.dart';
 import 'package:wtw/screens/lading_screen.dart';
 
-void main() => runApp(App());
+void main() => runApp(MyApp());
 
-class App extends StatelessWidget {
+class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MultiProvider(

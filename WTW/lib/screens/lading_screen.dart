@@ -1,6 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:wtw/screens/main_screen.dart';
+import 'package:wtw/app.dart';
 
 class LandingScreen extends StatefulWidget {
   @override
@@ -12,7 +12,7 @@ class _LandingScreenState extends State<LandingScreen> {
   void initState() {
     Timer(Duration(seconds: 3), () async {
       await Navigator.of(context).pushReplacement(
-          MaterialPageRoute(builder: (BuildContext context) => MainScreen()));
+          MaterialPageRoute(builder: (BuildContext context) => App()));
     });
     super.initState();
   }
@@ -20,9 +20,23 @@ class _LandingScreenState extends State<LandingScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.black,
-      body: Container(
-        child: Center(child: CircularProgressIndicator()),
+      backgroundColor: Color(0xff141414),
+      body: Stack(
+        children: [
+          Center(
+            child: Container(
+                width: MediaQuery.of(context).size.width * 0.8,
+                height: MediaQuery.of(context).size.height * 0.8,
+                decoration: BoxDecoration(
+                    image: DecorationImage(
+                  fit: BoxFit.contain,
+                  image: AssetImage('images/logo.png'),
+                ))),
+          ),
+          Container(
+            child: Center(child: CircularProgressIndicator()),
+          ),
+        ],
       ),
     );
   }

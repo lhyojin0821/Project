@@ -1,5 +1,8 @@
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:wtw/screens/favorite_screen.dart';
+import 'package:wtw/screens/login_screen.dart';
 import 'package:wtw/screens/movie_screen/movie_main_screen.dart';
 import 'package:wtw/screens/tv_screen/tv_main_screen.dart';
 
@@ -31,7 +34,13 @@ class _MainScreenState extends State<MainScreen>
         appBar: AppBar(
           actions: [
             IconButton(
-              onPressed: () {},
+              onPressed: () async {
+                await FirebaseAuth.instance.signOut().then((value) =>
+                    Navigator.of(context).pushReplacement(
+                        MaterialPageRoute(builder: (BuildContext context) {
+                      return LoginScreen();
+                    })));
+              },
               icon: Icon(
                 Icons.settings,
                 color: Colors.white,

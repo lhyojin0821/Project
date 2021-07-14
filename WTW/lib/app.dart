@@ -1,22 +1,46 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:wtw/screens/login_screen.dart';
+import 'package:provider/provider.dart';
+import 'package:wtw/providers/auth_provider.dart';
+import 'package:wtw/screens/authentication.dart';
+import 'package:wtw/screens/wrapper.dart';
 
 class App extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    final _init = Firebase.initializeApp();
     return FutureBuilder(
-        future: Firebase.initializeApp(),
+        future: _init,
         builder: (BuildContext context, snapshot) {
           if (snapshot.hasError) {
-            return Center(
-              child: Text('Firebase load fail'),
+            return Scaffold(
+              body: Column(
+                children: [
+                  Icon(Icons.error),
+                  Center(
+                    child: Text('something went wrong!'),
+                  ),
+                ],
+              ),
             );
+          } else if (snapshot.hasData) {
+            return MultiProvider(providers: [
+              ChangeNotifierProvider<AuthProvider>.value(
+                value: AuthProvider(),
+              ),
+              StreamProvider<User?>.value(
+                value: AuthProvider().user,
+                initialData: null,
+                catchError: (_, err) => null,
+              ),
+            ], child: Wrapper());
           }
-          if (snapshot.connectionState == ConnectionState.done) {
-            return LoginScreen();
-          }
-          return CircularProgressIndicator();
+          return Scaffold(
+            body: Center(
+              child: CircularProgressIndicator(),
+            ),
+          );
         });
   }
 }

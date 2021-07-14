@@ -2,14 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:wtw/providers/auth_provider.dart';
 
-class LoginScreen extends StatefulWidget {
+class RegisterScreen extends StatefulWidget {
   final Function? toggleScreen;
-  const LoginScreen({Key? key, this.toggleScreen}) : super(key: key);
+
+  const RegisterScreen({Key? key, this.toggleScreen}) : super(key: key);
   @override
-  _LoginScreenState createState() => _LoginScreenState();
+  _RegisterScreenState createState() => _RegisterScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
+class _RegisterScreenState extends State<RegisterScreen> {
   Color subColor = Color(0xff141414);
   Color mainColor = Color(0xffe50815);
   FocusNode idNode = new FocusNode();
@@ -22,6 +23,7 @@ class _LoginScreenState extends State<LoginScreen> {
   void initState() {
     this.idCt = new TextEditingController();
     this.pwCt = new TextEditingController();
+
     super.initState();
   }
 
@@ -49,7 +51,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 children: [
                   Container(
                       child: Text(
-                    "WTW",
+                    "Welcome",
                     style: TextStyle(
                         color: this.mainColor,
                         fontWeight: FontWeight.bold,
@@ -58,7 +60,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   Container(
                       margin: EdgeInsets.only(bottom: 50.0),
                       child: Text(
-                        "What To Watch",
+                        "Create account to continue",
                         style: TextStyle(
                             color: Colors.grey,
                             fontWeight: FontWeight.bold,
@@ -158,13 +160,13 @@ class _LoginScreenState extends State<LoginScreen> {
                           if (this._formKey.currentState!.validate()) {
                             print('email : ${this.idCt.text}');
                             print('password : ${this.pwCt.text}');
-                            await loginProvider.login(
+                            await loginProvider.register(
                                 this.idCt.text.trim(), this.pwCt.text.trim());
                           }
                         },
                         child: loginProvider.isLoading
                             ? CircularProgressIndicator()
-                            : Text("LOGIN",
+                            : Text("REGISTER",
                                 style: new TextStyle(
                                     fontSize: 12.0,
                                     fontWeight: FontWeight.bold,
@@ -176,14 +178,14 @@ class _LoginScreenState extends State<LoginScreen> {
                       children: [
                         Container(
                           child: Text(
-                            "Don't have an account?",
+                            "Already have an account?",
                             style: TextStyle(color: Colors.grey),
                           ),
                         ),
                         Container(
                           child: TextButton(
                             onPressed: () => widget.toggleScreen!(),
-                            child: Text('Register'),
+                            child: Text('Login'),
                           ),
                         )
                       ],

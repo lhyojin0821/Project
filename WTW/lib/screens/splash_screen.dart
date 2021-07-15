@@ -1,18 +1,19 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:wtw/app.dart';
+import 'package:wtw/main.dart';
+import 'package:wtw/screens/login/wrapper.dart';
 
-class LandingScreen extends StatefulWidget {
+class SplashScreen extends StatefulWidget {
   @override
-  _LandingScreenState createState() => _LandingScreenState();
+  _SplashScreenState createState() => _SplashScreenState();
 }
 
-class _LandingScreenState extends State<LandingScreen> {
+class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     Timer(Duration(seconds: 3), () async {
       await Navigator.of(context).pushReplacement(
-          MaterialPageRoute(builder: (BuildContext context) => App()));
+          MaterialPageRoute(builder: (BuildContext context) => Wrapper()));
     });
     super.initState();
   }

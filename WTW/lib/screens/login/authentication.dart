@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:wtw/screens/login_screen.dart';
-import 'package:wtw/screens/register_screen.dart';
+import 'package:wtw/screens/login/login_screen.dart';
+import 'package:wtw/screens/login/register_screen.dart';
 
 class Authentication extends StatefulWidget {
   const Authentication({Key? key}) : super(key: key);

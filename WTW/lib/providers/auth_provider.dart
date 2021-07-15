@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 
 class AuthProvider with ChangeNotifier {
   bool _isLoading = false;
@@ -42,6 +43,7 @@ class AuthProvider with ChangeNotifier {
 
   Future logout() async {
     await firebaseAuth.signOut();
+    notifyListeners();
   }
 
   void setLoading(val) {

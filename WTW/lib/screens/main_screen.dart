@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:wtw/providers/auth_provider.dart';
 import 'package:wtw/screens/favorite_screen.dart';
+import 'package:wtw/screens/login/login_screen.dart';
+import 'package:wtw/screens/login/wrapper.dart';
 import 'package:wtw/screens/movie_screen/movie_main_screen.dart';
 import 'package:wtw/screens/tv_screen/tv_main_screen.dart';
 
@@ -15,6 +17,7 @@ class _MainScreenState extends State<MainScreen>
   late TabController _tabController;
   Color subColor = Color(0xff141414);
   Color mainColor = Color(0xffe50815);
+
   @override
   void initState() {
     this._tabController = new TabController(length: 3, vsync: this);
@@ -34,7 +37,11 @@ class _MainScreenState extends State<MainScreen>
         appBar: AppBar(
           actions: [
             IconButton(
-              onPressed: () async => await loginProvider.logout(),
+              onPressed: () async {
+                await loginProvider.logout();
+                Navigator.of(context).pushReplacement(MaterialPageRoute(
+                    builder: (BuildContext context) => Wrapper()));
+              },
               icon: Icon(
                 Icons.settings,
                 color: Colors.white,

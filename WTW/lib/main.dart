@@ -3,6 +3,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:wtw/providers/auth_provider.dart';
+import 'package:wtw/providers/movie_provider/movie_detail_provider.dart';
 import 'package:wtw/providers/movie_provider/movie_nowplaying_provider.dart';
 import 'package:wtw/providers/tv_provider/tv_popular_provider.dart';
 import 'package:wtw/screens/splash_screen.dart';
@@ -41,6 +42,8 @@ class MyApp extends StatelessWidget {
                         MovieNowPlayingProvider()),
                 ChangeNotifierProvider(
                     create: (BuildContext context) => TvPopularProvider()),
+                ChangeNotifierProvider(
+                    create: (BuildContext context) => MovieDetailProvider()),
               ],
               child: MaterialApp(
                 debugShowCheckedModeBanner: false,

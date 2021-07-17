@@ -15,14 +15,17 @@ class _RegisterScreenState extends State<RegisterScreen> {
   Color mainColor = Color(0xffe50815);
   FocusNode idNode = new FocusNode();
   FocusNode pwNode = new FocusNode();
+  FocusNode nmNode = new FocusNode();
   late TextEditingController idCt;
   late TextEditingController pwCt;
+  late TextEditingController nmCt;
   final _formKey = GlobalKey<FormState>();
 
   @override
   void initState() {
     this.idCt = new TextEditingController();
     this.pwCt = new TextEditingController();
+    this.nmCt = new TextEditingController();
 
     super.initState();
   }
@@ -32,6 +35,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
     super.dispose();
     this.idCt.dispose();
     this.pwCt.dispose();
+    this.nmCt.dispose();
   }
 
   @override
@@ -66,6 +70,46 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             fontWeight: FontWeight.bold,
                             fontSize: 12.0),
                       )),
+                  Container(
+                    width: MediaQuery.of(context).size.width * 0.9,
+                    child: TextFormField(
+                      style: TextStyle(
+                          fontSize: 14.0,
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold),
+                      controller: this.nmCt,
+                      focusNode: this.nmNode,
+                      validator: (val) =>
+                          val!.isNotEmpty ? null : 'Please enter a email name',
+                      keyboardType: TextInputType.text,
+                      textInputAction: TextInputAction.next,
+                      decoration: InputDecoration(
+                        prefixIcon: Icon(Icons.person, color: Colors.white38),
+                        border: OutlineInputBorder(
+                            borderSide: BorderSide(color: Colors.white70),
+                            borderRadius: BorderRadius.circular(15.0)),
+                        enabledBorder: OutlineInputBorder(
+                            borderSide: BorderSide(color: Colors.white70),
+                            borderRadius: BorderRadius.circular(15.0)),
+                        focusedBorder: OutlineInputBorder(
+                            borderSide: BorderSide(color: Colors.white),
+                            borderRadius: BorderRadius.circular(15.0)),
+                        labelText: "Name",
+                        hintStyle: TextStyle(
+                            fontSize: 12.0,
+                            color: Colors.grey,
+                            fontWeight: FontWeight.w500),
+                        labelStyle: TextStyle(
+                            fontSize: 12.0,
+                            color: Colors.grey,
+                            fontWeight: FontWeight.w500),
+                      ),
+                      autocorrect: false,
+                    ),
+                  ),
+                  SizedBox(
+                    height: 15.0,
+                  ),
                   Container(
                     width: MediaQuery.of(context).size.width * 0.9,
                     child: TextFormField(
@@ -158,10 +202,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         ),
                         onPressed: () async {
                           if (this._formKey.currentState!.validate()) {
+                            print('email : ${this.nmCt.text}');
                             print('email : ${this.idCt.text}');
                             print('password : ${this.pwCt.text}');
-                            await loginProvider.register(
-                                this.idCt.text.trim(), this.pwCt.text.trim());
+                            await loginProvider.register(this.idCt.text.trim(),
+                                this.pwCt.text.trim(), this.nmCt.text);
                           }
                         },
                         child: loginProvider.isLoading

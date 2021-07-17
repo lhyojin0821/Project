@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:wtw/providers/auth_provider.dart';
-import 'package:wtw/screens/favorite_screen.dart';
-import 'package:wtw/screens/login/login_screen.dart';
-import 'package:wtw/screens/login/wrapper.dart';
 import 'package:wtw/screens/movie_screen/movie_main_screen.dart';
 import 'package:wtw/screens/tv_screen/tv_main_screen.dart';
+import 'package:wtw/screens/user_screen.dart';
 
 class MainScreen extends StatefulWidget {
   @override
@@ -21,6 +19,9 @@ class _MainScreenState extends State<MainScreen>
   @override
   void initState() {
     this._tabController = new TabController(length: 3, vsync: this);
+    Provider.of<AuthProvider>(context, listen: false)
+        .getUser()
+        .whenComplete(() => {setState(() {})});
     super.initState();
   }
 
@@ -37,16 +38,10 @@ class _MainScreenState extends State<MainScreen>
         appBar: AppBar(
           actions: [
             IconButton(
-              onPressed: () async {
-                await loginProvider.logout();
-                Navigator.of(context).pushReplacement(MaterialPageRoute(
-                    builder: (BuildContext context) => Wrapper()));
-              },
-              icon: Icon(
-                Icons.settings,
-                color: Colors.white,
-              ),
-            )
+                onPressed: () {
+                  loginProvider.logout();
+                },
+                icon: Icon(Icons.power_settings_new_outlined))
           ],
           centerTitle: true,
           backgroundColor: this.mainColor,
@@ -73,7 +68,7 @@ class _MainScreenState extends State<MainScreen>
               Container(
                   margin: EdgeInsets.only(bottom: 15.0),
                   child: Icon(
-                    Icons.favorite_border,
+                    Icons.person_outline,
                     color: Colors.white,
                   )),
             ],
@@ -84,7 +79,7 @@ class _MainScreenState extends State<MainScreen>
           children: [
             MovieMainScreen(),
             TvMainScreen(),
-            FavoriteScreen(),
+            UserScreen(),
           ],
         ));
   }

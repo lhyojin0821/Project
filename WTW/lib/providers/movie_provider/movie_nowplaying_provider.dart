@@ -10,4 +10,5 @@ class MovieNowPlayingProvider with ChangeNotifier {
     notifyListeners();
     return nowPlayingList;
   }
+
 }

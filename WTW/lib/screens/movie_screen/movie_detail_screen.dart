@@ -3,8 +3,10 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:wtw/models/movie_model/movie_detail_model.dart';
 import 'package:wtw/models/movie_model/movie_model.dart';
+import 'package:wtw/models/user_model.dart';
 import 'package:wtw/providers/movie_provider/movie_detail_provider.dart';
 import 'package:wtw/providers/movie_provider/movie_recommendation_provider.dart';
+import 'package:wtw/repository/db_repo.dart';
 import 'package:wtw/screens/main_screen.dart';
 import 'package:wtw/widgets/movie_widget/movie_video_widget.dart';
 
@@ -73,6 +75,8 @@ class _MovieDetailScreenState extends State<MovieDetailScreen> {
   }
 
   Widget _detailScreen(List<MovieModel> data) {
+    final user = UserModel.current;
+    bool check = false;
     return FutureBuilder(
       future: this._movieDetailProvider.movies(data[0].id),
       builder:
@@ -275,10 +279,25 @@ class _MovieDetailScreenState extends State<MovieDetailScreen> {
                                             fontWeight: FontWeight.bold),
                                       ),
                                 IconButton(
-                                  onPressed: () {},
-                                  icon: Icon(
-                                    Icons.favorite_border,
-                                  ),
+                                  onPressed: () async {
+                                    user.userMovieId!.add(snapshot.data!.id);
+                                    await DbRepo().saveUser(UserModel(
+                                        id: user.id,
+                                        email: user.email,
+                                        name: user.name,
+                                        userMovieId: user.userMovieId));
+                                    print(user.userMovieId);
+                                    setState(() {
+                                      check = !check;
+                                    });
+                                  },
+                                  icon: user.userMovieId!.isEmpty && check
+                                      ? Icon(
+                                          Icons.favorite_border,
+                                        )
+                                      : Icon(
+                                          Icons.favorite_border_outlined,
+                                        ),
                                   color: Colors.white,
                                 ),
                               ],

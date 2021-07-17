@@ -14,6 +14,7 @@ class MovieRepo {
           .get(Uri.parse('$mainUrl/movie/$movieId?$apiKey&language=ko-KR'))
           .timeout(Duration(seconds: 8),
               onTimeout: () async => new http.Response('{}', 404));
+
       if (res.statusCode == 404) {
         return MovieDetailModel.fromJson({});
       }

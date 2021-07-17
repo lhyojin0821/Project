@@ -24,8 +24,11 @@ class AuthProvider with ChangeNotifier {
         password: password,
       );
       User user = authResult.user!;
-      await DbRepo().saveUser(
-          UserModel(id: user.uid, email: email, name: name, userMovieId: []));
+      await DbRepo().saveUser(UserModel(
+        id: user.uid, email: email, name: name,
+        // userMovieId: []
+        userMovie: [],
+      ));
       return user;
     } on SocketException {
       setMessage('No inter, please connect to internet');
@@ -67,12 +70,12 @@ class AuthProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> getUser() async {
+  Future<UserModel> getUser() async {
     final user = FirebaseAuth.instance.currentUser;
     final userResult = await DbRepo().getUser(user!.uid);
     UserModel.current = userResult;
     notifyListeners();
-    return;
+    return UserModel.current;
   }
 
   Stream<User> get user =>

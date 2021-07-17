@@ -13,13 +13,9 @@ class DbRepo {
     }
   }
 
-  Future getUser(String id) async {
-    try {
-      final dynamic data = await userCol.doc(id).get();
-      final user = UserModel.fromJson(data.data());
-      return user;
-    } catch (e) {
-      return;
-    }
+  Future<UserModel> getUser(String id) async {
+    final dynamic data = await userCol.doc(id).get();
+    final user = UserModel.fromJson(data.data());
+    return user;
   }
 }

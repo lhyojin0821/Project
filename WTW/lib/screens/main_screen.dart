@@ -33,16 +33,8 @@ class _MainScreenState extends State<MainScreen>
 
   @override
   Widget build(BuildContext context) {
-    final loginProvider = Provider.of<AuthProvider>(context);
     return Scaffold(
         appBar: AppBar(
-          actions: [
-            IconButton(
-                onPressed: () {
-                  loginProvider.logout();
-                },
-                icon: Icon(Icons.power_settings_new_outlined))
-          ],
           centerTitle: true,
           backgroundColor: this.mainColor,
           title: Text(

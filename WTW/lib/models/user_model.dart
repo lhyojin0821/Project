@@ -23,7 +23,7 @@ class UserModel {
       email: json['email'] == null ? '' : json['email'],
       name: json['name'] == null ? '' : json['name'],
       // userMovieId: json['userMovieId'] == null ? [] : json['userMovieId']
-      userMovie: json['userMovie'] == null ? [{}] : json['userMovie'],
+      userMovie: json['userMovie'] == null ? [] : json['userMovie'],
       favorite: json['favorite'],
     );
   }
@@ -32,7 +32,7 @@ class UserModel {
         'email': email,
         'name': name,
         // 'userMovieId': userMovieId,
-        'userMovie': userMovie,
+        'userMovie': userMovie!,
         'favorite': favorite,
       };
 }

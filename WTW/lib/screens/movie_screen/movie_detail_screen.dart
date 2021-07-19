@@ -76,6 +76,7 @@ class _MovieDetailScreenState extends State<MovieDetailScreen> {
 
   Widget _detailScreen(List<MovieModel> data) {
     final user = UserModel.current;
+
     return data.isEmpty
         ? Container(
             color: Color(0xff141414),
@@ -117,6 +118,16 @@ class _MovieDetailScreenState extends State<MovieDetailScreen> {
             builder: (BuildContext context,
                 AsyncSnapshot<MovieDetailModel> snapshot) {
               if (snapshot.hasData) {
+                List checkList = user.userMovie!
+                    .where((element) =>
+                        element['userMovieId'] == snapshot.data!.id)
+                    .toList();
+                bool check;
+                if (checkList.length == 0) {
+                  check = false;
+                } else {
+                  check = true;
+                }
                 return Consumer<MovieDetailProvider>(
                     builder: (context, value, child) {
                   return SafeArea(
@@ -318,25 +329,47 @@ class _MovieDetailScreenState extends State<MovieDetailScreen> {
                                             ),
                                       IconButton(
                                         onPressed: () async {
-                                          // user.userMovieId!.add(snapshot.data!.id);
-                                          user.userMovie!.add({
-                                            'userMovieId': snapshot.data!.id,
-                                            'userMovieUrl':
-                                                snapshot.data!.posterPath
-                                          });
-
+                                          List list = user.userMovie!
+                                              .where((element) =>
+                                                  element['userMovieId'] ==
+                                                  snapshot.data!.id)
+                                              .toList();
+                                          bool isExist;
+                                          if (list.length == 0) {
+                                            isExist = false;
+                                          } else {
+                                            isExist = true;
+                                          }
+                                          if (isExist) {
+                                            user.userMovie!.removeWhere(
+                                                (element) =>
+                                                    element['userMovieId'] ==
+                                                    snapshot.data!.id);
+                                          } else {
+                                            user.userMovie!.add({
+                                              'userMovieId': snapshot.data!.id,
+                                              'userMovieUrl':
+                                                  snapshot.data!.posterPath
+                                            });
+                                          }
                                           await DbRepo().saveUser(UserModel(
                                             id: user.id,
                                             email: user.email,
                                             name: user.name,
-                                            // userMovieId: user.userMovieId
-                                            userMovie: user.userMovie,
+                                            userMovie: user.userMovie!,
                                           ));
                                           print(user.userMovie);
+                                          setState(() {
+                                            check = !check;
+                                          });
                                         },
-                                        icon: Icon(
-                                          Icons.favorite,
-                                        ),
+                                        icon: check
+                                            ? Icon(
+                                                Icons.favorite,
+                                                color: Colors.white,
+                                              )
+                                            : Icon(
+                                                Icons.favorite_border_outlined),
                                         color: Colors.white,
                                       ),
                                     ],

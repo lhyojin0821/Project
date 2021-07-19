@@ -1,10 +1,8 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:wtw/models/movie_model/movie_detail_model.dart';
 import 'package:wtw/models/user_model.dart';
 import 'package:wtw/providers/auth_provider.dart';
-import 'package:wtw/providers/movie_provider/movie_detail_provider.dart';
 
 class UserScreen extends StatefulWidget {
   @override

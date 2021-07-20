@@ -114,7 +114,7 @@ class _TvTileWidgetState extends State<TvTileWidget> {
                                     FaIcon(
                                       FontAwesomeIcons.solidStar,
                                       color: Colors.yellow,
-                                      size: 20.0,
+                                      size: 16.0,
                                     ),
                                     SizedBox(
                                       width: 5.0,
@@ -126,7 +126,7 @@ class _TvTileWidgetState extends State<TvTileWidget> {
                                             '',
                                             style: TextStyle(
                                                 color: Colors.white,
-                                                fontSize: 14.0,
+                                                fontSize: 10.0,
                                                 fontWeight: FontWeight.bold),
                                           )
                                         : Text(
@@ -154,7 +154,7 @@ class _TvTileWidgetState extends State<TvTileWidget> {
                                     maxLines: 2,
                                     style: TextStyle(
                                         color: Colors.white,
-                                        fontSize: 20.0,
+                                        fontSize: 15.0,
                                         fontWeight: FontWeight.bold),
                                   ),
                           ),

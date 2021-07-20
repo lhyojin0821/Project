@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:wtw/models/movie_model/movie_detail_model.dart';
+import 'package:wtw/models/user_model.dart';
 import 'package:wtw/providers/movie_provider/movie_detail_provider.dart';
 import 'package:wtw/providers/movie_provider/movie_nowplaying_provider.dart';
+import 'package:wtw/repository/db_repo.dart';
 import 'package:wtw/screens/main_screen.dart';
 import 'package:wtw/widgets/movie_widget/movie_video_widget.dart';
 
@@ -40,6 +42,7 @@ class _MovieNowPlayingScreenState extends State<MovieNowPlayingScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final user = UserModel.current;
     return Scaffold(
       backgroundColor: Colors.black,
       body: FutureBuilder(
@@ -47,6 +50,15 @@ class _MovieNowPlayingScreenState extends State<MovieNowPlayingScreen> {
         builder:
             (BuildContext context, AsyncSnapshot<MovieDetailModel> snapshot) {
           if (snapshot.hasData) {
+            List checkList = user.userMovie!
+                .where((element) => element['userMovieId'] == snapshot.data!.id)
+                .toList();
+            bool check;
+            if (checkList.length == 0) {
+              check = false;
+            } else {
+              check = true;
+            }
             return Consumer<MovieNowPlayingProvider>(
                 builder: (context, value, child) {
               return SafeArea(
@@ -103,7 +115,7 @@ class _MovieNowPlayingScreenState extends State<MovieNowPlayingScreen> {
                           icon: FaIcon(
                             FontAwesomeIcons.arrowLeft,
                             color: Colors.white,
-                            size: 25.0,
+                            size: 20.0,
                           )),
                     ),
                   ),
@@ -121,7 +133,7 @@ class _MovieNowPlayingScreenState extends State<MovieNowPlayingScreen> {
                             FaIcon(
                               FontAwesomeIcons.solidStar,
                               color: Colors.yellow,
-                              size: 20.0,
+                              size: 18.0,
                             ),
                             SizedBox(
                               width: 5.0,
@@ -131,14 +143,14 @@ class _MovieNowPlayingScreenState extends State<MovieNowPlayingScreen> {
                                     '',
                                     style: TextStyle(
                                         color: Colors.white,
-                                        fontSize: 14.0,
+                                        fontSize: 15.0,
                                         fontWeight: FontWeight.bold),
                                   )
                                 : Text(
                                     snapshot.data!.voteAverage.toString(),
                                     style: TextStyle(
                                         color: Colors.white,
-                                        fontSize: 14.0,
+                                        fontSize: 15.0,
                                         fontWeight: FontWeight.bold),
                                   ),
                           ],
@@ -157,16 +169,73 @@ class _MovieNowPlayingScreenState extends State<MovieNowPlayingScreen> {
                                   '',
                                   style: TextStyle(
                                       color: Colors.white,
-                                      fontSize: 20.0,
+                                      fontSize: 15.0,
                                       fontWeight: FontWeight.bold),
                                 )
-                              : Text(
-                                  snapshot.data!.title,
-                                  overflow: TextOverflow.ellipsis,
-                                  style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 20.0,
-                                      fontWeight: FontWeight.bold),
+                              : Row(
+                                  children: [
+                                    Container(
+                                      child: Text(
+                                        snapshot.data!.title,
+                                        overflow: TextOverflow.ellipsis,
+                                        style: TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 15.0,
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                    ),
+                                    Container(
+                                      // padding: EdgeInsets.only(bottom: 5.0),
+                                      child: IconButton(
+                                        onPressed: () async {
+                                          List list = user.userMovie!
+                                              .where((element) =>
+                                                  element['userMovieId'] ==
+                                                  snapshot.data!.id)
+                                              .toList();
+                                          bool isExist;
+                                          if (list.length == 0) {
+                                            isExist = false;
+                                          } else {
+                                            isExist = true;
+                                          }
+                                          if (isExist) {
+                                            user.userMovie!.removeWhere(
+                                                (element) =>
+                                                    element['userMovieId'] ==
+                                                    snapshot.data!.id);
+                                          } else {
+                                            user.userMovie!.add({
+                                              'userMovieId': snapshot.data!.id,
+                                              'userMovieUrl':
+                                                  snapshot.data!.posterPath
+                                            });
+                                          }
+                                          await DbRepo().saveUser(UserModel(
+                                            id: user.id,
+                                            email: user.email,
+                                            name: user.name,
+                                            userMovie: user.userMovie!,
+                                          ));
+                                          print(user.userMovie);
+                                          setState(() {
+                                            check = !check;
+                                          });
+                                        },
+                                        icon: check
+                                            ? FaIcon(
+                                                Icons.favorite,
+                                                color: Colors.white,
+                                                size: 20.0,
+                                              )
+                                            : Icon(
+                                                Icons.favorite_border_outlined,
+                                                size: 20.0,
+                                              ),
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                  ],
                                 ),
                           SizedBox(
                             height: 10.0,
@@ -179,10 +248,10 @@ class _MovieNowPlayingScreenState extends State<MovieNowPlayingScreen> {
                               : Text(
                                   snapshot.data!.overView,
                                   overflow: TextOverflow.ellipsis,
-                                  maxLines: 10,
+                                  maxLines: 15,
                                   style: TextStyle(
                                     color: Colors.white,
-                                    fontSize: 14.0,
+                                    fontSize: 12.0,
                                   ),
                                 ),
                           SizedBox(
@@ -195,7 +264,7 @@ class _MovieNowPlayingScreenState extends State<MovieNowPlayingScreen> {
                                   Icon(
                                     Icons.timer,
                                     color: Colors.white,
-                                    size: 15.0,
+                                    size: 16.0,
                                   ),
                                   SizedBox(
                                     width: 5.0,
@@ -222,10 +291,10 @@ class _MovieNowPlayingScreenState extends State<MovieNowPlayingScreen> {
                               ),
                               Row(
                                 children: [
-                                  FaIcon(
-                                    FontAwesomeIcons.calendar,
+                                  Icon(
+                                    Icons.calendar_today_outlined,
                                     color: Colors.white,
-                                    size: 15.0,
+                                    size: 14.0,
                                   ),
                                   SizedBox(
                                     width: 5.0,
@@ -245,13 +314,54 @@ class _MovieNowPlayingScreenState extends State<MovieNowPlayingScreen> {
                                               fontSize: 12.0,
                                               fontWeight: FontWeight.bold),
                                         ),
-                                  IconButton(
-                                    onPressed: () {},
-                                    icon: Icon(
-                                      Icons.favorite_border,
-                                    ),
-                                    color: Colors.white,
-                                  ),
+                                  // IconButton(
+                                  //   onPressed: () async {
+                                  //     List list = user.userMovie!
+                                  //         .where((element) =>
+                                  //             element['userMovieId'] ==
+                                  //             snapshot.data!.id)
+                                  //         .toList();
+                                  //     bool isExist;
+                                  //     if (list.length == 0) {
+                                  //       isExist = false;
+                                  //     } else {
+                                  //       isExist = true;
+                                  //     }
+                                  //     if (isExist) {
+                                  //       user.userMovie!.removeWhere((element) =>
+                                  //           element['userMovieId'] ==
+                                  //           snapshot.data!.id);
+                                  //     } else {
+                                  //       user.userMovie!.add({
+                                  //         'userMovieId': snapshot.data!.id,
+                                  //         'userMovieUrl':
+                                  //             snapshot.data!.posterPath
+                                  //       });
+                                  //     }
+                                  //     await DbRepo().saveUser(UserModel(
+                                  //       id: user.id,
+                                  //       email: user.email,
+                                  //       name: user.name,
+                                  //       userMovie: user.userMovie!,
+                                  //       userTv: user.userTv,
+                                  //     ));
+                                  //     print(user.userMovie);
+                                  //     setState(() {
+                                  //       check = !check;
+                                  //     });
+                                  //   },
+                                  //   icon: check
+                                  //       ? Icon(
+                                  //           Icons.favorite,
+                                  //           color: Colors.white,
+                                  //           size: 20.0,
+                                  //         )
+                                  //       : Icon(
+                                  //           Icons.favorite_border_outlined,
+                                  //           size: 20.0,
+                                  //         ),
+                                  //   color: Colors.white,
+                                  // ),
                                 ],
                               )
                             ],

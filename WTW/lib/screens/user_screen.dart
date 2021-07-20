@@ -3,6 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:wtw/models/user_model.dart';
 import 'package:wtw/providers/auth_provider.dart';
+import 'package:wtw/providers/movie_provider/movie_detail_provider.dart';
+import 'package:wtw/providers/movie_provider/movie_video_provider.dart';
+import 'package:wtw/providers/tv_provider/tv_detail_provider.dart';
+import 'package:wtw/providers/tv_provider/tv_video_provider.dart';
+import 'package:wtw/screens/login/wrapper.dart';
+import 'package:wtw/screens/movie_screen/user_movie_detail_screen.dart';
+import 'package:wtw/screens/tv_screen/user_tv_detail_screen.dart';
 
 class UserScreen extends StatefulWidget {
   @override
@@ -12,15 +19,10 @@ class UserScreen extends StatefulWidget {
 class _UserScreenState extends State<UserScreen> {
   Color subColor = Color(0xff141414);
   Color mainColor = Color(0xffe50815);
-  // late MovieDetailProvider _movieDetailProvider;
   late AuthProvider _userProvider;
 
   @override
   void initState() {
-    // this._movieDetailProvider = Provider.of<MovieDetailProvider>(
-    //   context,
-    //   listen: false,
-    // );
     this._userProvider = Provider.of<AuthProvider>(context, listen: false);
     super.initState();
   }
@@ -50,13 +52,13 @@ class _UserScreenState extends State<UserScreen> {
               title: Container(
                 child: Text(
                   user.name,
-                  style: TextStyle(color: Colors.white),
+                  style: TextStyle(color: Colors.white, fontSize: 12.0),
                 ),
               ),
               subtitle: Container(
                 child: Text(
                   user.email,
-                  style: TextStyle(color: Colors.white),
+                  style: TextStyle(color: Colors.white, fontSize: 12.0),
                 ),
               ),
               trailing: Container(
@@ -70,20 +72,36 @@ class _UserScreenState extends State<UserScreen> {
                         context: context,
                         builder: (BuildContext context) {
                           return AlertDialog(
-                            title: Text('Logout'),
-                            content: Text('Are you sure you want to logout?'),
+                            title: Text(
+                              '로그아웃',
+                              style: TextStyle(fontSize: 12.0),
+                            ),
+                            content: Text(
+                              '로그아웃 하시겠습니까?',
+                              style: TextStyle(fontSize: 10.0),
+                            ),
                             actions: [
                               TextButton(
                                   onPressed: () async {
                                     await loginProvider.logout();
-                                    Navigator.of(context).pop();
+                                    Navigator.of(context).pushReplacement(
+                                        MaterialPageRoute(
+                                            builder: (BuildContext context) {
+                                      return Wrapper();
+                                    }));
                                   },
-                                  child: Text('Logout')),
+                                  child: Text(
+                                    '로그아웃',
+                                    style: TextStyle(fontSize: 10.0),
+                                  )),
                               TextButton(
                                   onPressed: () {
                                     Navigator.of(context).pop();
                                   },
-                                  child: Text('Cancel'))
+                                  child: Text(
+                                    '취소',
+                                    style: TextStyle(fontSize: 10.0),
+                                  ))
                             ],
                           );
                         });
@@ -95,75 +113,191 @@ class _UserScreenState extends State<UserScreen> {
           SizedBox(
             height: 10.0,
           ),
+          Expanded(
+            child: Container(
+              width: MediaQuery.of(context).size.width,
+              child: SingleChildScrollView(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Container(
+                      alignment: Alignment.center,
+                      padding: EdgeInsets.only(top: 10.0, left: 10.0),
+                      child: Text(
+                        '찜한 콘텐츠 목록',
+                        style: TextStyle(
+                          fontSize: 12.0,
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+
+                    user.userMovie!.isEmpty ? Container() : userMovie(),
+                    SizedBox(
+                      height: 10.0,
+                    ),
+                    // userMovie(user),
+                    user.userTv!.isEmpty ? Container() : userTv(),
+                  ],
+                ),
+              ),
+            ),
+          )
+
           // userMovie(user),
-          user.userMovie!.isEmpty ? Container() : userMovie(),
         ],
       ),
     );
   }
 
-  // Widget userMovies(UserModel user) {
-  //   print(user.userMovie![0]['userMovieUrl']);
-  //   return Expanded(
-  //     child: SingleChildScrollView(
-  //       child: Container(
-  //         height: MediaQuery.of(context).size.height,
-  //         child: GridView.count(
-  //           childAspectRatio: 2 / 3,
-  //           mainAxisSpacing: 10.0,
-  //           crossAxisSpacing: 10.0,
-  //           crossAxisCount: 3,
-  //           children: List.generate(
-  //             user.userMovie!.length,
-  //             (index) => ClipRRect(
-  //               borderRadius: BorderRadius.circular(15.0),
-  //               child: GestureDetector(
-  //                 onTap: () {},
-  //                 child: CachedNetworkImage(
-  //                   fit: BoxFit.cover,
-  //                   imageUrl:
-  //                       'https://image.tmdb.org/t/p/original/${user.userMovie![index]['userMovieUrl']}',
-  //                 ),
-  //               ),
-  //             ),
-  //           ),
-  //         ),
-  //       ),
-  //     ),
-  //   );
-  // }
   Widget userMovie() {
     return FutureBuilder(
         future: this._userProvider.getUser(),
         builder: (BuildContext context, AsyncSnapshot<UserModel> snapshot) {
           if (snapshot.hasData) {
             return Consumer<AuthProvider>(builder: (context, value, child) {
-              return Expanded(
-                child: SingleChildScrollView(
-                  child: Container(
-                    height: MediaQuery.of(context).size.height,
-                    child: GridView.count(
-                      childAspectRatio: 2 / 3,
-                      mainAxisSpacing: 10.0,
-                      crossAxisSpacing: 10.0,
-                      crossAxisCount: 3,
-                      children: List.generate(
-                        snapshot.data!.userMovie!.length,
-                        (index) => ClipRRect(
-                          borderRadius: BorderRadius.circular(15.0),
-                          child: GestureDetector(
-                            onTap: () {},
-                            child: CachedNetworkImage(
-                              fit: BoxFit.cover,
-                              imageUrl:
-                                  'https://image.tmdb.org/t/p/original/${snapshot.data!.userMovie![index]['userMovieUrl']}',
+              return Column(
+                children: [
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Container(
+                        padding: EdgeInsets.only(
+                          left: 10.0,
+                          top: 20.0,
+                          bottom: 10.0,
+                        ),
+                        child: Text(
+                          'MOVIE',
+                          style: TextStyle(
+                            color: Colors.grey,
+                            fontWeight: FontWeight.w500,
+                            fontSize: 12.0,
+                          ),
+                        ),
+                      ),
+                      SingleChildScrollView(
+                        scrollDirection: Axis.horizontal,
+                        child: Row(
+                          children: List.generate(
+                            snapshot.data!.userMovie!.length,
+                            (index) => GestureDetector(
+                              onTap: () {
+                                Navigator.of(context).push(MaterialPageRoute(
+                                    builder: (BuildContext context) {
+                                  return MultiProvider(
+                                    providers: [
+                                      ChangeNotifierProvider(
+                                          create: (BuildContext context) =>
+                                              MovieDetailProvider()),
+                                      ChangeNotifierProvider(
+                                          create: (BuildContext context) =>
+                                              MovieVideoProvider()),
+                                    ],
+                                    child: UserMovieDetailScreen(
+                                        userMovieId: snapshot.data!
+                                            .userMovie![index]['userMovieId']),
+                                  );
+                                }));
+                              },
+                              child: Container(
+                                padding: EdgeInsets.only(left: 10.0, top: 10.0),
+                                width: 150,
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(15.0),
+                                  child: CachedNetworkImage(
+                                    fit: BoxFit.cover,
+                                    imageUrl:
+                                        'https://image.tmdb.org/t/p/original/${snapshot.data!.userMovie![index]['userMovieUrl']}',
+                                  ),
+                                ),
+                              ),
                             ),
                           ),
                         ),
                       ),
-                    ),
+                    ],
                   ),
-                ),
+                ],
+              );
+            });
+          } else {
+            return Center(
+              child: CircularProgressIndicator(),
+            );
+          }
+        });
+  }
+
+  Widget userTv() {
+    return FutureBuilder(
+        future: this._userProvider.getUser(),
+        builder: (BuildContext context, AsyncSnapshot<UserModel> snapshot) {
+          if (snapshot.hasData) {
+            return Consumer<AuthProvider>(builder: (context, value, child) {
+              return Column(
+                children: [
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Container(
+                        padding: EdgeInsets.only(
+                          left: 10.0,
+                          top: 20.0,
+                          bottom: 10.0,
+                        ),
+                        child: Text(
+                          'TV',
+                          style: TextStyle(
+                            color: Colors.grey,
+                            fontWeight: FontWeight.w500,
+                            fontSize: 12.0,
+                          ),
+                        ),
+                      ),
+                      SingleChildScrollView(
+                        scrollDirection: Axis.horizontal,
+                        child: Row(
+                          children: List.generate(
+                            snapshot.data!.userTv!.length,
+                            (index) => GestureDetector(
+                              onTap: () {
+                                Navigator.of(context).push(MaterialPageRoute(
+                                    builder: (BuildContext context) {
+                                  return MultiProvider(
+                                      providers: [
+                                        ChangeNotifierProvider(
+                                            create: (BuildContext context) =>
+                                                TvDetailProvider()),
+                                        ChangeNotifierProvider(
+                                            create: (BuildContext context) =>
+                                                TvVideoProvider()),
+                                      ],
+                                      child: UserTvDetailScreen(
+                                          userTvId: snapshot.data!
+                                              .userTv![index]['userTvId']));
+                                }));
+                              },
+                              child: Container(
+                                padding: EdgeInsets.only(left: 10.0, top: 10.0),
+                                width: 150,
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(15.0),
+                                  child: CachedNetworkImage(
+                                    fit: BoxFit.cover,
+                                    imageUrl:
+                                        'https://image.tmdb.org/t/p/original/${snapshot.data!.userTv![index]['userTvUrl']}',
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
               );
             });
           } else {
@@ -174,46 +308,3 @@ class _UserScreenState extends State<UserScreen> {
         });
   }
 }
-
-// FutureBuilder(
-//       future: this._userProvider.getUser(),
-//         builder: (BuildContext context, AsyncSnapshot<UserModel> snapshot) {
-//       if (snapshot.hasData) {
-//         return Consumer(
-//           builder: (BuildContext context, snapshot){
-//             Expanded(
-//               child: SingleChildScrollView(
-//                 child: Container(
-//                   height: MediaQuery.of(context).size.height,
-//                   child: GridView.count(
-//                     childAspectRatio: 2 / 3,
-//                     mainAxisSpacing: 10.0,
-//                     crossAxisSpacing: 10.0,
-//                     crossAxisCount: 3,
-//                     children: List.generate(
-//                       user.userMovie!.length,
-//                           (index) => ClipRRect(
-//                         borderRadius: BorderRadius.circular(15.0),
-//                         child: GestureDetector(
-//                           onTap: () {},
-//                           child: CachedNetworkImage(
-//                             fit: BoxFit.cover,
-//                             imageUrl:
-//                             'https://image.tmdb.org/t/p/original/${snapshot.data!.userMovie![index]['userMovieUrl']}',
-//                           ),
-//                         ),
-//                       ),
-//                     ),
-//                   ),
-//                 ),
-//               ),
-//             ),
-//           },
-//           child:
-//         );
-//       } else {
-//         return Center(
-//           child: CircularProgressIndicator(),
-//         );
-//       }
-//     });

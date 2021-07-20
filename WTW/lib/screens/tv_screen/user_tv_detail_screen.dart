@@ -4,28 +4,25 @@ import 'package:provider/provider.dart';
 import 'package:wtw/models/tv_model/tv_detail_model.dart';
 import 'package:wtw/models/user_model.dart';
 import 'package:wtw/providers/tv_provider/tv_detail_provider.dart';
-import 'package:wtw/providers/tv_provider/tv_popular_provider.dart';
 import 'package:wtw/repository/db_repo.dart';
-import 'package:wtw/screens/main_screen.dart';
 import 'package:wtw/widgets/tv_widget/tv_video_widget.dart';
 
-class TvPopularScreen extends StatefulWidget {
-  final int tvId;
+class UserTvDetailScreen extends StatefulWidget {
+  final int userTvId;
 
-  TvPopularScreen({
-    required this.tvId,
-  });
+  UserTvDetailScreen({required this.userTvId});
 
   @override
-  _TvPopularScreenState createState() => _TvPopularScreenState(
-        this.tvId,
+  _UserTvDetailScreenState createState() => _UserTvDetailScreenState(
+        this.userTvId,
       );
 }
 
-class _TvPopularScreenState extends State<TvPopularScreen> {
-  final int tvId;
-  _TvPopularScreenState(
-    this.tvId,
+class _UserTvDetailScreenState extends State<UserTvDetailScreen> {
+  int userTvId;
+
+  _UserTvDetailScreenState(
+    this.userTvId,
   );
 
   late TvDetailProvider _tvDetailProvider;
@@ -44,7 +41,7 @@ class _TvPopularScreenState extends State<TvPopularScreen> {
     return Scaffold(
       backgroundColor: Colors.black,
       body: FutureBuilder(
-        future: this._tvDetailProvider.tvs(this.tvId),
+        future: this._tvDetailProvider.tvs(this.userTvId),
         builder: (BuildContext context, AsyncSnapshot<TvDetailModel> snapshot) {
           if (snapshot.hasData) {
             List checkList = user.userTv!
@@ -56,8 +53,7 @@ class _TvPopularScreenState extends State<TvPopularScreen> {
             } else {
               check = true;
             }
-            return Consumer<TvPopularProvider>(
-                builder: (context, value, child) {
+            return Consumer<TvDetailProvider>(builder: (context, value, child) {
               return SafeArea(
                   child: Stack(
                 children: [
@@ -103,11 +99,7 @@ class _TvPopularScreenState extends State<TvPopularScreen> {
                     child: Container(
                       child: IconButton(
                           onPressed: () {
-                            Navigator.of(context).pushReplacement(
-                                MaterialPageRoute(
-                                    builder: (BuildContext context) {
-                              return MainScreen();
-                            }));
+                            Navigator.of(context).pop();
                           },
                           icon: FaIcon(
                             FontAwesomeIcons.arrowLeft,

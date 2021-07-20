@@ -41,216 +41,231 @@ class _RegisterScreenState extends State<RegisterScreen> {
   @override
   Widget build(BuildContext context) {
     final loginProvider = Provider.of<AuthProvider>(context);
-    return Scaffold(
-      backgroundColor: this.subColor,
-      body: SingleChildScrollView(
-        child: Container(
-          height: MediaQuery.of(context).size.height,
-          width: MediaQuery.of(context).size.width,
-          child: Form(
-            key: this._formKey,
-            child: Container(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Container(
-                      child: Text(
-                    "Welcome",
-                    style: TextStyle(
-                        color: this.mainColor,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 50.0),
-                  )),
-                  Container(
-                      margin: EdgeInsets.only(bottom: 50.0),
-                      child: Text(
-                        "Create account to continue",
-                        style: TextStyle(
-                            color: Colors.grey,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 12.0),
-                      )),
-                  Container(
-                    width: MediaQuery.of(context).size.width * 0.9,
-                    child: TextFormField(
-                      style: TextStyle(
-                          fontSize: 14.0,
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold),
-                      controller: this.nmCt,
-                      focusNode: this.nmNode,
-                      validator: (val) =>
-                          val!.isNotEmpty ? null : 'Please enter a email name',
-                      keyboardType: TextInputType.text,
-                      textInputAction: TextInputAction.next,
-                      decoration: InputDecoration(
-                        prefixIcon: Icon(Icons.person, color: Colors.white38),
-                        border: OutlineInputBorder(
-                            borderSide: BorderSide(color: Colors.white70),
-                            borderRadius: BorderRadius.circular(15.0)),
-                        enabledBorder: OutlineInputBorder(
-                            borderSide: BorderSide(color: Colors.white70),
-                            borderRadius: BorderRadius.circular(15.0)),
-                        focusedBorder: OutlineInputBorder(
-                            borderSide: BorderSide(color: Colors.white),
-                            borderRadius: BorderRadius.circular(15.0)),
-                        labelText: "Name",
-                        hintStyle: TextStyle(
-                            fontSize: 12.0,
-                            color: Colors.grey,
-                            fontWeight: FontWeight.w500),
-                        labelStyle: TextStyle(
-                            fontSize: 12.0,
-                            color: Colors.grey,
-                            fontWeight: FontWeight.w500),
-                      ),
-                      autocorrect: false,
-                    ),
-                  ),
-                  SizedBox(
-                    height: 15.0,
-                  ),
-                  Container(
-                    width: MediaQuery.of(context).size.width * 0.9,
-                    child: TextFormField(
-                      style: TextStyle(
-                          fontSize: 14.0,
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold),
-                      controller: this.idCt,
-                      focusNode: this.idNode,
-                      validator: (val) => val!.isNotEmpty
-                          ? null
-                          : 'Please enter a email address',
-                      keyboardType: TextInputType.emailAddress,
-                      textInputAction: TextInputAction.next,
-                      decoration: InputDecoration(
-                        prefixIcon: Icon(Icons.email, color: Colors.white38),
-                        border: OutlineInputBorder(
-                            borderSide: BorderSide(color: Colors.white70),
-                            borderRadius: BorderRadius.circular(15.0)),
-                        enabledBorder: OutlineInputBorder(
-                            borderSide: BorderSide(color: Colors.white70),
-                            borderRadius: BorderRadius.circular(15.0)),
-                        focusedBorder: OutlineInputBorder(
-                            borderSide: BorderSide(color: Colors.white),
-                            borderRadius: BorderRadius.circular(15.0)),
-                        labelText: "E-Mail",
-                        hintStyle: TextStyle(
-                            fontSize: 12.0,
-                            color: Colors.grey,
-                            fontWeight: FontWeight.w500),
-                        labelStyle: TextStyle(
-                            fontSize: 12.0,
-                            color: Colors.grey,
-                            fontWeight: FontWeight.w500),
-                      ),
-                      autocorrect: false,
-                    ),
-                  ),
-                  SizedBox(
-                    height: 15.0,
-                  ),
-                  Container(
-                    width: MediaQuery.of(context).size.width * 0.9,
-                    child: TextFormField(
-                      style: TextStyle(
-                          fontSize: 14.0,
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold),
-                      controller: this.pwCt,
-                      focusNode: this.pwNode,
-                      validator: (val) =>
-                          val!.length < 6 ? 'Enter more than 6 char' : null,
-                      decoration: InputDecoration(
-                        fillColor: Colors.black,
-                        prefixIcon: Icon(
-                          Icons.lock,
-                          color: Colors.white38,
-                        ),
-                        border: OutlineInputBorder(
-                            borderSide: BorderSide(color: Colors.white70),
-                            borderRadius: BorderRadius.circular(15.0)),
-                        enabledBorder: OutlineInputBorder(
-                            borderSide: BorderSide(color: Colors.white70),
-                            borderRadius: BorderRadius.circular(15.0)),
-                        focusedBorder: OutlineInputBorder(
-                            borderSide: BorderSide(color: Colors.white),
-                            borderRadius: BorderRadius.circular(15.0)),
-                        labelText: "Password",
-                        hintStyle: TextStyle(
-                            fontSize: 12.0,
-                            color: Colors.grey,
-                            fontWeight: FontWeight.w500),
-                        labelStyle: TextStyle(
-                            fontSize: 12.0,
-                            color: Colors.grey,
-                            fontWeight: FontWeight.w500),
-                      ),
-                      autocorrect: false,
-                      obscureText: true,
-                    ),
-                  ),
-                  Container(
-                    height: 50.0,
-                    margin: EdgeInsets.only(top: 20.0),
-                    width: MediaQuery.of(context).size.width * 0.8,
-                    child: MaterialButton(
-                        color: Color(0xffe50815),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10.0),
-                        ),
-                        onPressed: () async {
-                          if (this._formKey.currentState!.validate()) {
-                            print('email : ${this.nmCt.text}');
-                            print('email : ${this.idCt.text}');
-                            print('password : ${this.pwCt.text}');
-                            await loginProvider.register(this.idCt.text.trim(),
-                                this.pwCt.text.trim(), this.nmCt.text);
-                          }
-                        },
-                        child: loginProvider.isLoading
-                            ? CircularProgressIndicator()
-                            : Text("REGISTER",
-                                style: new TextStyle(
-                                    fontSize: 12.0,
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.white))),
-                  ),
-                  Container(
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Container(
-                          child: Text(
-                            "Already have an account?",
-                            style: TextStyle(color: Colors.grey),
-                          ),
-                        ),
-                        Container(
-                          child: TextButton(
-                            onPressed: () => widget.toggleScreen!(),
-                            child: Text('Login'),
-                          ),
-                        )
-                      ],
-                    ),
-                  ),
-                  if (loginProvider.errorMessage != null)
+    return GestureDetector(
+      onTap: FocusScope.of(context).unfocus,
+      child: Scaffold(
+        backgroundColor: this.subColor,
+        body: SingleChildScrollView(
+          child: Container(
+            height: MediaQuery.of(context).size.height,
+            child: Form(
+              key: this._formKey,
+              child: Container(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
                     Container(
-                      padding:
-                          EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                      color: Colors.amberAccent,
-                      child: ListTile(
-                        title: Text(loginProvider.errorMessage!),
-                        leading: Icon(Icons.error),
-                        trailing: IconButton(
-                          icon: Icon(Icons.close),
-                          onPressed: () => loginProvider.setMessage(null),
+                        child: Text(
+                      "Welcome",
+                      style: TextStyle(
+                          color: this.mainColor,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 30.0),
+                    )),
+                    Container(
+                        margin: EdgeInsets.only(bottom: 50.0),
+                        child: Text(
+                          "Create account to continue",
+                          style: TextStyle(
+                              color: Colors.grey,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 8.0),
+                        )),
+                    Container(
+                      width: MediaQuery.of(context).size.width * 0.7,
+                      child: TextFormField(
+                        style: TextStyle(
+                            fontSize: 8.0,
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold),
+                        controller: this.nmCt,
+                        focusNode: this.nmNode,
+                        validator: (val) =>
+                            val!.isNotEmpty ? null : '정확한 이름을 입력 하세요.',
+                        keyboardType: TextInputType.text,
+                        textInputAction: TextInputAction.next,
+                        decoration: InputDecoration(
+                          errorStyle: TextStyle(fontSize: 8.0),
+                          prefixIcon: Icon(Icons.person, color: Colors.white38),
+                          border: OutlineInputBorder(
+                              borderSide: BorderSide(color: Colors.white70),
+                              borderRadius: BorderRadius.circular(15.0)),
+                          enabledBorder: OutlineInputBorder(
+                              borderSide: BorderSide(color: Colors.white70),
+                              borderRadius: BorderRadius.circular(15.0)),
+                          focusedBorder: OutlineInputBorder(
+                              borderSide: BorderSide(color: Colors.white),
+                              borderRadius: BorderRadius.circular(15.0)),
+                          labelText: "Name",
+                          hintStyle: TextStyle(
+                              fontSize: 8.0,
+                              color: Colors.grey,
+                              fontWeight: FontWeight.w500),
+                          labelStyle: TextStyle(
+                              fontSize: 8.0,
+                              color: Colors.grey,
+                              fontWeight: FontWeight.w500),
                         ),
+                        autocorrect: false,
                       ),
-                    )
-                ],
+                    ),
+                    SizedBox(
+                      height: 15.0,
+                    ),
+                    Container(
+                      width: MediaQuery.of(context).size.width * 0.7,
+                      child: TextFormField(
+                        style: TextStyle(
+                            fontSize: 8.0,
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold),
+                        controller: this.idCt,
+                        focusNode: this.idNode,
+                        validator: (val) =>
+                            val!.isNotEmpty ? null : '정확한 이메일 주소를 입력 하세요.',
+                        keyboardType: TextInputType.emailAddress,
+                        textInputAction: TextInputAction.next,
+                        decoration: InputDecoration(
+                          errorStyle: TextStyle(fontSize: 8.0),
+                          prefixIcon: Icon(Icons.email, color: Colors.white38),
+                          border: OutlineInputBorder(
+                              borderSide: BorderSide(color: Colors.white70),
+                              borderRadius: BorderRadius.circular(15.0)),
+                          enabledBorder: OutlineInputBorder(
+                              borderSide: BorderSide(color: Colors.white70),
+                              borderRadius: BorderRadius.circular(15.0)),
+                          focusedBorder: OutlineInputBorder(
+                              borderSide: BorderSide(color: Colors.white),
+                              borderRadius: BorderRadius.circular(15.0)),
+                          labelText: "E-Mail",
+                          hintStyle: TextStyle(
+                              fontSize: 8.0,
+                              color: Colors.grey,
+                              fontWeight: FontWeight.w500),
+                          labelStyle: TextStyle(
+                              fontSize: 8.0,
+                              color: Colors.grey,
+                              fontWeight: FontWeight.w500),
+                        ),
+                        autocorrect: false,
+                      ),
+                    ),
+                    SizedBox(
+                      height: 15.0,
+                    ),
+                    Container(
+                      width: MediaQuery.of(context).size.width * 0.7,
+                      child: TextFormField(
+                        style: TextStyle(
+                            fontSize: 8.0,
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold),
+                        controller: this.pwCt,
+                        focusNode: this.pwNode,
+                        validator: (val) =>
+                            val!.length < 6 ? '비밀번호는 6자 이상이여야 합니다' : null,
+                        decoration: InputDecoration(
+                          errorStyle: TextStyle(fontSize: 8.0),
+                          fillColor: Colors.black,
+                          prefixIcon: Icon(
+                            Icons.lock,
+                            color: Colors.white38,
+                          ),
+                          border: OutlineInputBorder(
+                              borderSide: BorderSide(color: Colors.white70),
+                              borderRadius: BorderRadius.circular(15.0)),
+                          enabledBorder: OutlineInputBorder(
+                              borderSide: BorderSide(color: Colors.white70),
+                              borderRadius: BorderRadius.circular(15.0)),
+                          focusedBorder: OutlineInputBorder(
+                              borderSide: BorderSide(color: Colors.white),
+                              borderRadius: BorderRadius.circular(15.0)),
+                          labelText: "Password",
+                          hintStyle: TextStyle(
+                              fontSize: 8.0,
+                              color: Colors.grey,
+                              fontWeight: FontWeight.w500),
+                          labelStyle: TextStyle(
+                              fontSize: 8.0,
+                              color: Colors.grey,
+                              fontWeight: FontWeight.w500),
+                        ),
+                        autocorrect: false,
+                        obscureText: true,
+                      ),
+                    ),
+                    Container(
+                      height: 35.0,
+                      margin: EdgeInsets.only(top: 20.0),
+                      width: MediaQuery.of(context).size.width * 0.5,
+                      child: MaterialButton(
+                          color: Color(0xffe50815),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10.0),
+                          ),
+                          onPressed: () async {
+                            if (this._formKey.currentState!.validate()) {
+                              print('email : ${this.nmCt.text}');
+                              print('email : ${this.idCt.text}');
+                              print('password : ${this.pwCt.text}');
+                              await loginProvider.register(
+                                  this.idCt.text.trim(),
+                                  this.pwCt.text.trim(),
+                                  this.nmCt.text);
+                            }
+                          },
+                          child: loginProvider.isLoading
+                              ? Container(
+                                  width: 30.0,
+                                  height: 30.0,
+                                  child: CircularProgressIndicator(
+                                    color: Colors.white,
+                                  ))
+                              : Text("회원가입",
+                                  style: new TextStyle(
+                                      fontSize: 10.0,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.white))),
+                    ),
+                    Container(
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Container(
+                            child: Text(
+                              "WTW 회원 이신가요?",
+                              style:
+                                  TextStyle(color: Colors.grey, fontSize: 8.0),
+                            ),
+                          ),
+                          Container(
+                            child: TextButton(
+                              onPressed: () => widget.toggleScreen!(),
+                              child: Text(
+                                '로그인',
+                                style: TextStyle(fontSize: 9.0),
+                              ),
+                            ),
+                          )
+                        ],
+                      ),
+                    ),
+                    if (loginProvider.errorMessage != null)
+                      Container(
+                        padding:
+                            EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                        color: Colors.amberAccent,
+                        child: ListTile(
+                          title: Text(loginProvider.errorMessage!),
+                          leading: Icon(Icons.error),
+                          trailing: IconButton(
+                            icon: Icon(Icons.close),
+                            onPressed: () => loginProvider.setMessage(null),
+                          ),
+                        ),
+                      )
+                  ],
+                ),
               ),
             ),
           ),
@@ -259,74 +274,3 @@ class _RegisterScreenState extends State<RegisterScreen> {
     );
   }
 }
-
-// sns login
-
-// Container(
-//                 child: Row(
-//                   mainAxisAlignment: MainAxisAlignment.center,
-//                   children: [
-//                     Container(
-//                       child: ElevatedButton(
-//                           style: ElevatedButton.styleFrom(
-//                               primary: Color(0xFFf14436),
-//                               shape: RoundedRectangleBorder(
-//                                 borderRadius: BorderRadius.circular(8.0),
-//                               )),
-//                           onPressed: this.signInWithGoogle,
-//                           child: Row(
-//                             mainAxisAlignment: MainAxisAlignment.center,
-//                             children: [
-//                               SizedBox(
-//                                 width: 5.0,
-//                               ),
-//                               Text("Google",
-//                                   style: new TextStyle(
-//                                       fontSize: 12.0,
-//                                       fontWeight: FontWeight.bold,
-//                                       color: Colors.white)),
-//                             ],
-//                           )),
-//                     ),
-//                     SizedBox(
-//                       width: 10.0,
-//                     ),
-//                     Container(
-//                       child: ElevatedButton(
-//                         style: ElevatedButton.styleFrom(
-//                             primary: Colors.yellow,
-//                             shape: RoundedRectangleBorder(
-//                               borderRadius: BorderRadius.circular(8.0),
-//                             )),
-//                         onPressed: () {},
-//                         child: Row(
-//                           mainAxisAlignment: MainAxisAlignment.center,
-//                           children: [
-//                             SizedBox(
-//                               width: 5.0,
-//                             ),
-//                             Text("Kakao",
-//                                 style: new TextStyle(
-//                                     fontSize: 12.0,
-//                                     fontWeight: FontWeight.bold,
-//                                     color: Colors.white)),
-//                           ],
-//                         ),
-//                       ),
-//                     ),
-//                   ],
-//                 ),
-//               ),
-
-// Future<UserCredential> signInWithGoogle() async {
-//     final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
-//     final GoogleSignInAuthentication googleAuth =
-//         await googleUser!.authentication;
-//
-//     final credential = GoogleAuthProvider.credential(
-//       accessToken: googleAuth.accessToken,
-//       idToken: googleAuth.idToken,
-//     );
-//
-//     return await FirebaseAuth.instance.signInWithCredential(credential);
-//   }

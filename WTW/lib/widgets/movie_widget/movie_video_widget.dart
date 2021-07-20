@@ -44,8 +44,8 @@ class _MovieVideoWidgetState extends State<MovieVideoWidget> {
               return Center(
                 child: Container(
                   child: GestureDetector(
-                    onTap: () {
-                      Navigator.of(context).push(
+                    onTap: () async {
+                      await Navigator.of(context).push(
                           MaterialPageRoute(builder: (BuildContext context) {
                         return MovieVideoPlayer(
                           controller: YoutubePlayerController(

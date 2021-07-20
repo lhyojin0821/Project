@@ -46,7 +46,6 @@ class MyApp extends StatelessWidget {
                     create: (BuildContext context) => MovieDetailProvider()),
               ],
               child: MaterialApp(
-                debugShowCheckedModeBanner: false,
                 home: SplashScreen(),
               ),
             );

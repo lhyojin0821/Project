@@ -17,6 +17,7 @@ class AuthProvider with ChangeNotifier {
     String password,
     String name,
   ) async {
+    setLoading(true);
     try {
       UserCredential authResult =
           await firebaseAuth.createUserWithEmailAndPassword(
@@ -24,16 +25,22 @@ class AuthProvider with ChangeNotifier {
         password: password,
       );
       User user = authResult.user!;
+      setLoading(false);
       await DbRepo().saveUser(UserModel(
-        id: user.uid, email: email, name: name,
-        // userMovieId: []
+        id: user.uid,
+        email: email,
+        name: name,
         userMovie: [],
       ));
       return user;
     } on SocketException {
       setMessage('No inter, please connect to internet');
     } catch (e) {
-      setMessage(e.toString());
+      setLoading(false);
+      if (e.hashCode == 34618382) setMessage('이미 사용 중 인 계정 입니다.');
+      if (e.hashCode == 360587416) setMessage('이메일 주소의 형식이 잘못되었습니다.');
+      print(e.toString());
+      print(e.hashCode);
     }
     notifyListeners();
   }
@@ -50,7 +57,9 @@ class AuthProvider with ChangeNotifier {
       setMessage('No internet, please connect to internet');
     } catch (e) {
       setLoading(false);
-      setMessage(e.toString());
+      if (e.hashCode == 185768934 || e.hashCode == 140382746)
+        setMessage('비밀번호가 잘못되었습니다.');
+      if (e == 505284406) setMessage('이 이메일 주소를 사용하는 계정을 찾을 수 없습니다.');
     }
     notifyListeners();
   }

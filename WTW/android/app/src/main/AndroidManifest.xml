@@ -2,7 +2,7 @@
     package="com.hyojin.wtw">
     <uses-permission android:name="android.permission.INTERNET" />
    <application
-        android:label="wtw"
+        android:label="WTW"
         android:icon="@mipmap/ic_launcher">
         android:usesCleartextTraffic="true"
         <activity

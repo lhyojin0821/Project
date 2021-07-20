@@ -110,7 +110,7 @@ class _MovieTileWidgetState extends State<MovieTileWidget> {
                                     FaIcon(
                                       FontAwesomeIcons.solidStar,
                                       color: Colors.yellow,
-                                      size: 20.0,
+                                      size: 16.0,
                                     ),
                                     SizedBox(
                                       width: 5.0,
@@ -122,7 +122,7 @@ class _MovieTileWidgetState extends State<MovieTileWidget> {
                                             '',
                                             style: TextStyle(
                                                 color: Colors.white,
-                                                fontSize: 14.0,
+                                                fontSize: 10.0,
                                                 fontWeight: FontWeight.bold),
                                           )
                                         : Text(
@@ -150,7 +150,7 @@ class _MovieTileWidgetState extends State<MovieTileWidget> {
                                     maxLines: 2,
                                     style: TextStyle(
                                         color: Colors.white,
-                                        fontSize: 20.0,
+                                        fontSize: 15.0,
                                         fontWeight: FontWeight.bold),
                                   ),
                           ),

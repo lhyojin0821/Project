@@ -90,15 +90,18 @@ class _MovieMainScreenState extends State<MovieMainScreen> {
               items: genres.map((SelectModel filter) {
                 return new DropdownMenuItem<SelectModel>(
                     value: filter,
-                    child: SizedBox(
-                      width: 120.0,
-                      child: Center(
-                        child: new Text(
-                          filter.title,
-                          style: new TextStyle(
-                              color: Colors.white,
-                              fontSize: 14.0,
-                              fontWeight: FontWeight.bold),
+                    child: Container(
+                      alignment: Alignment.center,
+                      child: SizedBox(
+                        width: 100.0,
+                        child: Center(
+                          child: new Text(
+                            filter.title,
+                            style: new TextStyle(
+                                color: Colors.white,
+                                fontSize: 10.0,
+                                fontWeight: FontWeight.bold),
+                          ),
                         ),
                       ),
                     ));
@@ -146,14 +149,14 @@ class _MovieMainScreenState extends State<MovieMainScreen> {
                   FaIcon(
                     FontAwesomeIcons.dice,
                     color: Colors.white,
-                    size: 20.0,
+                    size: 16.0,
                   ),
                   SizedBox(
                     width: 5.0,
                   ),
                   Text("추천",
                       style: new TextStyle(
-                          fontSize: 14.0,
+                          fontSize: 10.0,
                           fontWeight: FontWeight.bold,
                           color: Colors.white)),
                 ],

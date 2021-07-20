@@ -32,7 +32,7 @@ class _TvMainScreenState extends State<TvMainScreen> {
       SelectModel(title: '드라마', value: 18),
       SelectModel(title: '가족', value: 10751),
       SelectModel(title: '미스터리', value: 9648),
-      SelectModel(title: '공상과학 & 판타지', value: 10765),
+      SelectModel(title: '판타지', value: 10765),
       SelectModel(title: '전쟁 & 정치', value: 10768),
     ];
     this.randomPage = new Random().nextInt(20) + 1;
@@ -89,15 +89,18 @@ class _TvMainScreenState extends State<TvMainScreen> {
               items: genres.map((SelectModel filter) {
                 return new DropdownMenuItem<SelectModel>(
                     value: filter,
-                    child: SizedBox(
-                      width: 110.0,
-                      child: Center(
-                        child: new Text(
-                          filter.title,
-                          style: new TextStyle(
-                              color: Colors.white,
-                              fontSize: 14.0,
-                              fontWeight: FontWeight.bold),
+                    child: Container(
+                      alignment: Alignment.center,
+                      child: SizedBox(
+                        width: 100.0,
+                        child: Center(
+                          child: new Text(
+                            filter.title,
+                            style: new TextStyle(
+                                color: Colors.white,
+                                fontSize: 10.0,
+                                fontWeight: FontWeight.bold),
+                          ),
                         ),
                       ),
                     ));
@@ -145,14 +148,14 @@ class _TvMainScreenState extends State<TvMainScreen> {
                   FaIcon(
                     FontAwesomeIcons.dice,
                     color: Colors.white,
-                    size: 20.0,
+                    size: 16.0,
                   ),
                   SizedBox(
                     width: 5.0,
                   ),
                   Text("추천",
                       style: new TextStyle(
-                          fontSize: 14.0,
+                          fontSize: 10.0,
                           fontWeight: FontWeight.bold,
                           color: Colors.white)),
                 ],

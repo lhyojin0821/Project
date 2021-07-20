@@ -1,37 +1,30 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
-import 'package:wtw/models/tv_model/tv_detail_model.dart';
+import 'package:wtw/models/movie_model/movie_detail_model.dart';
 import 'package:wtw/models/user_model.dart';
-import 'package:wtw/providers/tv_provider/tv_detail_provider.dart';
-import 'package:wtw/providers/tv_provider/tv_popular_provider.dart';
+import 'package:wtw/providers/movie_provider/movie_detail_provider.dart';
 import 'package:wtw/repository/db_repo.dart';
-import 'package:wtw/screens/main_screen.dart';
-import 'package:wtw/widgets/tv_widget/tv_video_widget.dart';
+import 'package:wtw/widgets/movie_widget/movie_video_widget.dart';
 
-class TvPopularScreen extends StatefulWidget {
-  final int tvId;
+class UserMovieDetailScreen extends StatefulWidget {
+  final int userMovieId;
 
-  TvPopularScreen({
-    required this.tvId,
-  });
+  UserMovieDetailScreen({required this.userMovieId});
 
   @override
-  _TvPopularScreenState createState() => _TvPopularScreenState(
-        this.tvId,
-      );
+  _UserMovieDetailScreenState createState() =>
+      _UserMovieDetailScreenState(this.userMovieId);
 }
 
-class _TvPopularScreenState extends State<TvPopularScreen> {
-  final int tvId;
-  _TvPopularScreenState(
-    this.tvId,
-  );
+class _UserMovieDetailScreenState extends State<UserMovieDetailScreen> {
+  int userMovieId;
+  _UserMovieDetailScreenState(this.userMovieId);
 
-  late TvDetailProvider _tvDetailProvider;
+  late MovieDetailProvider _movieDetailProvider;
   @override
   void initState() {
-    this._tvDetailProvider = Provider.of<TvDetailProvider>(
+    this._movieDetailProvider = Provider.of<MovieDetailProvider>(
       context,
       listen: false,
     );
@@ -44,11 +37,12 @@ class _TvPopularScreenState extends State<TvPopularScreen> {
     return Scaffold(
       backgroundColor: Colors.black,
       body: FutureBuilder(
-        future: this._tvDetailProvider.tvs(this.tvId),
-        builder: (BuildContext context, AsyncSnapshot<TvDetailModel> snapshot) {
+        future: this._movieDetailProvider.movies(this.userMovieId),
+        builder:
+            (BuildContext context, AsyncSnapshot<MovieDetailModel> snapshot) {
           if (snapshot.hasData) {
-            List checkList = user.userTv!
-                .where((element) => element['userTvId'] == snapshot.data!.id)
+            List checkList = user.userMovie!
+                .where((element) => element['userMovieId'] == snapshot.data!.id)
                 .toList();
             bool check;
             if (checkList.length == 0) {
@@ -56,7 +50,7 @@ class _TvPopularScreenState extends State<TvPopularScreen> {
             } else {
               check = true;
             }
-            return Consumer<TvPopularProvider>(
+            return Consumer<MovieDetailProvider>(
                 builder: (context, value, child) {
               return SafeArea(
                   child: Stack(
@@ -103,11 +97,7 @@ class _TvPopularScreenState extends State<TvPopularScreen> {
                     child: Container(
                       child: IconButton(
                           onPressed: () {
-                            Navigator.of(context).pushReplacement(
-                                MaterialPageRoute(
-                                    builder: (BuildContext context) {
-                              return MainScreen();
-                            }));
+                            Navigator.of(context).pop();
                           },
                           icon: FaIcon(
                             FontAwesomeIcons.arrowLeft,
@@ -161,7 +151,7 @@ class _TvPopularScreenState extends State<TvPopularScreen> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          snapshot.data!.name.isEmpty
+                          snapshot.data!.title.isEmpty
                               ? Text(
                                   '',
                                   style: TextStyle(
@@ -173,9 +163,8 @@ class _TvPopularScreenState extends State<TvPopularScreen> {
                                   children: [
                                     Container(
                                       child: Text(
-                                        snapshot.data!.name,
+                                        snapshot.data!.title,
                                         overflow: TextOverflow.ellipsis,
-                                        maxLines: 2,
                                         style: TextStyle(
                                             color: Colors.white,
                                             fontSize: 15.0,
@@ -185,9 +174,9 @@ class _TvPopularScreenState extends State<TvPopularScreen> {
                                     Container(
                                       child: IconButton(
                                         onPressed: () async {
-                                          List list = user.userTv!
+                                          List list = user.userMovie!
                                               .where((element) =>
-                                                  element['userTvId'] ==
+                                                  element['userMovieId'] ==
                                                   snapshot.data!.id)
                                               .toList();
                                           bool isExist;
@@ -197,14 +186,14 @@ class _TvPopularScreenState extends State<TvPopularScreen> {
                                             isExist = true;
                                           }
                                           if (isExist) {
-                                            user.userTv!.removeWhere(
+                                            user.userMovie!.removeWhere(
                                                 (element) =>
-                                                    element['userTvId'] ==
+                                                    element['userMovieId'] ==
                                                     snapshot.data!.id);
                                           } else {
-                                            user.userTv!.add({
-                                              'userTvId': snapshot.data!.id,
-                                              'userTvUrl':
+                                            user.userMovie!.add({
+                                              'userMovieId': snapshot.data!.id,
+                                              'userMovieUrl':
                                                   snapshot.data!.posterPath
                                             });
                                           }
@@ -213,7 +202,6 @@ class _TvPopularScreenState extends State<TvPopularScreen> {
                                             email: user.email,
                                             name: user.name,
                                             userMovie: user.userMovie!,
-                                            userTv: user.userTv,
                                           ));
                                           print(user.userMovie);
                                           setState(() {
@@ -260,14 +248,14 @@ class _TvPopularScreenState extends State<TvPopularScreen> {
                               Row(
                                 children: [
                                   Icon(
-                                    Icons.calendar_today,
+                                    Icons.timer,
                                     color: Colors.white,
-                                    size: 14.0,
+                                    size: 16.0,
                                   ),
                                   SizedBox(
                                     width: 5.0,
                                   ),
-                                  snapshot.data!.firstAirDate.isEmpty
+                                  snapshot.data!.runtime.toString().isEmpty
                                       ? Text(
                                           '',
                                           style: TextStyle(
@@ -276,7 +264,7 @@ class _TvPopularScreenState extends State<TvPopularScreen> {
                                               fontWeight: FontWeight.bold),
                                         )
                                       : Text(
-                                          '${snapshot.data!.firstAirDate} ',
+                                          '${snapshot.data!.runtime.toString()} min',
                                           style: TextStyle(
                                               color: Colors.white,
                                               fontSize: 12.0,
@@ -297,7 +285,7 @@ class _TvPopularScreenState extends State<TvPopularScreen> {
                                   SizedBox(
                                     width: 5.0,
                                   ),
-                                  snapshot.data!.lastAirDate.isEmpty
+                                  snapshot.data!.releaseDate.isEmpty
                                       ? Text(
                                           '',
                                           style: TextStyle(
@@ -306,41 +294,7 @@ class _TvPopularScreenState extends State<TvPopularScreen> {
                                               fontWeight: FontWeight.bold),
                                         )
                                       : Text(
-                                          '${snapshot.data!.lastAirDate} ',
-                                          style: TextStyle(
-                                              color: Colors.white,
-                                              fontSize: 12.0,
-                                              fontWeight: FontWeight.bold),
-                                        ),
-                                ],
-                              ),
-                              SizedBox(
-                                width: 10.0,
-                              ),
-                              Row(
-                                children: [
-                                  FaIcon(
-                                    FontAwesomeIcons.tv,
-                                    color: Colors.white,
-                                    size: 12.0,
-                                  ),
-                                  SizedBox(
-                                    width: 5.0,
-                                  ),
-                                  snapshot.data!.networks.isEmpty
-                                      ? Text(
-                                          '',
-                                          style: TextStyle(
-                                              color: Colors.white,
-                                              fontSize: 12.0,
-                                              fontWeight: FontWeight.bold),
-                                        )
-                                      : Text(
-                                          snapshot.data!.networks[0].name
-                                                      .length >
-                                                  10
-                                              ? '${snapshot.data!.networks[0].name.substring(0, 10)}...'
-                                              : '${snapshot.data!.networks[0].name}',
+                                          '${snapshot.data!.releaseDate} ',
                                           style: TextStyle(
                                               color: Colors.white,
                                               fontSize: 12.0,
@@ -348,9 +302,9 @@ class _TvPopularScreenState extends State<TvPopularScreen> {
                                         ),
                                   // IconButton(
                                   //   onPressed: () async {
-                                  //     List list = user.userTv!
+                                  //     List list = user.userMovie!
                                   //         .where((element) =>
-                                  //             element['userTvId'] ==
+                                  //             element['userMovieId'] ==
                                   //             snapshot.data!.id)
                                   //         .toList();
                                   //     bool isExist;
@@ -360,13 +314,14 @@ class _TvPopularScreenState extends State<TvPopularScreen> {
                                   //       isExist = true;
                                   //     }
                                   //     if (isExist) {
-                                  //       user.userTv!.removeWhere((element) =>
-                                  //           element['userTvId'] ==
+                                  //       user.userMovie!.removeWhere((element) =>
+                                  //           element['userMovieId'] ==
                                   //           snapshot.data!.id);
                                   //     } else {
-                                  //       user.userTv!.add({
-                                  //         'userTvId': snapshot.data!.id,
-                                  //         'userTvUrl': snapshot.data!.posterPath
+                                  //       user.userMovie!.add({
+                                  //         'userMovieId': snapshot.data!.id,
+                                  //         'userMovieUrl':
+                                  //             snapshot.data!.posterPath
                                   //       });
                                   //     }
                                   //     await DbRepo().saveUser(UserModel(
@@ -374,7 +329,6 @@ class _TvPopularScreenState extends State<TvPopularScreen> {
                                   //       email: user.email,
                                   //       name: user.name,
                                   //       userMovie: user.userMovie!,
-                                  //       userTv: user.userTv,
                                   //     ));
                                   //     print(user.userMovie);
                                   //     setState(() {
@@ -394,14 +348,14 @@ class _TvPopularScreenState extends State<TvPopularScreen> {
                                   //   color: Colors.white,
                                   // ),
                                 ],
-                              ),
+                              )
                             ],
                           )
                         ],
                       ),
                     ),
                   ),
-                  TvVideoWidget(tvData: snapshot.data!),
+                  MovieVideoWidget(movieData: snapshot.data!),
                 ],
               ));
             });

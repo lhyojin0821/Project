@@ -40,6 +40,7 @@ class _TvVideoWidgetState extends State<TvVideoWidget> {
             builder: (context, value, child) {
               return Center(
                 child: Container(
+                  padding: EdgeInsets.only(bottom: 120.0),
                   child: GestureDetector(
                     onTap: () {
                       Navigator.of(context).push(

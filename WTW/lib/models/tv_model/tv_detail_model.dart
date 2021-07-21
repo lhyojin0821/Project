@@ -28,9 +28,9 @@ class TvDetailModel {
       networks: (json["networks"] as List)
           .map((i) => new TvNetWorkModel.fromJson(json: i))
           .toList(),
-      lastAirDate: json["last_air_date"] == null ? null : json['last_air_date'],
+      lastAirDate: json["last_air_date"] == null ? '' : json['last_air_date'],
       firstAirDate:
-          json["first_air_date"] == null ? null : json['first_air_date'],
+          json["first_air_date"] == null ? '' : json['first_air_date'],
       runtime:
           json["episode_run_time"] == null ? [] : (json['episode_run_time']),
       posterPath: json["poster_path"] == null ? '' : json['poster_path'],

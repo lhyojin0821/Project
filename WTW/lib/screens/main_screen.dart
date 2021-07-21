@@ -35,12 +35,9 @@ class _MainScreenState extends State<MainScreen>
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
+          title: Text('What To Watch'),
           centerTitle: true,
           backgroundColor: this.mainColor,
-          title: Text(
-            'What to Watch',
-            style: TextStyle(color: Colors.white),
-          ),
           bottom: TabBar(
             indicatorColor: Colors.white,
             controller: this._tabController,

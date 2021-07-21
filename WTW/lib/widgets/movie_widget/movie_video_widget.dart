@@ -43,6 +43,7 @@ class _MovieVideoWidgetState extends State<MovieVideoWidget> {
             builder: (context, value, child) {
               return Center(
                 child: Container(
+                  padding: EdgeInsets.only(bottom: 120.0),
                   child: GestureDetector(
                     onTap: () async {
                       await Navigator.of(context).push(

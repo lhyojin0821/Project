@@ -1,6 +1,6 @@
 class MovieDetailModel {
   final int id;
-  final List companies;
+
   final String releaseDate;
   final int runtime;
   final String posterPath;
@@ -11,7 +11,6 @@ class MovieDetailModel {
 
   MovieDetailModel({
     required this.id,
-    required this.companies,
     required this.releaseDate,
     required this.runtime,
     required this.posterPath,
@@ -24,9 +23,6 @@ class MovieDetailModel {
   factory MovieDetailModel.fromJson(Map<String, dynamic> json) {
     return MovieDetailModel(
       id: json["id"] == null ? 0 : json['id'],
-      companies: json["production_companies"] == null
-          ? []
-          : json["production_companies"],
       releaseDate: json["release_date"] == null ? '' : json['release_date'],
       runtime: json["runtime"] == null ? 0 : json['runtime'],
       posterPath: json["poster_path"] == null ? '' : json['poster_path'],

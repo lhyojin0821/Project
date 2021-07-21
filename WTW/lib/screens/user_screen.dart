@@ -72,13 +72,20 @@ class _UserScreenState extends State<UserScreen> {
                         context: context,
                         builder: (BuildContext context) {
                           return AlertDialog(
+                            backgroundColor: this.subColor,
                             title: Text(
                               '로그아웃',
-                              style: TextStyle(fontSize: 12.0),
+                              style: TextStyle(
+                                fontSize: 12.0,
+                                color: Colors.white,
+                              ),
                             ),
                             content: Text(
                               '로그아웃 하시겠습니까?',
-                              style: TextStyle(fontSize: 10.0),
+                              style: TextStyle(
+                                fontSize: 10.0,
+                                color: Colors.white,
+                              ),
                             ),
                             actions: [
                               TextButton(
@@ -224,7 +231,7 @@ class _UserScreenState extends State<UserScreen> {
             });
           } else {
             return Center(
-              child: CircularProgressIndicator(),
+              child: Container(),
             );
           }
         });

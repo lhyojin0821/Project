@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -70,14 +71,16 @@ class _MovieTileWidgetState extends State<MovieTileWidget> {
                                   ),
                                 )
                               : Container(
+                                  height: MediaQuery.of(context).size.height,
                                   decoration: BoxDecoration(
-                                    borderRadius:
-                                        BorderRadius.all(Radius.circular(15.0)),
-                                    image: DecorationImage(
-                                        image: NetworkImage(
-                                          "https://image.tmdb.org/t/p/original/${snapshot.data![i].posterPath}",
-                                        ),
-                                        fit: BoxFit.cover),
+                                    borderRadius: BorderRadius.circular(15.0),
+                                  ),
+                                  child: ClipRRect(
+                                    borderRadius: BorderRadius.circular(15.0),
+                                    child: CachedNetworkImage(
+                                        fit: BoxFit.cover,
+                                        imageUrl:
+                                            "https://image.tmdb.org/t/p/original/${snapshot.data![i].posterPath}"),
                                   ),
                                 ),
                           Container(
@@ -110,7 +113,7 @@ class _MovieTileWidgetState extends State<MovieTileWidget> {
                                     FaIcon(
                                       FontAwesomeIcons.solidStar,
                                       color: Colors.yellow,
-                                      size: 16.0,
+                                      size: 14.0,
                                     ),
                                     SizedBox(
                                       width: 5.0,
@@ -130,7 +133,7 @@ class _MovieTileWidgetState extends State<MovieTileWidget> {
                                                 .toString(),
                                             style: TextStyle(
                                                 color: Colors.white,
-                                                fontSize: 14.0,
+                                                fontSize: 10.0,
                                                 fontWeight: FontWeight.bold),
                                           ),
                                   ],
@@ -150,7 +153,7 @@ class _MovieTileWidgetState extends State<MovieTileWidget> {
                                     maxLines: 2,
                                     style: TextStyle(
                                         color: Colors.white,
-                                        fontSize: 15.0,
+                                        fontSize: 12.0,
                                         fontWeight: FontWeight.bold),
                                   ),
                           ),

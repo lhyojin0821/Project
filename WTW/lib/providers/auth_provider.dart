@@ -80,13 +80,17 @@ class AuthProvider with ChangeNotifier {
   }
 
   Future<UserModel> getUser() async {
-    final user = FirebaseAuth.instance.currentUser;
-    final userResult = await DbRepo().getUser(user!.uid);
-    UserModel.current = userResult;
-    notifyListeners();
-    return UserModel.current;
+    if (FirebaseAuth.instance.currentUser != null) {
+      final user = FirebaseAuth.instance.currentUser;
+      final userResult = await DbRepo().getUser(user!.uid);
+      UserModel.current = userResult;
+      notifyListeners();
+      return UserModel.current;
+    } else {
+      return UserModel.fromJson({});
+    }
   }
 
-  Stream<User> get user =>
+  Stream<User>? get user =>
       firebaseAuth.authStateChanges().map((event) => event!);
 }

@@ -1,6 +1,10 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:wtw/providers/auth_provider.dart';
+import 'package:wtw/screens/guest_screen.dart';
+import 'package:wtw/screens/login/register_screen.dart';
+import 'package:wtw/screens/login/wrapper.dart';
 import 'package:wtw/screens/movie_screen/movie_main_screen.dart';
 import 'package:wtw/screens/tv_screen/tv_main_screen.dart';
 import 'package:wtw/screens/user_screen.dart';
@@ -57,7 +61,7 @@ class _MainScreenState extends State<MainScreen>
               Container(
                   margin: EdgeInsets.only(bottom: 15.0),
                   child: Icon(
-                    Icons.person_outline,
+                    Icons.person,
                     color: Colors.white,
                   )),
             ],
@@ -68,7 +72,9 @@ class _MainScreenState extends State<MainScreen>
           children: [
             MovieMainScreen(),
             TvMainScreen(),
-            UserScreen(),
+            FirebaseAuth.instance.currentUser == null
+                ? GuestScreen()
+                : UserScreen(),
           ],
         ));
   }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:wtw/providers/auth_provider.dart';
+import 'package:wtw/screens/main_screen.dart';
 
 class LoginScreen extends StatefulWidget {
   final Function? toggleScreen;
@@ -148,35 +149,66 @@ class _LoginScreenState extends State<LoginScreen> {
                         obscureText: true,
                       ),
                     ),
-                    Container(
-                      height: 35.0,
-                      margin: EdgeInsets.only(top: 20.0),
-                      width: MediaQuery.of(context).size.width * 0.5,
-                      child: MaterialButton(
-                          color: Color(0xffe50815),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10.0),
-                          ),
-                          onPressed: () async {
-                            if (this._formKey.currentState!.validate()) {
-                              print('email : ${this.idCt.text}');
-                              print('password : ${this.pwCt.text}');
-                              await loginProvider.login(
-                                  this.idCt.text.trim(), this.pwCt.text.trim());
-                            }
-                          },
-                          child: loginProvider.isLoading
-                              ? Container(
-                                  width: 30.0,
-                                  height: 30.0,
-                                  child: CircularProgressIndicator(
-                                    color: Colors.white,
-                                  ))
-                              : Text("로그인",
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Container(
+                          height: 35.0,
+                          margin: EdgeInsets.only(top: 20.0),
+                          width: MediaQuery.of(context).size.width * 0.3,
+                          child: MaterialButton(
+                              color: Color(0xffe50815),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10.0),
+                              ),
+                              onPressed: () async {
+                                if (this._formKey.currentState!.validate()) {
+                                  print('email : ${this.idCt.text}');
+                                  print('password : ${this.pwCt.text}');
+                                  await loginProvider.login(
+                                      this.idCt.text.trim(),
+                                      this.pwCt.text.trim());
+                                }
+                              },
+                              child: loginProvider.isLoading
+                                  ? Container(
+                                      width: 30.0,
+                                      height: 30.0,
+                                      child: CircularProgressIndicator(
+                                        color: Colors.white,
+                                      ))
+                                  : Text("로그인",
+                                      style: new TextStyle(
+                                          fontSize: 8.0,
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.white))),
+                        ),
+                        SizedBox(
+                          width: 10.0,
+                        ),
+                        Container(
+                          height: 35.0,
+                          margin: EdgeInsets.only(top: 20.0),
+                          width: MediaQuery.of(context).size.width * 0.3,
+                          child: MaterialButton(
+                              color: Colors.grey[600],
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10.0),
+                              ),
+                              onPressed: () async {
+                                Navigator.of(context).pushReplacement(
+                                    MaterialPageRoute(
+                                        builder: (BuildContext context) {
+                                  return MainScreen();
+                                }));
+                              },
+                              child: Text("둘러보기",
                                   style: new TextStyle(
                                       fontSize: 8.0,
                                       fontWeight: FontWeight.bold,
                                       color: Colors.white))),
+                        ),
+                      ],
                     ),
                     Container(
                       child: Row(

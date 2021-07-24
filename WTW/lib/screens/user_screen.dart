@@ -161,7 +161,7 @@ class _UserScreenState extends State<UserScreen> {
   Widget userMovie() {
     return FutureBuilder(
         future: this._userProvider.getUser(),
-        builder: (BuildContext context, AsyncSnapshot<UserModel> snapshot) {
+        builder: (BuildContext context, AsyncSnapshot<UserModel?> snapshot) {
           if (snapshot.hasData) {
             return Consumer<AuthProvider>(builder: (context, value, child) {
               return Column(
@@ -240,7 +240,7 @@ class _UserScreenState extends State<UserScreen> {
   Widget userTv() {
     return FutureBuilder(
         future: this._userProvider.getUser(),
-        builder: (BuildContext context, AsyncSnapshot<UserModel> snapshot) {
+        builder: (BuildContext context, AsyncSnapshot<UserModel?> snapshot) {
           if (snapshot.hasData) {
             return Consumer<AuthProvider>(builder: (context, value, child) {
               return Column(

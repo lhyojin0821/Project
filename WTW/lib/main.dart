@@ -43,6 +43,7 @@ class MyApp extends StatelessWidget {
                     create: (BuildContext context) => TvPopularProvider()),
               ],
               child: MaterialApp(
+                debugShowCheckedModeBanner: false,
                 home: SplashScreen(),
               ),
             );

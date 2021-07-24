@@ -210,7 +210,7 @@ class _UserTvDetailScreenState extends State<UserTvDetailScreen> {
                                             email: user.email,
                                             name: user.name,
                                             userMovie: user.userMovie!,
-                                            userTv: user.userTv,
+                                            userTv: user.userTv!,
                                           ));
                                           print(user.userMovie);
                                           setState(() {

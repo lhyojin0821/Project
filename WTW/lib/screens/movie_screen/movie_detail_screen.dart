@@ -77,7 +77,6 @@ class _MovieDetailScreenState extends State<MovieDetailScreen> {
 
   Widget _detailScreen(List<MovieModel> data) {
     final user = UserModel.current;
-
     return data.isEmpty
         ? Container(
             color: Color(0xff141414),

@@ -1,4 +1,5 @@
 import 'dart:math';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
@@ -6,6 +7,7 @@ import 'package:wtw/models/select_model.dart';
 import 'package:wtw/providers/tv_provider/tv_detail_provider.dart';
 import 'package:wtw/providers/tv_provider/tv_recommendation_provider.dart';
 import 'package:wtw/providers/tv_provider/tv_video_provider.dart';
+import 'package:wtw/screens/tv_screen/tv_detail_no_user_screen.dart';
 import 'package:wtw/screens/tv_screen/tv_detail_screen.dart';
 import 'package:wtw/widgets/tv_widget/tv_tile_widget.dart';
 
@@ -121,7 +123,8 @@ class _TvMainScreenState extends State<TvMainScreen> {
                 ),
               ),
               onPressed: () {
-                if (this._selectedGenre.value != 0)
+                if (this._selectedGenre.value != 0 &&
+                    FirebaseAuth.instance.currentUser != null) {
                   Navigator.of(context).pushReplacement(
                       MaterialPageRoute(builder: (BuildContext context) {
                     return MultiProvider(
@@ -142,6 +145,29 @@ class _TvMainScreenState extends State<TvMainScreen> {
                       ),
                     );
                   }));
+                } else if (this._selectedGenre.value != 0 &&
+                    FirebaseAuth.instance.currentUser == null) {
+                  Navigator.of(context).pushReplacement(
+                      MaterialPageRoute(builder: (BuildContext context) {
+                    return MultiProvider(
+                      providers: [
+                        ChangeNotifierProvider(
+                            create: (BuildContext context) =>
+                                TvRecommendationProvider()),
+                        ChangeNotifierProvider(
+                            create: (BuildContext context) =>
+                                TvDetailProvider()),
+                        ChangeNotifierProvider(
+                            create: (BuildContext context) =>
+                                TvVideoProvider()),
+                      ],
+                      child: TvDetailNoUserScreen(
+                        selectedGenre: this._selectedGenre.value,
+                        pageId: this.randomPage,
+                      ),
+                    );
+                  }));
+                }
               },
               child: Row(
                 children: [

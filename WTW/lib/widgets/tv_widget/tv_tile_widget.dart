@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
@@ -7,6 +8,7 @@ import 'package:wtw/models/tv_model/tv_model.dart';
 import 'package:wtw/providers/tv_provider/tv_detail_provider.dart';
 import 'package:wtw/providers/tv_provider/tv_popular_provider.dart';
 import 'package:wtw/providers/tv_provider/tv_video_provider.dart';
+import 'package:wtw/screens/tv_screen/tv_popular_no_user_screen.dart';
 import 'package:wtw/screens/tv_screen/tv_popular_screen.dart';
 
 class TvTileWidget extends StatefulWidget {
@@ -44,23 +46,47 @@ class _TvTileWidgetState extends State<TvTileWidget> {
                   itemBuilder: (BuildContext context, int i, int? b) {
                     return GestureDetector(
                       onTap: () {
-                        Navigator.of(context).pushReplacement(
-                            MaterialPageRoute(builder: (BuildContext context) {
-                          return MultiProvider(
-                            providers: [
-                              ChangeNotifierProvider(
-                                  create: (BuildContext context) =>
-                                      TvPopularProvider()),
-                              ChangeNotifierProvider(
-                                  create: (BuildContext context) =>
-                                      TvDetailProvider()),
-                              ChangeNotifierProvider(
-                                  create: (BuildContext context) =>
-                                      TvVideoProvider()),
-                            ],
-                            child: TvPopularScreen(tvId: snapshot.data![i].id),
-                          );
-                        }));
+                        if (FirebaseAuth.instance.currentUser != null) {
+                          Navigator.of(context).pushReplacement(
+                              MaterialPageRoute(
+                                  builder: (BuildContext context) {
+                            return MultiProvider(
+                              providers: [
+                                ChangeNotifierProvider(
+                                    create: (BuildContext context) =>
+                                        TvPopularProvider()),
+                                ChangeNotifierProvider(
+                                    create: (BuildContext context) =>
+                                        TvDetailProvider()),
+                                ChangeNotifierProvider(
+                                    create: (BuildContext context) =>
+                                        TvVideoProvider()),
+                              ],
+                              child:
+                                  TvPopularScreen(tvId: snapshot.data![i].id),
+                            );
+                          }));
+                        } else if (FirebaseAuth.instance.currentUser == null) {
+                          Navigator.of(context).pushReplacement(
+                              MaterialPageRoute(
+                                  builder: (BuildContext context) {
+                            return MultiProvider(
+                              providers: [
+                                ChangeNotifierProvider(
+                                    create: (BuildContext context) =>
+                                        TvPopularProvider()),
+                                ChangeNotifierProvider(
+                                    create: (BuildContext context) =>
+                                        TvDetailProvider()),
+                                ChangeNotifierProvider(
+                                    create: (BuildContext context) =>
+                                        TvVideoProvider()),
+                              ],
+                              child: TvPopularNoUserScreen(
+                                  tvId: snapshot.data![i].id),
+                            );
+                          }));
+                        }
                       },
                       child: Stack(
                         children: [

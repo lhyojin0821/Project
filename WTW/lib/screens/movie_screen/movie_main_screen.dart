@@ -1,4 +1,5 @@
 import 'dart:math';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
@@ -6,6 +7,7 @@ import 'package:wtw/models/select_model.dart';
 import 'package:wtw/providers/movie_provider/movie_detail_provider.dart';
 import 'package:wtw/providers/movie_provider/movie_recommendation_provider.dart';
 import 'package:wtw/providers/movie_provider/movie_video_provider.dart';
+import 'package:wtw/screens/movie_screen/movie_detail_no_user_screen.dart';
 import 'package:wtw/screens/movie_screen/movie_detail_screen.dart';
 import 'package:wtw/widgets/movie_widget/movie_tile_widget.dart';
 
@@ -122,7 +124,8 @@ class _MovieMainScreenState extends State<MovieMainScreen> {
                 ),
               ),
               onPressed: () {
-                if (this._selectedGenre.value != 0)
+                if (this._selectedGenre.value != 0 &&
+                    FirebaseAuth.instance.currentUser != null) {
                   Navigator.of(context).pushReplacement(
                       MaterialPageRoute(builder: (BuildContext context) {
                     return MultiProvider(
@@ -143,6 +146,29 @@ class _MovieMainScreenState extends State<MovieMainScreen> {
                       ),
                     );
                   }));
+                } else if (this._selectedGenre.value != 0 &&
+                    FirebaseAuth.instance.currentUser == null) {
+                  Navigator.of(context).pushReplacement(
+                      MaterialPageRoute(builder: (BuildContext context) {
+                    return MultiProvider(
+                      providers: [
+                        ChangeNotifierProvider(
+                            create: (BuildContext context) =>
+                                MovieRecommendationProvider()),
+                        ChangeNotifierProvider(
+                            create: (BuildContext context) =>
+                                MovieDetailProvider()),
+                        ChangeNotifierProvider(
+                            create: (BuildContext context) =>
+                                MovieVideoProvider()),
+                      ],
+                      child: MovieDetailNoUserScreen(
+                        selectedGenre: this._selectedGenre.value,
+                        pageId: this.randomPage,
+                      ),
+                    );
+                  }));
+                }
               },
               child: Row(
                 children: [

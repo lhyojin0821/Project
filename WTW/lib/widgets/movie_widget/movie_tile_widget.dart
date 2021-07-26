@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
@@ -7,6 +8,7 @@ import 'package:wtw/models/movie_model/movie_model.dart';
 import 'package:wtw/providers/movie_provider/movie_detail_provider.dart';
 import 'package:wtw/providers/movie_provider/movie_nowplaying_provider.dart';
 import 'package:wtw/providers/movie_provider/movie_video_provider.dart';
+import 'package:wtw/screens/movie_screen/movie_nowplaying_no_user_screen.dart';
 import 'package:wtw/screens/movie_screen/movie_nowplaying_screen.dart';
 
 class MovieTileWidget extends StatefulWidget {
@@ -44,21 +46,41 @@ class _MovieTileWidgetState extends State<MovieTileWidget> {
                   itemBuilder: (BuildContext context, int i, int? b) {
                     return GestureDetector(
                       onTap: () {
-                        Navigator.of(context).pushReplacement(
-                            MaterialPageRoute(builder: (BuildContext context) {
-                          return MultiProvider(
-                            providers: [
-                              ChangeNotifierProvider(
-                                  create: (BuildContext context) =>
-                                      MovieDetailProvider()),
-                              ChangeNotifierProvider(
-                                  create: (BuildContext context) =>
-                                      MovieVideoProvider()),
-                            ],
-                            child: MovieNowPlayingScreen(
-                                movieId: snapshot.data![i].id),
-                          );
-                        }));
+                        if (FirebaseAuth.instance.currentUser != null) {
+                          Navigator.of(context).pushReplacement(
+                              MaterialPageRoute(
+                                  builder: (BuildContext context) {
+                            return MultiProvider(
+                              providers: [
+                                ChangeNotifierProvider(
+                                    create: (BuildContext context) =>
+                                        MovieDetailProvider()),
+                                ChangeNotifierProvider(
+                                    create: (BuildContext context) =>
+                                        MovieVideoProvider()),
+                              ],
+                              child: MovieNowPlayingScreen(
+                                  movieId: snapshot.data![i].id),
+                            );
+                          }));
+                        } else if (FirebaseAuth.instance.currentUser == null) {
+                          Navigator.of(context).pushReplacement(
+                              MaterialPageRoute(
+                                  builder: (BuildContext context) {
+                            return MultiProvider(
+                              providers: [
+                                ChangeNotifierProvider(
+                                    create: (BuildContext context) =>
+                                        MovieDetailProvider()),
+                                ChangeNotifierProvider(
+                                    create: (BuildContext context) =>
+                                        MovieVideoProvider()),
+                              ],
+                              child: MovieNowPlayingNoUserScreen(
+                                  movieId: snapshot.data![i].id),
+                            );
+                          }));
+                        }
                       },
                       child: Stack(
                         children: [

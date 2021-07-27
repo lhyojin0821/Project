@@ -196,7 +196,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                 borderRadius: BorderRadius.circular(10.0),
                               ),
                               onPressed: () async {
-                                Navigator.of(context).pushReplacement(
+                                await Navigator.of(context).pushReplacement(
                                     MaterialPageRoute(
                                         builder: (BuildContext context) {
                                   return MainScreen();

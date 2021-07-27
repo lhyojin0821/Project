@@ -68,7 +68,7 @@ class _UserScreenState extends State<UserScreen> {
                     color: Colors.white,
                   ),
                   onPressed: () async {
-                    showDialog(
+                    await showDialog(
                         context: context,
                         builder: (BuildContext context) {
                           return AlertDialog(

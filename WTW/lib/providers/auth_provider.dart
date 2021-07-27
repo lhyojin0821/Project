@@ -59,7 +59,7 @@ class AuthProvider with ChangeNotifier {
       setLoading(false);
       if (e.hashCode == 185768934 || e.hashCode == 140382746)
         setMessage('비밀번호가 잘못되었습니다.');
-      if (e == 505284406) setMessage('이 이메일 주소를 사용하는 계정을 찾을 수 없습니다.');
+      if (e.hashCode == 505284406) setMessage('이 이메일 주소를 사용하는 계정을 찾을 수 없습니다.');
     }
     notifyListeners();
   }
